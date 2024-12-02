@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/will-stone/2n8/compare/0.0.3...0.0.4) (2024-12-02)
+
+### Patches
+
+- Initial library release (for testing only)
+  ([d0df404](https://github.com/will-stone/2n8/commit/d0df404a96605fa1f0aba841c697de1bc2cb6417))
+
 ## 0.0.3 (2024-12-02)
 
 ### Patches
