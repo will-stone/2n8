@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/will-stone/2n8/compare/0.0.4...0.0.5) (2024-12-02)
+
+### Patches
+
+- Fix build artefacts not in release
+  ([caa40bd](https://github.com/will-stone/2n8/commit/caa40bd878495f1b5b6d033321c80f710208af31))
+
 ## [0.0.4](https://github.com/will-stone/2n8/compare/0.0.3...0.0.4) (2024-12-02)
 
 ### Patches
