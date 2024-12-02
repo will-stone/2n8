@@ -4,7 +4,7 @@ import type { FC } from 'react'
 import { useRef } from 'react'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 
-import { ClassyStore, createClassyStore } from './2n8.js'
+import { createStore, TwoAndEight } from './2n8.js'
 
 const RenderCount: FC<{ title: string }> = ({ title }) => {
   const renderCount = useRef(0)
@@ -28,7 +28,7 @@ afterEach(() => {
 })
 
 test('should update count component and not rerender others', async () => {
-  class Store extends ClassyStore {
+  class Store extends TwoAndEight {
     count = 0
 
     buttonClicked() {
@@ -44,7 +44,7 @@ test('should update count component and not rerender others', async () => {
     }
   }
 
-  const useStore = createClassyStore(new Store())
+  const useStore = createStore(new Store())
 
   const Count: FC = () => {
     const count = useStore((s) => s.count)
@@ -124,7 +124,7 @@ test('should update count component and not rerender others', async () => {
 })
 
 test('should update when using async actions', async () => {
-  class Store extends ClassyStore {
+  class Store extends TwoAndEight {
     count = 0
 
     buttonClicked() {
@@ -158,7 +158,7 @@ test('should update when using async actions', async () => {
 })
 
 test('should reset all state', () => {
-  class Store extends ClassyStore {
+  class Store extends TwoAndEight {
     untouched = true
     toggle: boolean | 'a string' = false
     greeting = 'hello'
@@ -209,7 +209,7 @@ test('should reset all state', () => {
 })
 
 test('should reset single field', () => {
-  class Store extends ClassyStore {
+  class Store extends TwoAndEight {
     untouched = true
     count = 999
 

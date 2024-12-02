@@ -1,7 +1,7 @@
 import autoBind from 'auto-bind'
 import { useSyncExternalStore } from 'react'
 
-export class ClassyStore {
+export class TwoAndEight {
   #initialState = {}
 
   #listeners: (() => void)[] = []
@@ -67,7 +67,7 @@ export class ClassyStore {
   }
 }
 
-export function createClassyStore<Store extends ClassyStore>(
+export function createStore<Store extends TwoAndEight>(
   store: Store,
 ): <StoreField>(
   selector: (state: Omit<Store, '__getSnapshot' | '__subscribe'>) => StoreField,
