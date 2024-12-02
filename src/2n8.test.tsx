@@ -156,3 +156,82 @@ test('should update when using async actions', async () => {
 
   expect(store.count).toBe(7)
 })
+
+test('should reset all state', () => {
+  class Store extends ClassyStore {
+    untouched = true
+    toggle: boolean | 'a string' = false
+    greeting = 'hello'
+    count = 999
+
+    increment() {
+      this.count = this.count + 1
+    }
+
+    gone() {
+      this.greeting = 'bye'
+    }
+
+    switched() {
+      if (this.toggle === true) {
+        this.toggle = 'a string'
+      } else if (this.toggle === false) {
+        this.toggle = true
+      } else {
+        this.toggle = false
+      }
+    }
+  }
+
+  const store = new Store()
+
+  expect(store.greeting).toBe('hello')
+  expect(store.count).toBe(999)
+  expect(store.toggle).toBe(false)
+  expect(store.untouched).toBe(true)
+
+  store.switched()
+  store.switched()
+  store.increment()
+  store.gone()
+
+  expect(store.greeting).toBe('bye')
+  expect(store.count).toBe(1000)
+  expect(store.toggle).toBe('a string')
+  expect(store.untouched).toBe(true)
+
+  store.$reset()
+
+  expect(store.greeting).toBe('hello')
+  expect(store.count).toBe(999)
+  expect(store.toggle).toBe(false)
+  expect(store.untouched).toBe(true)
+})
+
+test('should reset single field', () => {
+  class Store extends ClassyStore {
+    untouched = true
+    count = 999
+
+    increment() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = new Store()
+
+  store.$reset('count')
+
+  expect(store.count).toBe(999)
+  expect(store.untouched).toBe(true)
+
+  store.increment()
+
+  expect(store.count).toBe(1000)
+  expect(store.untouched).toBe(true)
+
+  store.$reset('count')
+
+  expect(store.count).toBe(999)
+  expect(store.untouched).toBe(true)
+})

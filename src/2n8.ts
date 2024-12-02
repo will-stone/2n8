@@ -2,18 +2,32 @@ import autoBind from 'auto-bind'
 import { useSyncExternalStore } from 'react'
 
 export class ClassyStore {
+  #initialState = {}
+
   #listeners: (() => void)[] = []
 
   constructor() {
     const p = new Proxy(this, {
       set: (_, key, value) => {
         const prevValue = Reflect.get(this, key)
-        if (prevValue !== value) {
-          Reflect.set(this, key, value)
-          if (prevValue !== undefined && typeof prevValue !== 'function') {
-            this.emitChange()
+        // Always update value.
+        Reflect.set(this, key, value)
+
+        if (
+          // Value has changed.
+          prevValue !== value &&
+          // Do not care about methods.
+          typeof prevValue !== 'function'
+        ) {
+          // Store first value so it can be reset if required.
+          const initialValue = Reflect.get(this.#initialState, key)
+          if (initialValue === undefined) {
+            Reflect.set(this.#initialState, key, prevValue)
           }
+          // Announce change.
+          this.emitChange()
         }
+
         return true
       },
     })
@@ -30,6 +44,20 @@ export class ClassyStore {
 
   __getSnapshot = (): this => {
     return this
+  }
+
+  $reset = (field?: string): void => {
+    if (field) {
+      const initialValue = Reflect.get(this.#initialState, field)
+      if (initialValue !== undefined) {
+        Reflect.set(this, field, initialValue)
+      }
+    } else {
+      for (const key of Object.keys(this.#initialState)) {
+        const initialValue = Reflect.get(this.#initialState, key)
+        Reflect.set(this, key, initialValue)
+      }
+    }
   }
 
   private emitChange = () => {
