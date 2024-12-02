@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.0](https://github.com/will-stone/2n8/compare/0.0.5...0.1.0) (2024-12-02)
+
+### Minor changes
+
+- ClassyStore -> TwoAndEight, createClassyStore -> createStore
+  ([1914c91](https://github.com/will-stone/2n8/commit/1914c91e36baba97a4b26f765d1388768c5e7aa6))
+
+### Patches
+
+- Add reset state ability
+  ([ce28af7](https://github.com/will-stone/2n8/commit/ce28af7a61fd152497604012b9d42a6f529946a9))
+
 ## [0.0.5](https://github.com/will-stone/2n8/compare/0.0.4...0.0.5) (2024-12-02)
 
 ### Patches
