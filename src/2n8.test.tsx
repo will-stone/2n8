@@ -235,3 +235,79 @@ test('should reset single field', () => {
   expect(store.count).toBe(999)
   expect(store.untouched).toBe(true)
 })
+
+test('should compute derived value', () => {
+  class Store extends TwoAndEight {
+    count = 1
+    count2 = 3
+
+    get total() {
+      return this.count + this.count2
+    }
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = new Store()
+  expect(store.total).toBe(4)
+  store.increaseCount()
+  expect(store.total).toBe(5)
+})
+
+test('should render computed', async () => {
+  class Store extends TwoAndEight {
+    count = 1
+    count2 = 3
+
+    get total() {
+      return this.count + this.count2
+    }
+
+    buttonClicked() {
+      this.count = this.count + 1
+    }
+  }
+
+  const useStore = createStore(new Store())
+
+  const Total: FC = () => {
+    const total = useStore((s) => s.total)
+    return (
+      <div>
+        <div>Total: {total}</div>
+      </div>
+    )
+  }
+
+  const Button: FC = () => {
+    const buttonClicked = useStore((s) => s.buttonClicked)
+    return (
+      <div>
+        <button onClick={buttonClicked} type="button">
+          Button
+        </button>
+      </div>
+    )
+  }
+
+  const App = () => {
+    return (
+      <>
+        <Button />
+        <Total />
+      </>
+    )
+  }
+
+  const user = userEvent.setup()
+
+  render(<App />)
+
+  expect(screen.getByText('Total: 4')).toBeVisible()
+
+  await user.click(screen.getByRole('button', { name: 'Button' }))
+
+  expect(screen.getByText('Total: 5')).toBeVisible()
+})
