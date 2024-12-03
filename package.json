@@ -43,7 +43,7 @@
   "dependencies": {
     "@astrojs/tailwind": "^5.1.3",
     "auto-bind": "^5.0.1",
-    "tailwindcss": "^3.4.15"
+    "tailwindcss": "^3.4.16"
   },
   "devDependencies": {
     "@commits-with-character/conventional-changelog-preset": "^1.0.0",
@@ -64,7 +64,7 @@
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.2",
     "vite-plugin-dts": "^4.3.0",
-    "vitest": "^2.1.7"
+    "vitest": "^2.1.8"
   },
   "peerDependencies": {
     "react": "^18.3.1"

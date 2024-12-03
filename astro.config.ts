@@ -5,5 +5,6 @@ import { defineConfig } from 'astro/config'
 export default defineConfig({
   integrations: [tailwind()],
   outDir: './dist-website',
+  publicDir: './website/public',
   srcDir: './website',
 })

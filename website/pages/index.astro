@@ -1,21 +1,33 @@
 ---
+import { Image } from 'astro:assets'
 import { Code } from 'astro:components'
+
+import logo from '../images/logo.png'
 ---
 
 <html>
-  <body
-    class="bg-gradient-to-r from-indigo-800 via-indigo-900 to-gray-950 text-indigo-50 px-4 py-16 container mx-auto"
-  >
-    <div class="grid grid-cols-2 gap-8">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      body {
+        background-image: url(bg.webp);
+      }
+    </style>
+  </head>
+  <body class="container mx-auto px-4 py-16 text-indigo-950">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
       <div>
-        <h1 class="text-9xl font-serif text-center">2n8</h1>
-        <blockquote class="text-2xl italic mt-4 text-center">
-          Oh dear, your store is in a right two and eight.
-        </blockquote>
+        <Image alt="" class="mx-auto w-full max-w-96" src={logo} />
+        <h1
+          class="mt-4 text-center font-handwritten text-9xl font-black drop-shadow"
+        >
+          2n8
+        </h1>
       </div>
       <div>
         <Code
-          class="p-8 rounded shadow-2xl text-sm"
+          class="rounded border-2 border-indigo-700 p-8 text-sm shadow-lg"
           code={`// Counter.tsx
 
 import { TwoAndEight } from '2n8'
