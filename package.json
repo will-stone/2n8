@@ -23,7 +23,10 @@
     "lint": "eslint .",
     "prepare": "simple-git-hooks",
     "release": "release-it",
-    "test": "vitest --typecheck"
+    "test": "vitest --typecheck",
+    "website:build": "astro build",
+    "website:dev": "astro dev",
+    "website:preview": "astro preview"
   },
   "simple-git-hooks": {
     "pre-commit": "npx --no lint-staged"
@@ -38,7 +41,9 @@
   },
   "prettier": "@will-stone/prettier-config",
   "dependencies": {
-    "auto-bind": "^5.0.1"
+    "@astrojs/tailwind": "^5.1.3",
+    "auto-bind": "^5.0.1",
+    "tailwindcss": "^3.4.15"
   },
   "devDependencies": {
     "@commits-with-character/conventional-changelog-preset": "^1.0.0",
@@ -50,6 +55,7 @@
     "@types/react": "^18.3.12",
     "@will-stone/eslint-config": "^12.1.0",
     "@will-stone/prettier-config": "^8.0.1",
+    "astro": "^5.0.1",
     "eslint": "^9.16.0",
     "jsdom": "^25.0.1",
     "lint-staged": "^15.2.10",

@@ -1,0 +1,51 @@
+---
+import { Code } from 'astro:components'
+---
+
+<html>
+  <body
+    class="bg-gradient-to-r from-indigo-800 via-indigo-900 to-gray-950 text-indigo-50 px-4 py-16 container mx-auto"
+  >
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <h1 class="text-9xl font-serif text-center">2n8</h1>
+        <blockquote class="text-2xl italic mt-4 text-center">
+          Oh dear, your store is in a right two and eight.
+        </blockquote>
+      </div>
+      <div>
+        <Code
+          class="p-8 rounded shadow-2xl text-sm"
+          code={`// Counter.tsx
+
+import { TwoAndEight } from '2n8'
+import { createStore } from '2n8/react'
+import type { FC } from 'react'
+
+class Store extends TwoAndEight {
+  count = 0
+
+  buttonClicked() {
+    this.count = this.count + 1
+  }
+}
+
+const useStore = createStore(new Store())
+
+const Counter: FC = () => {
+  const count = useStore(state => state.count)
+  const buttonClicked = useStore(state => state.buttonClicked)
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={buttonClicked}>one up</button>
+    </div>
+  )
+}`}
+          lang="js"
+          theme="plastic"
+        />
+      </div>
+    </div>
+  </body>
+</html>

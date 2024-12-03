@@ -5,4 +5,6 @@ node_modules
 .DS_Store
 
 # Build assets
+.astro
 dist
+dist-website
