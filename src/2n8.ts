@@ -1,5 +1,4 @@
 import autoBind from 'auto-bind'
-import { useSyncExternalStore } from 'react'
 
 export class TwoAndEight {
   #initialState = {}
@@ -65,15 +64,4 @@ export class TwoAndEight {
       listener()
     }
   }
-}
-
-export function createStore<Store extends TwoAndEight>(
-  store: Store,
-): <StoreField>(
-  selector: (state: Omit<Store, '__getSnapshot' | '__subscribe'>) => StoreField,
-) => StoreField {
-  return (selector) =>
-    useSyncExternalStore(store.__subscribe, () =>
-      selector(store.__getSnapshot()),
-    )
 }

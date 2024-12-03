@@ -7,7 +7,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   build: {
     lib: {
-      entry: ['./src/2n8.ts'],
+      entry: ['./src/2n8.ts', './src/react.tsx'],
       formats: ['es', 'cjs'],
     },
     minify: false,
@@ -23,6 +23,7 @@ export default defineConfig({
         // read as ESM. To do this, there must be duplicate types with the
         // correct extension supplied in the package.json exports field.
         copyFileSync('./dist/2n8.d.ts', './dist/2n8.d.cts')
+        copyFileSync('./dist/react.d.ts', './dist/react.d.cts')
       },
       exclude: [
         // Start a file with an underscore if you don't intend for it produce

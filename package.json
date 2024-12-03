@@ -6,8 +6,14 @@
   "author": "Will Stone",
   "type": "module",
   "exports": {
-    "import": "./dist/2n8.js",
-    "require": "./dist/2n8.cjs"
+    ".": {
+      "import": "./dist/2n8.js",
+      "require": "./dist/2n8.cjs"
+    },
+    "./react": {
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
+    }
   },
   "files": [
     "./dist"
