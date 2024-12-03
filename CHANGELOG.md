@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/will-stone/2n8/compare/0.1.0...0.2.0) (2024-12-03)
+
+### Minor changes
+
+- Removed React hook from main bundle, and exported it from /react
+  ([284fb26](https://github.com/will-stone/2n8/commit/284fb26d100df82dbf7d0769f45e280816e03618))
+
 ## [0.1.0](https://github.com/will-stone/2n8/compare/0.0.5...0.1.0) (2024-12-02)
 
 ### Minor changes
