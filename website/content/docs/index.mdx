@@ -1,0 +1,41 @@
+---
+title: Home
+description: Streamline state logic and minimize boilerplate code.
+template: splash
+head:
+  - tag: title
+    content: 2n8 - state management
+  # Hide the header on homepage.
+  - tag: style
+    content:
+      '.header { display: none; } .main-frame { padding-top: 0 !important; }
+      .hero { padding-block: 0 !important }'
+# Hide the next page link
+next: false
+hero:
+  title: Oh my, your store is in a right two and eight.
+  tagline: Streamline state logic and minimize boilerplate code.
+  image:
+    alt: A cartoon confused emoji-like face, this is the project logo.
+    file: ../../assets/logo.png
+  actions:
+    - text: Docs
+      link: /introduction/
+      icon: right-caret
+    - text: View on GitHub
+      link: https://github.com/will-stone/2n8
+      icon: external
+      variant: minimal
+      attrs:
+        rel: me
+        target: _blank
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+import { Code } from '@astrojs/starlight/components'
+import { twoAndEight, zustand } from '../code-snippets.js'
+import { Card, CardGrid } from '@astrojs/starlight/components'
+import Counter from '../counter.jsx'
+
+<Counter client:load />
+<Code code={twoAndEight} lang="tsx" title="Counter.tsx" />
