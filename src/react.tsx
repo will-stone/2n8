@@ -8,7 +8,9 @@ export function createStore<Store extends TwoAndEight>(
   selector: (state: Omit<Store, '__getSnapshot' | '__subscribe'>) => StoreField,
 ) => StoreField {
   return (selector) =>
-    useSyncExternalStore(store.__subscribe, () =>
-      selector(store.__getSnapshot()),
+    useSyncExternalStore(
+      store.__subscribe,
+      () => selector(store.__getSnapshot()),
+      () => selector(store.__getSnapshot()),
     )
 }
