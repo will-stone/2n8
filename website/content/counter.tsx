@@ -24,49 +24,60 @@ const Counter: FC = () => {
   return (
     <div
       style={{
-        alignItems: 'center',
         display: 'flex',
-        gap: '1rem',
         justifyContent: 'center',
       }}
     >
       <div
         style={{
-          fontFamily: 'monospace',
-          fontSize: '3rem',
-        }}
-      >
-        {count}
-      </div>
-      <div
-        style={{
           alignItems: 'center',
-          display: 'flex',
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
+          border: '8px solid #222429',
+          borderRadius: '1rem',
+          display: 'inline-flex',
           gap: '1rem',
-          margin: 0,
+          justifyContent: 'center',
+          padding: '2rem',
         }}
       >
-        <button
-          onClick={addClicked}
+        <div
           style={{
-            paddingLeft: '1rem',
-            paddingRight: '1rem',
+            fontFamily: 'monospace',
+            fontSize: '3rem',
+            lineHeight: 1,
           }}
         >
-          + 1
-        </button>
-        <button
-          onClick={resetClicked}
+          {count}
+        </div>
+        <div
           style={{
-            marginTop: 0,
-            paddingLeft: '1rem',
-            paddingRight: '1rem',
+            alignItems: 'center',
+            display: 'flex',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            gap: '1rem',
+            margin: 0,
           }}
         >
-          Reset
-        </button>
+          <button
+            onClick={addClicked}
+            style={{
+              paddingLeft: '1rem',
+              paddingRight: '1rem',
+            }}
+          >
+            + 1
+          </button>
+          <button
+            onClick={resetClicked}
+            style={{
+              marginTop: 0,
+              paddingLeft: '1rem',
+              paddingRight: '1rem',
+            }}
+          >
+            Reset
+          </button>
+        </div>
       </div>
     </div>
   )
