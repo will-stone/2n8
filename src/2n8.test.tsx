@@ -143,3 +143,22 @@ test('should compute derived value', () => {
   store.increaseCount()
   expect(store.total).toBe(5)
 })
+
+test('should throw if attempting to reset an action', () => {
+  class Store extends TwoAndEight {
+    count = 0
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = new Store()
+  expect(() => store.$reset('increaseCount')).toThrow(
+    '2n8: Cannot reset a method.',
+  )
+  expect(() => store.$reset('$reset')).toThrow('2n8: Cannot reset a method.')
+  expect(() => store.$reset('$subscribe')).toThrow(
+    '2n8: Cannot reset a method.',
+  )
+})

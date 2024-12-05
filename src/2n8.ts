@@ -34,19 +34,18 @@ export class TwoAndEight {
     autoBind(p)
   }
 
-  __subscribe = (listener: () => void) => {
+  $subscribe = (listener: () => void) => {
     this.#listeners = [...this.#listeners, listener]
     return (): void => {
       this.#listeners = this.#listeners.filter((l) => l !== listener)
     }
   }
 
-  __getSnapshot = (): this => {
-    return this
-  }
-
   $reset = (field?: keyof this): void => {
     if (field) {
+      if (typeof this[field] === 'function') {
+        throw new TypeError('2n8: Cannot reset a method.')
+      }
       const initialValue = Reflect.get(this.#initialState, field)
       if (initialValue !== undefined) {
         Reflect.set(this, field, initialValue)
