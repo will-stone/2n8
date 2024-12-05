@@ -93,34 +93,24 @@ test('should update count component and not rerender others', async () => {
   }
 
   const user = userEvent.setup()
-
   render(<App />)
-
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 1')).toBeVisible()
   expect(screen.getByText('Count: 0')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
-
   await user.click(screen.getByRole('button', { name: 'Button' }))
-
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 2')).toBeVisible()
   expect(screen.getByText('Count: 1')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
-
   await user.click(screen.getByRole('button', { name: 'Button' }))
-
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 3')).toBeVisible()
   expect(screen.getByText('Count: 2')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
-
   await user.click(screen.getByRole('button', { name: 'AsyncButton' }))
-
   expect(screen.getByText('Count: 3')).toBeVisible()
-
   await act(() => vi.advanceTimersByTime(10_001))
-
   expect(screen.getByText('Count: 8')).toBeVisible()
 })
 
@@ -170,12 +160,49 @@ test('should render computed', async () => {
   }
 
   const user = userEvent.setup()
-
   render(<App />)
-
   expect(screen.getByText('Total: 4')).toBeVisible()
-
   await user.click(screen.getByRole('button', { name: 'Button' }))
-
   expect(screen.getByText('Total: 5')).toBeVisible()
+})
+
+test('should reset state', async () => {
+  class Store extends TwoAndEight {
+    count = 1
+
+    addButtonClicked() {
+      this.count = this.count + 1
+    }
+
+    resetButtonClicked() {
+      this.$reset('count')
+    }
+  }
+
+  const useStore = createStore(new Store())
+
+  const App = () => {
+    const count = useStore((s) => s.count)
+    const addButtonClicked = useStore((s) => s.addButtonClicked)
+    const resetButtonClicked = useStore((s) => s.resetButtonClicked)
+    return (
+      <>
+        <div>Count: {count}</div>
+        <button onClick={addButtonClicked} type="button">
+          Add Button
+        </button>
+        <button onClick={resetButtonClicked} type="button">
+          Reset Button
+        </button>
+      </>
+    )
+  }
+
+  const user = userEvent.setup()
+  render(<App />)
+  expect(screen.getByText('Count: 1')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Add Button' }))
+  expect(screen.getByText('Count: 2')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Reset Button' }))
+  expect(screen.getByText('Count: 1')).toBeVisible()
 })
