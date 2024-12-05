@@ -24,7 +24,7 @@ export class TwoAndEight {
             Reflect.set(this.#initialState, key, prevValue)
           }
           // Announce change.
-          this.emitChange()
+          this.#emitChange()
         }
 
         return true
@@ -56,10 +56,10 @@ export class TwoAndEight {
         Reflect.set(this, key, initialValue)
       }
     }
-    this.emitChange()
+    this.#emitChange()
   }
 
-  private emitChange = () => {
+  #emitChange = () => {
     for (const listener of this.#listeners) {
       listener()
     }
