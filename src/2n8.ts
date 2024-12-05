@@ -45,7 +45,7 @@ export class TwoAndEight {
     return this
   }
 
-  $reset = (field?: string): void => {
+  $reset = (field?: keyof this): void => {
     if (field) {
       const initialValue = Reflect.get(this.#initialState, field)
       if (initialValue !== undefined) {
