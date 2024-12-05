@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.1](https://github.com/will-stone/2n8/compare/0.2.0...0.2.1) (2024-12-05)
+
+### Patches
+
+- Refactor for one less line of code
+  ([1e59973](https://github.com/will-stone/2n8/commit/1e59973eadff144e3d69eba24b5c2cfadf13d253))
+- Fix server and client hydration mismatch
+  ([99dc112](https://github.com/will-stone/2n8/commit/99dc1127638b2a9f4f54b1e0b916321b91c01f84))
+- Fix reset not announcing change to listeners
+  ([19e8250](https://github.com/will-stone/2n8/commit/19e82506337436f67c2b8698bfd93e35b393b810))
+
 ## [0.2.0](https://github.com/will-stone/2n8/compare/0.1.0...0.2.0) (2024-12-03)
 
 ### Minor changes
