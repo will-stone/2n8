@@ -6,6 +6,9 @@ export class TwoAndEight {
   #listeners: (() => void)[] = []
 
   constructor() {
+    this.$subscribe = this.$subscribe.bind(this)
+    this.$reset = this.$reset.bind(this)
+
     const p = new Proxy(this, {
       set: (_, key, value) => {
         const prevValue = Reflect.get(this, key)
@@ -34,14 +37,14 @@ export class TwoAndEight {
     autoBind(p)
   }
 
-  $subscribe = (listener: () => void) => {
+  $subscribe(listener: () => void) {
     this.#listeners = [...this.#listeners, listener]
     return (): void => {
       this.#listeners = this.#listeners.filter((l) => l !== listener)
     }
   }
 
-  $reset = (field?: keyof this): void => {
+  $reset(field?: keyof this): void {
     if (field) {
       if (typeof this[field] === 'function') {
         throw new TypeError('2n8: Cannot reset a method.')
@@ -59,7 +62,7 @@ export class TwoAndEight {
     this.#emitChange()
   }
 
-  #emitChange = () => {
+  #emitChange() {
     for (const listener of this.#listeners) {
       listener()
     }
