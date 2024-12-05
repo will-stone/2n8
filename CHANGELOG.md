@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.3](https://github.com/will-stone/2n8/compare/0.2.2...0.2.3) (2024-12-05)
+
+### Patches
+
+- Show $ methods as methods in IDE
+  ([197fe56](https://github.com/will-stone/2n8/commit/197fe5644d189b51391b2b914b0fef16549608bc))
+- Hide emitChange method as it's an internal method
+  ([d63ec4b](https://github.com/will-stone/2n8/commit/d63ec4bdbb417ef954e9a954e925b5d7ec930ce6))
+
 ## [0.2.2](https://github.com/will-stone/2n8/compare/0.2.1...0.2.2) (2024-12-05)
 
 ### Patches
