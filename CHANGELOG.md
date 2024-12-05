@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.2](https://github.com/will-stone/2n8/compare/0.2.1...0.2.2) (2024-12-05)
+
+### Patches
+
+- Provide initial state to server snapshot of React store
+  ([cec5da1](https://github.com/will-stone/2n8/commit/cec5da120e98b935e59dbb0096d5d3f6dcd7e371))
+- Throw if attempting to reset an action
+  ([4444426](https://github.com/will-stone/2n8/commit/444442619438ebd5277a489498e58bc3dc6d9068))
+- Add type to $reset
+  ([10a0f41](https://github.com/will-stone/2n8/commit/10a0f411ade17cebe844d370184d1df344a96ddf))
+
 ## [0.2.1](https://github.com/will-stone/2n8/compare/0.2.0...0.2.1) (2024-12-05)
 
 ### Patches
