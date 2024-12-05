@@ -50,15 +50,14 @@ export class TwoAndEight {
       const initialValue = Reflect.get(this.#initialState, field)
       if (initialValue !== undefined) {
         Reflect.set(this, field, initialValue)
-        this.emitChange()
       }
     } else {
       for (const key of Object.keys(this.#initialState)) {
         const initialValue = Reflect.get(this.#initialState, key)
         Reflect.set(this, key, initialValue)
-        this.emitChange()
       }
     }
+    this.emitChange()
   }
 
   private emitChange = () => {
