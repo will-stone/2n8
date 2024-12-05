@@ -16,9 +16,9 @@ class Store extends TwoAndEight {
 const useStore = createStore(new Store())
 
 const Counter = () => {
-  const count = useStore((state) => state.count)
-  const addClicked = useStore((state) => state.addClicked)
-  const resetClicked = useStore((state) => state.resetClicked)
+  const count = useStore((s) => s.count)
+  const addClicked = useStore((s) => s.addClicked)
+  const resetClicked = useStore((s) => s.resetClicked)
   return (
     <div>
       <span>{count}</span>
