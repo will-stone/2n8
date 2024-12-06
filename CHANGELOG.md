@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.4](https://github.com/will-stone/2n8/compare/0.2.3...0.2.4) (2024-12-06)
+
+### Patches
+
+- Remove API methods from React hook
+  ([69163c2](https://github.com/will-stone/2n8/commit/69163c24d620f9069a52681c8aed69b7e812eb56))
+- Add $getState method
+  ([06afbc9](https://github.com/will-stone/2n8/commit/06afbc98ff5b9ec4207df02daa9174e33ac8edd3))
+- Add $getInitialState method
+  ([7c9caba](https://github.com/will-stone/2n8/commit/7c9caba70481a65cdeb3338b83a203540002b128))
+
 ## [0.2.3](https://github.com/will-stone/2n8/compare/0.2.2...0.2.3) (2024-12-05)
 
 ### Patches
