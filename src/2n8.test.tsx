@@ -164,28 +164,7 @@ test('should return initial state', () => {
   store.increaseCount()
   expect(store.$getInitialState()).toStrictEqual({
     count: 0,
-    untouched: 'foo',
-  })
-})
-
-test('should return state', () => {
-  class Store extends TwoAndEight {
-    count = 0
-    untouched = 'foo'
-
-    increaseCount() {
-      this.count = this.count + 1
-    }
-  }
-
-  const store = new Store()
-  expect(store.$getState()).toStrictEqual({
-    count: 0,
-    untouched: 'foo',
-  })
-  store.increaseCount()
-  expect(store.$getState()).toStrictEqual({
-    count: 1,
+    increaseCount: expect.any(Function),
     untouched: 'foo',
   })
 })

@@ -12,12 +12,10 @@ export function createStore<Store extends TwoAndEight>(
     >,
   ) => StoreField,
 ) => StoreField {
-  // eslint-disable-next-line unicorn/prefer-structured-clone
-  const initialState = JSON.parse(JSON.stringify(store))
   return (selector) =>
     useSyncExternalStore(
       store.$subscribe,
       () => selector(store),
-      () => selector(initialState),
+      () => selector(store.$getInitialState()),
     )
 }
