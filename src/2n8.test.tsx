@@ -149,3 +149,21 @@ test('should throw if attempting to reset an action', () => {
     '2n8: Cannot reset a method.',
   )
 })
+
+test('should return initial state', () => {
+  class Store extends TwoAndEight {
+    count = 0
+    untouched = 'foo'
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = new Store()
+  store.increaseCount()
+  expect(store.$getInitialState()).toStrictEqual({
+    count: 0,
+    untouched: 'foo',
+  })
+})

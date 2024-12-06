@@ -1,5 +1,10 @@
 import autoBind from 'auto-bind'
 
+type State<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type -- need generic Function type to match all methods.
+  [K in keyof T as T[K] extends Function ? never : K]: T[K]
+}
+
 export class TwoAndEight {
   #initialState = {}
 
@@ -8,6 +13,7 @@ export class TwoAndEight {
   constructor() {
     this.$subscribe = this.$subscribe.bind(this)
     this.$reset = this.$reset.bind(this)
+    this.$getInitialState = this.$getInitialState.bind(this)
 
     const p = new Proxy(this, {
       set: (_, key, value) => {
@@ -60,6 +66,17 @@ export class TwoAndEight {
       }
     }
     this.#emitChange()
+  }
+
+  $getInitialState(): State<this> {
+    return Object.fromEntries(
+      Object.entries(this)
+        .filter(([_, value]) => typeof value !== 'function')
+        .map(([key, value]) => {
+          const initialValue = Reflect.get(this.#initialState, key)
+          return [key, initialValue ?? value]
+        }),
+    ) as State<this>
   }
 
   #emitChange() {
