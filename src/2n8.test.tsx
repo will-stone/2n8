@@ -29,19 +29,12 @@ test('should update when using async actions', async () => {
   }
 
   const store = new Store()
-
   expect(store.count).toBe(0)
-
   store.buttonClicked()
-
   expect(store.count).toBe(1)
-
   store.asyncButtonClicked()
-
   expect(store.count).toBe(2)
-
   await vi.advanceTimersByTimeAsync(10_001)
-
   expect(store.count).toBe(7)
 })
 
@@ -107,19 +100,13 @@ test('should reset single field', () => {
   }
 
   const store = new Store()
-
   store.$reset('count')
-
   expect(store.count).toBe(999)
   expect(store.untouched).toBe(true)
-
   store.increment()
-
   expect(store.count).toBe(1000)
   expect(store.untouched).toBe(true)
-
   store.$reset('count')
-
   expect(store.count).toBe(999)
   expect(store.untouched).toBe(true)
 })
