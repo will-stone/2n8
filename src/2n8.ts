@@ -79,6 +79,12 @@ export class TwoAndEight {
     ) as State<this>
   }
 
+  $getState(): State<this> {
+    return Object.fromEntries(
+      Object.entries(this).filter(([_, value]) => typeof value !== 'function'),
+    ) as typeof this
+  }
+
   #emitChange() {
     for (const listener of this.#listeners) {
       listener()
