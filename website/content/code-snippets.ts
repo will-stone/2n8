@@ -1,5 +1,4 @@
-export const twoAndEight = `import { TwoAndEight } from '2n8'
-import { createStore } from '2n8/react'
+export const twoAndEight = `import { TwoAndEight, createStore } from '2n8'
 
 class Store extends TwoAndEight {
   count = 0

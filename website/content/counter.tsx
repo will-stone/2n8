@@ -1,7 +1,6 @@
 import type { FC } from 'react'
 
-import { TwoAndEight } from '../../src/2n8.js'
-import { createStore } from '../../src/react.js'
+import { createStore, TwoAndEight } from '../../src/index.js'
 
 class Store extends TwoAndEight {
   count = 0

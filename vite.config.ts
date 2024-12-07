@@ -7,12 +7,15 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   build: {
     lib: {
-      entry: ['./src/2n8.ts', './src/react.tsx'],
+      entry: ['./src/index.ts'],
       formats: ['es', 'cjs'],
     },
     minify: false,
     rollupOptions: {
       external: ['auto-bind', 'react'],
+      output: {
+        preserveModules: true,
+      },
     },
   },
   plugins: [
@@ -22,8 +25,7 @@ export default defineConfig({
         // package is supported by all consumers, we must export types that are
         // read as ESM. To do this, there must be duplicate types with the
         // correct extension supplied in the package.json exports field.
-        copyFileSync('./dist/2n8.d.ts', './dist/2n8.d.cts')
-        copyFileSync('./dist/react.d.ts', './dist/react.d.cts')
+        copyFileSync('./dist/index.d.ts', './dist/index.d.cts')
       },
       exclude: [
         // Start a file with an underscore if you don't intend for it produce
