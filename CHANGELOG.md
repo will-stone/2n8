@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/will-stone/2n8/compare/0.2.4...0.2.5) (2024-12-07)
+
+### Patches
+
+- Removed getState
+  ([2815607](https://github.com/will-stone/2n8/commit/2815607db75f5aa8eac87cb4a18eb688cbdeaeb5))
+
 ## [0.2.4](https://github.com/will-stone/2n8/compare/0.2.3...0.2.4) (2024-12-06)
 
 ### Patches
