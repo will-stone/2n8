@@ -164,7 +164,6 @@ test('should return initial state', () => {
   store.increaseCount()
   expect(store.$getInitialState()).toStrictEqual({
     count: 0,
-    increaseCount: expect.any(Function),
     untouched: 'foo',
   })
 })

@@ -45,10 +45,7 @@ export class TwoAndEight {
   $subscribe<StoreField>(
     callback: () => void,
     selector?: (
-      state: Omit<
-        this,
-        '$reset' | '$subscribe' | '$getState' | '$getInitialState'
-      >,
+      state: Omit<this, '$reset' | '$subscribe' | '$getInitialState'>,
     ) => StoreField,
   ) {
     this.#listeners = [...this.#listeners, { callback, selector }]
@@ -87,19 +84,12 @@ export class TwoAndEight {
     }
   }
 
-  $getInitialState(): Omit<
-    this,
-    '$getInitialState' | '$getState' | '$reset' | '$subscribe'
-  > {
-    // TODO change this to merge current object with initial object.
-    return Object.fromEntries(
-      Object.entries(this)
-        .filter(([key]) => !key.startsWith('$'))
-        .map(([key, value]) => {
-          const initialValue = Reflect.get(this.#initialState, key)
-          return [key, initialValue ?? value]
-        }),
-    ) as Omit<this, '$getInitialState' | '$getState' | '$reset' | '$subscribe'>
+  $getInitialState(): {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    [K in keyof this as this[K] extends Function ? never : K]: this[K]
+  } {
+    const currentState = JSON.parse(JSON.stringify(this))
+    return { ...currentState, ...this.#initialState }
   }
 
   #emitChange(
