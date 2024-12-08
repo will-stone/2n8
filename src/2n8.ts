@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 /* eslint-disable unicorn/prefer-structured-clone */
 import autoBind from 'auto-bind'
 
@@ -16,7 +17,7 @@ export class TwoAndEight {
 
     const p = new Proxy(this, {
       set: (_, key, value) => {
-        const prevState = JSON.parse(JSON.stringify(this))
+        const prevState = this.$getState()
         const prevValue = Reflect.get(this, key)
         // Always update value.
         Reflect.set(this, key, value)
@@ -30,7 +31,7 @@ export class TwoAndEight {
           if (initialValue === undefined) {
             Reflect.set(this.#initialState, key, prevValue)
           }
-          const nextState = JSON.parse(JSON.stringify(this))
+          const nextState = this.$getState()
           // Announce change.
           this.#emitChange(String(key), prevState, nextState)
         }
@@ -44,9 +45,9 @@ export class TwoAndEight {
 
   $subscribe<StoreField>(
     callback: () => void,
-    selector?: (
-      state: Omit<this, '$reset' | '$subscribe' | '$getInitialState'>,
-    ) => StoreField,
+    selector?: (state: {
+      [K in keyof this as this[K] extends Function ? never : K]: this[K]
+    }) => StoreField,
   ) {
     this.#listeners = [...this.#listeners, { callback, selector }]
     return (): void => {
@@ -66,29 +67,35 @@ export class TwoAndEight {
     }
 
     if (field) {
-      const prevState = JSON.parse(JSON.stringify(this))
+      const prevState = this.$getState()
       const initialValue = Reflect.get(this.#initialState, field)
       if (initialValue !== undefined) {
         Reflect.set(this, field, initialValue)
-        const nextState = JSON.parse(JSON.stringify(this))
+        const nextState = this.$getState()
         this.#emitChange(String(field), prevState, nextState)
       }
     } else {
       for (const key of Object.keys(this.#initialState)) {
-        const prevState = JSON.parse(JSON.stringify(this))
+        const prevState = this.$getState()
         const initialValue = Reflect.get(this.#initialState, key)
         Reflect.set(this, key, initialValue)
-        const nextState = JSON.parse(JSON.stringify(this))
+        const nextState = this.$getState()
         this.#emitChange(key, prevState, nextState)
       }
     }
   }
 
-  $getInitialState(): {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  $getState(): {
     [K in keyof this as this[K] extends Function ? never : K]: this[K]
   } {
-    const currentState = JSON.parse(JSON.stringify(this))
+    return JSON.parse(JSON.stringify(this))
+  }
+
+  $getInitialState(): {
+    [K in keyof this as this[K] extends Function ? never : K]: this[K]
+  } {
+    const currentState = this.$getState()
+    // @ts-expect-error -- returned type does match but TS doesn't like it.
     return { ...currentState, ...this.#initialState }
   }
 
