@@ -65,7 +65,8 @@
     "starlight-package-managers": "^0.8.0",
     "typescript": "^5.7.2",
     "vite-plugin-dts": "^4.3.0",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "vitest-fail-on-console": "^0.7.1"
   },
   "peerDependencies": {
     "react": "^18.3.1"

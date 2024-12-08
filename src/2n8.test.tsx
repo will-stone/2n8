@@ -168,3 +168,39 @@ test('should return initial state', () => {
     untouched: 'foo',
   })
 })
+
+test('should allow granular subscriptions', () => {
+  class Store extends TwoAndEight {
+    count = 0
+    untouched = 'foo'
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = new Store()
+  const countSpy = vi.fn()
+  const untouchedSpy = vi.fn()
+  store.$subscribe(countSpy, (s) => s.count)
+  store.$subscribe(untouchedSpy, (s) => s.untouched)
+  store.increaseCount()
+  expect(countSpy).toHaveBeenCalledOnce()
+  expect(untouchedSpy).not.toHaveBeenCalled()
+})
+
+test('should not call listener when state has not changed', () => {
+  class Store extends TwoAndEight {
+    count = 0
+
+    noop() {
+      this.count = 0
+    }
+  }
+
+  const store = new Store()
+  const countSpy = vi.fn()
+  store.$subscribe(countSpy)
+  store.noop()
+  expect(countSpy).not.toHaveBeenCalled()
+})

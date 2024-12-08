@@ -206,3 +206,22 @@ test('should reset state', async () => {
   await user.click(screen.getByRole('button', { name: 'Reset Button' }))
   expect(screen.getByText('Count: 1')).toBeVisible()
 })
+
+test('should remove listener on unmount', () => {
+  const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => null)
+
+  class Store extends TwoAndEight {
+    count = 1
+  }
+
+  const useStore = createStore(new Store())
+
+  const App = () => {
+    const count = useStore((s) => s.count)
+    return <div>Count: {count}</div>
+  }
+
+  const { unmount } = render(<App />)
+  unmount()
+  expect(errorSpy).not.toHaveBeenCalled()
+})

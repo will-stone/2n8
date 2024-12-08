@@ -1,9 +1,13 @@
+/* eslint-disable unicorn/prefer-structured-clone */
 import autoBind from 'auto-bind'
 
 export class TwoAndEight {
   #initialState = {}
 
-  #listeners: (() => void)[] = []
+  #listeners: {
+    callback: () => void
+    selector?: (state: unknown) => unknown
+  }[] = []
 
   constructor() {
     this.$subscribe = this.$subscribe.bind(this)
@@ -12,13 +16,12 @@ export class TwoAndEight {
 
     const p = new Proxy(this, {
       set: (_, key, value) => {
+        const prevState = JSON.parse(JSON.stringify(this))
         const prevValue = Reflect.get(this, key)
         // Always update value.
         Reflect.set(this, key, value)
 
         if (
-          // Value has changed.
-          prevValue !== value &&
           // Do not care about methods.
           typeof prevValue !== 'function'
         ) {
@@ -27,8 +30,9 @@ export class TwoAndEight {
           if (initialValue === undefined) {
             Reflect.set(this.#initialState, key, prevValue)
           }
+          const nextState = JSON.parse(JSON.stringify(this))
           // Announce change.
-          this.#emitChange()
+          this.#emitChange(String(key), prevState, nextState)
         }
 
         return true
@@ -38,35 +42,56 @@ export class TwoAndEight {
     autoBind(p)
   }
 
-  $subscribe(listener: () => void) {
-    this.#listeners = [...this.#listeners, listener]
+  $subscribe<StoreField>(
+    callback: () => void,
+    selector?: (
+      state: Omit<
+        this,
+        '$reset' | '$subscribe' | '$getState' | '$getInitialState'
+      >,
+    ) => StoreField,
+  ) {
+    this.#listeners = [...this.#listeners, { callback, selector }]
     return (): void => {
-      this.#listeners = this.#listeners.filter((l) => l !== listener)
+      const prevListenersCount = this.#listeners.length
+      this.#listeners = this.#listeners.filter((l) => l.callback !== callback)
+      const nextListenersCount = this.#listeners.length
+      if (nextListenersCount >= prevListenersCount) {
+        // eslint-disable-next-line no-console
+        console.error("2n8: Listener wasn't removed on unsubscribe.")
+      }
     }
   }
 
   $reset(field?: keyof this): void {
+    if (typeof this[field] === 'function') {
+      throw new TypeError('2n8: Cannot reset a method.')
+    }
+
     if (field) {
-      if (typeof this[field] === 'function') {
-        throw new TypeError('2n8: Cannot reset a method.')
-      }
+      const prevState = JSON.parse(JSON.stringify(this))
       const initialValue = Reflect.get(this.#initialState, field)
       if (initialValue !== undefined) {
         Reflect.set(this, field, initialValue)
+        const nextState = JSON.parse(JSON.stringify(this))
+        this.#emitChange(String(field), prevState, nextState)
       }
     } else {
       for (const key of Object.keys(this.#initialState)) {
+        const prevState = JSON.parse(JSON.stringify(this))
         const initialValue = Reflect.get(this.#initialState, key)
         Reflect.set(this, key, initialValue)
+        const nextState = JSON.parse(JSON.stringify(this))
+        this.#emitChange(key, prevState, nextState)
       }
     }
-    this.#emitChange()
   }
 
   $getInitialState(): Omit<
     this,
     '$getInitialState' | '$getState' | '$reset' | '$subscribe'
   > {
+    // TODO change this to merge current object with initial object.
     return Object.fromEntries(
       Object.entries(this)
         .filter(([key]) => !key.startsWith('$'))
@@ -77,9 +102,19 @@ export class TwoAndEight {
     ) as Omit<this, '$getInitialState' | '$getState' | '$reset' | '$subscribe'>
   }
 
-  #emitChange() {
+  #emitChange(
+    key: string,
+    prevState: Record<string, unknown>,
+    nextState: Record<string, unknown>,
+  ) {
     for (const listener of this.#listeners) {
-      listener()
+      if (listener.selector) {
+        if (listener.selector(prevState) !== listener.selector(nextState)) {
+          listener.callback()
+        }
+      } else if (prevState[key] !== nextState[key]) {
+        listener.callback()
+      }
     }
   }
 }
