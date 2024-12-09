@@ -63,6 +63,10 @@ test('should reset all state', () => {
         this.toggle = false
       }
     }
+
+    resetAll() {
+      this.$reset()
+    }
   }
 
   const store = new Store()
@@ -91,27 +95,65 @@ test('should reset all state', () => {
   expect(store.count).toBe(999)
   expect(store.toggle).toBe(false)
   expect(store.untouched).toBe(true)
+
+  store.switched()
+  store.switched()
+  store.increment()
+  store.gone()
+
+  expect(store.greeting).toBe('bye')
+  expect(store.count).toBe(1000)
+  expect(store.toggle).toBe('a string')
+  expect(store.untouched).toBe(true)
+
+  store.resetAll()
+
+  expect(store.greeting).toBe('hello')
+  expect(store.count).toBe(999)
+  expect(store.toggle).toBe(false)
+  expect(store.untouched).toBe(true)
 })
 
 test('should reset single field', () => {
   class Store extends TwoAndEight {
     untouched = true
+    greeting = 'hello'
     count = 999
 
     increment() {
       this.count = this.count + 1
+    }
+
+    gone() {
+      this.greeting = 'bye'
+    }
+
+    resetCount() {
+      this.$reset('count')
     }
   }
 
   const store = new Store()
   store.$reset('count')
   expect(store.count).toBe(999)
+  expect(store.greeting).toBe('hello')
   expect(store.untouched).toBe(true)
   store.increment()
+  store.gone()
   expect(store.count).toBe(1000)
+  expect(store.greeting).toBe('bye')
   expect(store.untouched).toBe(true)
   store.$reset('count')
   expect(store.count).toBe(999)
+  expect(store.greeting).toBe('bye')
+  expect(store.untouched).toBe(true)
+  store.increment()
+  expect(store.count).toBe(1000)
+  expect(store.greeting).toBe('bye')
+  expect(store.untouched).toBe(true)
+  store.resetCount()
+  expect(store.count).toBe(999)
+  expect(store.greeting).toBe('bye')
   expect(store.untouched).toBe(true)
 })
 
