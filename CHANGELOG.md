@@ -4,7 +4,7 @@
 
 ### Minor changes
 
-- Export from all from index for one less line of code
+- Export all from index for one less line of code
   ([1d0bae9](https://github.com/will-stone/2n8/commit/1d0bae9f1c29d3578f907cfb067b5e4f84383170))
 
 ### Patches
