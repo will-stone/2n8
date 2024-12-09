@@ -168,6 +168,24 @@ test('should return initial state', () => {
   })
 })
 
+test('should return current state', () => {
+  class Store extends TwoAndEight {
+    count = 0
+    untouched = 'foo'
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = new Store()
+  store.increaseCount()
+  expect(store.$getState()).toStrictEqual({
+    count: 1,
+    untouched: 'foo',
+  })
+})
+
 test('should allow granular subscriptions', () => {
   class Store extends TwoAndEight {
     count = 0
