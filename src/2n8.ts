@@ -2,18 +2,23 @@
 /* eslint-disable unicorn/prefer-structured-clone */
 import autoBind from 'auto-bind'
 
+type State<Store> = {
+  [K in keyof Store as Store[K] extends Function ? never : K]: Store[K]
+}
+
 export class TwoAndEight {
   #initialState = {}
 
   #listeners: {
     callback: () => void
-    selector?: (state: unknown) => unknown
+    selector?: <Field, T>(state: State<T>) => Field
   }[] = []
 
   constructor() {
     this.$subscribe = this.$subscribe.bind(this)
     this.$reset = this.$reset.bind(this)
     this.$getInitialState = this.$getInitialState.bind(this)
+    this.$getState = this.$getState.bind(this)
 
     const p = new Proxy(this, {
       set: (_, key, value) => {
@@ -43,12 +48,11 @@ export class TwoAndEight {
     autoBind(p)
   }
 
-  $subscribe<StoreField>(
+  $subscribe<Field>(
     callback: () => void,
-    selector?: (state: {
-      [K in keyof this as this[K] extends Function ? never : K]: this[K]
-    }) => StoreField,
+    selector?: (state: State<this>) => Field,
   ) {
+    // @ts-expect-error -- Types don't match but the public API is correct, and that's the important thing.
     this.#listeners = [...this.#listeners, { callback, selector }]
     return (): void => {
       const prevListenersCount = this.#listeners.length
@@ -62,11 +66,10 @@ export class TwoAndEight {
   }
 
   $reset(field?: keyof this): void {
-    if (typeof this[field] === 'function') {
-      throw new TypeError('2n8: Cannot reset a method.')
-    }
-
     if (field) {
+      if (typeof this[field] === 'function') {
+        throw new TypeError('2n8: Cannot reset a method.')
+      }
       const prevState = this.$getState()
       const initialValue = Reflect.get(this.#initialState, field)
       if (initialValue !== undefined) {
@@ -85,17 +88,12 @@ export class TwoAndEight {
     }
   }
 
-  $getState(): {
-    [K in keyof this as this[K] extends Function ? never : K]: this[K]
-  } {
+  $getState(): State<this> {
     return JSON.parse(JSON.stringify(this))
   }
 
-  $getInitialState(): {
-    [K in keyof this as this[K] extends Function ? never : K]: this[K]
-  } {
+  $getInitialState(): State<this> {
     const currentState = this.$getState()
-    // @ts-expect-error -- returned type does match but TS doesn't like it.
     return { ...currentState, ...this.#initialState }
   }
 
