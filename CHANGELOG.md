@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0](https://github.com/will-stone/2n8/compare/0.2.5...0.3.0) (2024-12-09)
+
+### Minor changes
+
+- Export from all from index for one less line of code
+  ([1d0bae9](https://github.com/will-stone/2n8/commit/1d0bae9f1c29d3578f907cfb067b5e4f84383170))
+
+### Patches
+
+- Add $getState
+  ([1b08e2d](https://github.com/will-stone/2n8/commit/1b08e2d092eecbeb9f486ffe1ffd9b14d313e56f))
+- Only return state from $getInitialState
+  ([887987c](https://github.com/will-stone/2n8/commit/887987c3c93efb2a6615b15e9750d3c24a0202da))
+- Add subscribe with a selector
+  ([2f3139f](https://github.com/will-stone/2n8/commit/2f3139f4208bdce3e006d7c8e8cf75af3cca03cb))
+
 ## [0.2.5](https://github.com/will-stone/2n8/compare/0.2.4...0.2.5) (2024-12-07)
 
 ### Patches
