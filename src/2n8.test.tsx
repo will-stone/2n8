@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, expect, expectTypeOf, test, vi } from 'vitest'
 
 import { TwoAndEight } from './2n8.js'
 
@@ -29,6 +29,7 @@ test('should update when using async actions', async () => {
   }
 
   const store = new Store()
+  expectTypeOf(store.count).toMatchTypeOf<number>()
   expect(store.count).toBe(0)
   store.buttonClicked()
   expect(store.count).toBe(1)
@@ -67,8 +68,11 @@ test('should reset all state', () => {
   const store = new Store()
 
   expect(store.greeting).toBe('hello')
+  expectTypeOf(store.greeting).toMatchTypeOf<string>()
   expect(store.count).toBe(999)
+  expectTypeOf(store.count).toMatchTypeOf<number>()
   expect(store.toggle).toBe(false)
+  expectTypeOf(store.toggle).toMatchTypeOf<boolean | 'a string'>()
   expect(store.untouched).toBe(true)
 
   store.switched()
@@ -166,6 +170,8 @@ test('should return initial state', () => {
     count: 0,
     untouched: 'foo',
   })
+  expectTypeOf(store.$getInitialState().count).toMatchTypeOf<number>()
+  expectTypeOf(store.$getInitialState().untouched).toMatchTypeOf<string>()
 })
 
 test('should return current state', () => {
@@ -184,6 +190,8 @@ test('should return current state', () => {
     count: 1,
     untouched: 'foo',
   })
+  expectTypeOf(store.$getState().count).toMatchTypeOf<number>()
+  expectTypeOf(store.$getState().untouched).toMatchTypeOf<string>()
 })
 
 test('should allow granular subscriptions', () => {
@@ -197,6 +205,15 @@ test('should allow granular subscriptions', () => {
   }
 
   const store = new Store()
+  expectTypeOf(store.$subscribe).toMatchTypeOf<
+    (
+      callback: () => void,
+      selector?: (state: {
+        count: number
+        untouched: string
+      }) => number | string,
+    ) => void
+  >()
   const countSpy = vi.fn()
   const untouchedSpy = vi.fn()
   store.$subscribe(countSpy, (s) => s.count)
