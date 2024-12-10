@@ -137,6 +137,62 @@ test('should update count component and not rerender others', async () => {
   expect(screen.getByText('Derived: 18')).toBeVisible()
 })
 
+test('should batch state updates', async () => {
+  class Store extends TwoAndEight {
+    count = 1
+    count2 = 3
+
+    buttonClicked() {
+      this.count = this.count + 1
+      this.count2 = this.count2 + 1
+    }
+  }
+
+  const useStore = createStore(new Store())
+
+  const Counts: FC = () => {
+    const count = useStore((s) => s.count)
+    const count2 = useStore((s) => s.count2)
+    return (
+      <div>
+        <div>Count: {count}</div>
+        <div>Count2: {count2}</div>
+        <RenderCount title="Counts" />
+      </div>
+    )
+  }
+
+  const Button: FC = () => {
+    const buttonClicked = useStore((s) => s.buttonClicked)
+    return (
+      <div>
+        <button onClick={buttonClicked} type="button">
+          Button
+        </button>
+      </div>
+    )
+  }
+
+  const App = () => {
+    return (
+      <>
+        <Button />
+        <Counts />
+      </>
+    )
+  }
+
+  const user = userEvent.setup()
+  render(<App />)
+  expect(screen.getByText('Counts component: 1')).toBeVisible()
+  expect(screen.getByText('Count: 1')).toBeVisible()
+  expect(screen.getByText('Count2: 3')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Button' }))
+  expect(screen.getByText('Counts component: 2')).toBeVisible()
+  expect(screen.getByText('Count: 2')).toBeVisible()
+  expect(screen.getByText('Count2: 4')).toBeVisible()
+})
+
 test('should render computed', async () => {
   class Store extends TwoAndEight {
     count = 1
