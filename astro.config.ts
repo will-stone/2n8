@@ -1,6 +1,7 @@
 import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
+import rehypeExternalLinks from 'rehype-external-links'
 
 // https://astro.build/config
 export default defineConfig({
@@ -65,6 +66,9 @@ export default defineConfig({
       title: '2n8',
     }),
   ],
+  markdown: {
+    rehypePlugins: [[rehypeExternalLinks, { target: '_blank' }]],
+  },
   outDir: './dist-website',
   publicDir: './website/public',
   srcDir: './website',
