@@ -280,3 +280,20 @@ test('should not call listener when state has not changed', () => {
   store.noop()
   expect(countSpy).not.toHaveBeenCalled()
 })
+
+test('should warm store with state', () => {
+  class Store extends TwoAndEight {
+    count = 0
+    greeting = 'hi'
+
+    constructor(warmer: { count: number; greeting: string }) {
+      super()
+      this.count = warmer.count
+      this.greeting = warmer.greeting
+    }
+  }
+
+  const store = new Store({ count: 123, greeting: 'hello' })
+  expect(store.count).toBe(123)
+  expect(store.greeting).toBe('hello')
+})
