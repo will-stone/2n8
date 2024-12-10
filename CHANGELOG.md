@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/will-stone/2n8/compare/0.3.1...0.3.2) (2024-12-10)
+
+### Patches
+
+- Fix memoizing derived not working (again)
+  ([2756ba8](https://github.com/will-stone/2n8/commit/2756ba80e3b905e7cad116310b045c9e2a8b132f))
+
 ## [0.3.1](https://github.com/will-stone/2n8/compare/0.3.0...0.3.1) (2024-12-10)
 
 ### Patches
