@@ -75,6 +75,9 @@ export class TwoAndEight {
     })
 
     autoBind(p)
+
+    // eslint-disable-next-line no-constructor-return -- must be returned for getter memoizing to work.
+    return p
   }
 
   $subscribe<Field>(

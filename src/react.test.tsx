@@ -284,11 +284,13 @@ test('should handle complex state', async () => {
 test('should handle complex derived state', async () => {
   class Store extends TwoAndEight {
     idCounter = 1
-    data: { foo: boolean } = { foo: false }
-    dataTrue: { foo: boolean } = { foo: true }
 
-    get derivedState(): { foo: boolean } {
-      return this.idCounter === 2 ? this.dataTrue : this.data
+    get derivedState() {
+      return this.idCounter === 2 ? { foo: true } : { foo: false }
+    }
+
+    get emptyObj() {
+      return {}
     }
 
     add() {
@@ -308,6 +310,7 @@ test('should handle complex derived state', async () => {
 
   const App = () => {
     const derivedState = useStore((s) => s.derivedState)
+    const emptyObj = useStore((s) => s.emptyObj)
     const add = useStore((s) => s.add)
     const reset = useStore((s) => s.reset)
     return (
@@ -315,6 +318,7 @@ test('should handle complex derived state', async () => {
         <button onClick={add}>Add</button>
         <button onClick={reset}>Reset</button>
         <div data-testid="derived">{derivedState.foo ? 'yes' : 'no'}</div>
+        <div>{JSON.stringify(emptyObj)}</div>
       </div>
     )
   }
