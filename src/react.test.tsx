@@ -225,3 +225,82 @@ test('should remove listener on unmount', () => {
   unmount()
   expect(errorSpy).not.toHaveBeenCalled()
 })
+
+test('should handle complex state', async () => {
+  class Store extends TwoAndEight {
+    data: { bar: string; foo: number } = { bar: 'buz', foo: 1 }
+
+    changeData() {
+      this.data = { bar: 'moo', foo: 5 }
+    }
+  }
+
+  const useStore = createStore(new Store())
+
+  const App = () => {
+    const data = useStore((s) => s.data)
+    const changeData = useStore((s) => s.changeData)
+    return (
+      <div>
+        <div>Foo: {data.foo}</div>
+        <div>Bar: {data.bar}</div>
+        <button onClick={changeData}>Change Data</button>
+      </div>
+    )
+  }
+
+  const user = userEvent.setup()
+  render(<App />)
+  expect(screen.getByText('Foo: 1')).toBeVisible()
+  expect(screen.getByText('Bar: buz')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Change Data' }))
+  expect(screen.getByText('Foo: 5')).toBeVisible()
+  expect(screen.getByText('Bar: moo')).toBeVisible()
+})
+
+test('should handle complex derived state', async () => {
+  class Store extends TwoAndEight {
+    idCounter = 1
+    data: { foo: boolean } = { foo: false }
+    dataTrue: { foo: boolean } = { foo: true }
+
+    get derivedState(): { foo: boolean } {
+      return this.idCounter === 2 ? this.dataTrue : this.data
+    }
+
+    add() {
+      this.idCounter = this.idCounter + 1
+    }
+
+    noop() {
+      //
+    }
+
+    reset() {
+      this.$reset('idCounter')
+    }
+  }
+
+  const useStore = createStore(new Store())
+
+  const App = () => {
+    const derivedState = useStore((s) => s.derivedState)
+    const add = useStore((s) => s.add)
+    const reset = useStore((s) => s.reset)
+    return (
+      <div>
+        <button onClick={add}>Add</button>
+        <button onClick={reset}>Reset</button>
+        <div data-testid="derived">{derivedState.foo ? 'yes' : 'no'}</div>
+      </div>
+    )
+  }
+
+  const user = userEvent.setup()
+  render(<App />)
+  expect(screen.getByTestId('derived')).toHaveTextContent('no')
+  await user.click(screen.getByRole('button', { name: 'Add' }))
+  expect(screen.getByTestId('derived')).toHaveTextContent('yes')
+  await user.click(screen.getByRole('button', { name: 'Reset' }))
+  expect(screen.getByTestId('derived')).toHaveTextContent('no')
+})

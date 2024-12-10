@@ -12,7 +12,7 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['auto-bind', 'react'],
+      external: ['auto-bind', 'react', 'es-toolkit'],
       output: {
         preserveModules: true,
       },

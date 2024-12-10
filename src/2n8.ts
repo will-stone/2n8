@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 /* eslint-disable unicorn/prefer-structured-clone */
 import autoBind from 'auto-bind'
+import { isEqual } from 'es-toolkit'
 
 type State<Store> = {
   [K in keyof Store as Store[K] extends Function ? never : K]: Store[K]
 }
 
 export class TwoAndEight {
+  #memoisedGetters: Record<string | symbol, unknown> = {}
+
   #initialState = {}
 
   #listeners: {
@@ -21,6 +24,32 @@ export class TwoAndEight {
     this.$getState = this.$getState.bind(this)
 
     const p = new Proxy(this, {
+      get(target, propertyKey, receiver) {
+        const descriptor = Object.getOwnPropertyDescriptor(
+          target.constructor.prototype,
+          propertyKey,
+        )
+
+        // Check if the property is a getter
+        if (descriptor && typeof descriptor.get === 'function') {
+          const currentValue = Reflect.get(target, propertyKey, receiver)
+          const memoisedValue = Reflect.get(
+            target.#memoisedGetters,
+            propertyKey,
+          )
+
+          if (
+            !memoisedValue ||
+            !isEqual(target.#memoisedGetters[propertyKey], currentValue)
+          ) {
+            Reflect.set(target.#memoisedGetters, propertyKey, currentValue)
+          }
+
+          return Reflect.get(target.#memoisedGetters, propertyKey)
+        }
+
+        return Reflect.get(target, propertyKey, receiver)
+      },
       set: (_, key, value) => {
         const prevState = this.$getState()
         const prevValue = Reflect.get(this, key)
