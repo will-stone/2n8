@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/will-stone/2n8/compare/0.3.0...0.3.1) (2024-12-10)
+
+### Patches
+
+- Fix derived getters causing infinite loops in React
+  ([132d94e](https://github.com/will-stone/2n8/commit/132d94e96c30ab6812f7a91271603f338f4fa7fc))
+
 ## [0.3.0](https://github.com/will-stone/2n8/compare/0.2.5...0.3.0) (2024-12-09)
 
 ### Minor changes
