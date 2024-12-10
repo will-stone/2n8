@@ -32,6 +32,10 @@ test('should update count component and not rerender others', async () => {
   class Store extends TwoAndEight {
     count = 0
 
+    get derived() {
+      return this.count + 10
+    }
+
     buttonClicked() {
       this.count = this.count + 1
     }
@@ -53,6 +57,16 @@ test('should update count component and not rerender others', async () => {
       <div>
         <div>Count: {count}</div>
         <RenderCount title="Count" />
+      </div>
+    )
+  }
+
+  const Derived: FC = () => {
+    const derived = useStore((s) => s.derived)
+    return (
+      <div>
+        <div>Derived: {derived}</div>
+        <RenderCount title="Derived" />
       </div>
     )
   }
@@ -87,6 +101,7 @@ test('should update count component and not rerender others', async () => {
         <Button />
         <AsyncButton />
         <Count />
+        <Derived />
         <RenderCount title="App" />
       </>
     )
@@ -97,21 +112,29 @@ test('should update count component and not rerender others', async () => {
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 1')).toBeVisible()
   expect(screen.getByText('Count: 0')).toBeVisible()
+  expect(screen.getByText('Derived component: 1')).toBeVisible()
+  expect(screen.getByText('Derived: 10')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
   await user.click(screen.getByRole('button', { name: 'Button' }))
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 2')).toBeVisible()
   expect(screen.getByText('Count: 1')).toBeVisible()
+  expect(screen.getByText('Derived component: 2')).toBeVisible()
+  expect(screen.getByText('Derived: 11')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
   await user.click(screen.getByRole('button', { name: 'Button' }))
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 3')).toBeVisible()
   expect(screen.getByText('Count: 2')).toBeVisible()
+  expect(screen.getByText('Derived component: 3')).toBeVisible()
+  expect(screen.getByText('Derived: 12')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
   await user.click(screen.getByRole('button', { name: 'AsyncButton' }))
   expect(screen.getByText('Count: 3')).toBeVisible()
+  expect(screen.getByText('Derived: 13')).toBeVisible()
   await act(() => vi.advanceTimersByTime(10_001))
   expect(screen.getByText('Count: 8')).toBeVisible()
+  expect(screen.getByText('Derived: 18')).toBeVisible()
 })
 
 test('should render computed', async () => {
