@@ -1,20 +1,31 @@
 export const twoAndEight = `import { TwoAndEight, createStore } from '2n8'
 
+// Classes work really nicely with TypeScript. This class is
+// fully typed but there's no TypeScript syntax in sight!
 class Store extends TwoAndEight {
+  // Set your initial state. In this case the type
+  // is also automatically inferred as \`number\`.
   count = 0
 
+  // An action that can be called to modify state.
   addClicked() {
     this.count = this.count + 1
   }
 
   resetClicked() {
+    // Built in reset mechanism means you don't
+    // need to keep track of initial state.
     this.$reset('count')
   }
 }
 
+// Create the React hook.
 const useStore = createStore(new Store())
 
 const Counter = () => {
+  // Use selectors to grab the required state and actions.
+  // If you use the same one over-and-over, you can abstract
+  // them to their own hooks, e.g. \`useCount()\`.
   const count = useStore((s) => s.count)
   const addClicked = useStore((s) => s.addClicked)
   const resetClicked = useStore((s) => s.resetClicked)
