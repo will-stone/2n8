@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/will-stone/2n8/compare/0.3.2...0.3.3) (2024-12-11)
+
+### Patches
+
+- Fix subscriptions not firing with derived state
+  ([92f067a](https://github.com/will-stone/2n8/commit/92f067afa6bbc18159675316979a8a8d72b7c5be))
+
 ## [0.3.2](https://github.com/will-stone/2n8/compare/0.3.1...0.3.2) (2024-12-10)
 
 ### Patches
