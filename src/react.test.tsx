@@ -193,7 +193,7 @@ test('should batch state updates', async () => {
   expect(screen.getByText('Count2: 4')).toBeVisible()
 })
 
-test('should render computed', async () => {
+test('should render derived', async () => {
   class Store extends TwoAndEight {
     count = 1
     count2 = 3
@@ -204,6 +204,14 @@ test('should render computed', async () => {
 
     buttonClicked() {
       this.count = this.count + 1
+    }
+
+    reset() {
+      this.$reset()
+    }
+
+    resetCount() {
+      this.$reset('count')
     }
   }
 
@@ -218,12 +226,20 @@ test('should render computed', async () => {
     )
   }
 
-  const Button: FC = () => {
+  const Buttons: FC = () => {
     const buttonClicked = useStore((s) => s.buttonClicked)
+    const reset = useStore((s) => s.reset)
+    const resetCount = useStore((s) => s.resetCount)
     return (
       <div>
         <button onClick={buttonClicked} type="button">
-          Button
+          Add
+        </button>
+        <button onClick={reset} type="button">
+          Reset
+        </button>
+        <button onClick={resetCount} type="button">
+          Reset Count
         </button>
       </div>
     )
@@ -232,7 +248,7 @@ test('should render computed', async () => {
   const App = () => {
     return (
       <>
-        <Button />
+        <Buttons />
         <Total />
       </>
     )
@@ -241,8 +257,14 @@ test('should render computed', async () => {
   const user = userEvent.setup()
   render(<App />)
   expect(screen.getByText('Total: 4')).toBeVisible()
-  await user.click(screen.getByRole('button', { name: 'Button' }))
+  await user.click(screen.getByRole('button', { name: 'Add' }))
   expect(screen.getByText('Total: 5')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Reset' }))
+  expect(screen.getByText('Total: 4')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Add' }))
+  expect(screen.getByText('Total: 5')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Reset Count' }))
+  expect(screen.getByText('Total: 4')).toBeVisible()
 })
 
 test('should reset state', async () => {

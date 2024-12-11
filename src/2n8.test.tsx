@@ -221,6 +221,10 @@ test('should return current state', () => {
     count = 0
     untouched = 'foo'
 
+    get derived() {
+      return this.count + 10
+    }
+
     increaseCount() {
       this.count = this.count + 1
     }
@@ -230,6 +234,7 @@ test('should return current state', () => {
   store.increaseCount()
   expect(store.$getState()).toStrictEqual({
     count: 1,
+    derived: 11,
     untouched: 'foo',
   })
   expectTypeOf(store.$getState().count).toMatchTypeOf<number>()
@@ -263,6 +268,26 @@ test('should allow granular subscriptions', () => {
   store.increaseCount()
   expect(countSpy).toHaveBeenCalledOnce()
   expect(untouchedSpy).not.toHaveBeenCalled()
+})
+
+test('should allow granular subscriptions to derived state', () => {
+  class Store extends TwoAndEight {
+    count = 0
+
+    get derived() {
+      return this.count + 10
+    }
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = new Store()
+  const derivedSpy = vi.fn()
+  store.$subscribe(derivedSpy, (s) => s.derived)
+  store.increaseCount()
+  expect(derivedSpy).toHaveBeenCalledOnce()
 })
 
 test('should not call listener when state has not changed', () => {

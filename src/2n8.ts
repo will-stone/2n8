@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
-/* eslint-disable unicorn/prefer-structured-clone */
+
 import autoBind from 'auto-bind'
 import { isEqual } from 'es-toolkit'
 
@@ -121,7 +121,31 @@ export class TwoAndEight {
   }
 
   $getState(): State<this> {
-    return JSON.parse(JSON.stringify(this))
+    const snapshot = {} as State<this>
+
+    // Capture direct properties
+    for (const propertyKey of Object.getOwnPropertyNames(this)) {
+      const value = Reflect.get(this, propertyKey)
+      if (typeof value !== 'function') {
+        Reflect.set(snapshot, propertyKey, value)
+      }
+    }
+
+    // Capture getters by finding all getter methods
+    for (const [propertyKey, descriptor] of Object.entries(
+      Object.getOwnPropertyDescriptors(Object.getPrototypeOf(this)),
+    )) {
+      if (typeof descriptor.get === 'function') {
+        try {
+          const value = Reflect.get(this, propertyKey)
+          Reflect.set(snapshot, propertyKey, value)
+        } catch {
+          // Error retrieving getter
+        }
+      }
+    }
+
+    return snapshot
   }
 
   $getInitialState(): State<this> {
@@ -129,18 +153,18 @@ export class TwoAndEight {
     return { ...currentState, ...this.#initialState }
   }
 
-  #emitChange(
-    key: string,
-    prevState: Record<string, unknown>,
-    nextState: Record<string, unknown>,
-  ) {
+  #emitChange(key: string, prevState: State<this>, nextState: State<this>) {
     for (const listener of this.#listeners) {
       if (listener.selector) {
         if (listener.selector(prevState) !== listener.selector(nextState)) {
           listener.callback()
         }
-      } else if (prevState[key] !== nextState[key]) {
-        listener.callback()
+      } else {
+        const prev = Reflect.get(prevState, key)
+        const next = Reflect.get(nextState, key)
+        if (prev !== next) {
+          listener.callback()
+        }
       }
     }
   }
