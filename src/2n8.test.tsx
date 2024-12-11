@@ -294,16 +294,32 @@ test('should not call listener when state has not changed', () => {
   class Store extends TwoAndEight {
     count = 0
 
+    obj = {}
+
     noop() {
       this.count = 0
+    }
+
+    noop2() {
+      this.obj = {}
     }
   }
 
   const store = new Store()
+  const subscribeSpy = vi.fn()
   const countSpy = vi.fn()
-  store.$subscribe(countSpy)
+  const objSpy = vi.fn()
+  store.$subscribe(subscribeSpy)
+  store.$subscribe(countSpy, (s) => s.count)
+  store.$subscribe(objSpy, (s) => s.obj)
   store.noop()
+  expect(subscribeSpy).not.toHaveBeenCalled()
   expect(countSpy).not.toHaveBeenCalled()
+  expect(objSpy).not.toHaveBeenCalled()
+  store.noop2()
+  expect(subscribeSpy).not.toHaveBeenCalled()
+  expect(countSpy).not.toHaveBeenCalled()
+  expect(objSpy).not.toHaveBeenCalled()
 })
 
 test('should warm store with state', () => {

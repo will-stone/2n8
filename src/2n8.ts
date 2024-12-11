@@ -156,13 +156,15 @@ export class TwoAndEight {
   #emitChange(key: string, prevState: State<this>, nextState: State<this>) {
     for (const listener of this.#listeners) {
       if (listener.selector) {
-        if (listener.selector(prevState) !== listener.selector(nextState)) {
+        if (
+          !isEqual(listener.selector(prevState), listener.selector(nextState))
+        ) {
           listener.callback()
         }
       } else {
         const prev = Reflect.get(prevState, key)
         const next = Reflect.get(nextState, key)
-        if (prev !== next) {
+        if (!isEqual(prev, next)) {
           listener.callback()
         }
       }
