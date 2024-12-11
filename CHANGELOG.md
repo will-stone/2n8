@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/will-stone/2n8/compare/0.3.3...0.3.4) (2024-12-11)
+
+### Patches
+
+- Fixed unchanged objects causing subscriptions to fire
+  ([663582a](https://github.com/will-stone/2n8/commit/663582a958305e42e060f993cbd2308de7bccf65))
+
 ## [0.3.3](https://github.com/will-stone/2n8/compare/0.3.2...0.3.3) (2024-12-11)
 
 ### Patches
