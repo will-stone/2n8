@@ -16,7 +16,7 @@ export function createReactStore<Store extends TwoAndEight>(
 ) => Field {
   const store = createStore(rawStore)
 
-  let cache: State<Store> = {} as State<Store>
+  let cache = {} as State<Store>
 
   return (selector) =>
     useSyncExternalStore(
@@ -27,10 +27,12 @@ export function createReactStore<Store extends TwoAndEight>(
         }
 
         const state = cloneDeep(store.$getState())
+
         if (!isEqual(cache, state)) {
           cache = state
         }
 
+        // @ts-expect-error -- selector expects functions (actions) but those have been dealt with above.
         return selector(cache)
       },
       // @ts-expect-error -- Initial state doesn't (and shouldn't) include functions, but public selector API requires access to actions made by consumer.

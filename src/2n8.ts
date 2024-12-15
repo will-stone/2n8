@@ -18,8 +18,11 @@ export abstract class TwoAndEight {
     // no-op, for now, it's enhanced in createStore
   }
 
-  $subscribe(_callback: () => void): void {
+  $subscribe(_callback: () => void): () => void {
     // no-op, for now, it's enhanced in createStore
+    return () => {
+      //
+    }
   }
 
   $getInitialState(): State<this> {
@@ -53,20 +56,24 @@ export function createStore<Store extends TwoAndEight>(
 
   for (const [name, value] of Object.entries(store)) {
     if (typeof value === 'function' && !name.startsWith('$')) {
-      store[name] = new Proxy(value, {
-        apply(target, thisArg, args) {
-          const result = target.apply(thisArg, args)
-          if (result instanceof Promise) {
-            return result.then((asyncResult) => {
-              // Wait for hook to complete if it returns a promise
-              commit()
-              return asyncResult
-            })
-          }
-          commit()
-          return result
-        },
-      })
+      Reflect.set(
+        store,
+        name,
+        new Proxy(value, {
+          apply(target, thisArg, args) {
+            const result = target.apply(thisArg, args)
+            if (result instanceof Promise) {
+              return result.then((asyncResult) => {
+                // Wait for hook to complete if it returns a promise
+                commit()
+                return asyncResult
+              })
+            }
+            commit()
+            return result
+          },
+        }),
+      )
     }
   }
 
@@ -75,7 +82,7 @@ export function createStore<Store extends TwoAndEight>(
 
     for (const [name, value] of Object.entries(store)) {
       if (typeof value !== 'function' && !name.startsWith('$')) {
-        state[name] = value
+        Reflect.set(state, name, value)
       }
     }
 
@@ -86,9 +93,7 @@ export function createStore<Store extends TwoAndEight>(
       if (typeof descriptor.get === 'function') {
         try {
           const value = Reflect.get(store, propertyKey)
-          // console.log(propertyKey, value)
-          // Reflect.set(snapshot, propertyKey, value)
-          state[propertyKey] = value
+          Reflect.set(state, propertyKey, value)
         } catch {
           // Error retrieving getter
         }
@@ -98,19 +103,20 @@ export function createStore<Store extends TwoAndEight>(
     return state
   }
 
-  const initialState = {}
+  const initialState = {} as State<Store>
 
   for (const [name, value] of Object.entries(store)) {
     if (typeof value !== 'function' && !name.startsWith('$')) {
-      initialState[name] = structuredClone(value)
+      Reflect.set(initialState, name, structuredClone(value))
     }
   }
 
   store.$getInitialState = () => initialState
 
-  store.$reset = (field?: keyof Store): void => {
+  store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
-      if (typeof store[field] === 'function') {
+      const value = Reflect.get(store, field)
+      if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset a method.')
       }
       const initialValue = initialState[field]
@@ -120,7 +126,7 @@ export function createStore<Store extends TwoAndEight>(
       }
     } else {
       for (const [key, initialValue] of Object.entries(initialState)) {
-        store[key] = initialValue
+        Reflect.set(store, key, initialValue)
         commit()
       }
     }
