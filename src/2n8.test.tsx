@@ -291,7 +291,7 @@ test('should return current state', () => {
   expectTypeOf(store.$getState().untouched).toMatchTypeOf<string>()
 })
 
-test.skip('should allow granular subscriptions', () => {
+test('should allow granular subscriptions', () => {
   class Store extends TwoAndEight {
     count = 0
     untouched = 'foo'
@@ -320,7 +320,7 @@ test.skip('should allow granular subscriptions', () => {
   expect(untouchedSpy).not.toHaveBeenCalled()
 })
 
-test.skip('should allow granular subscriptions to derived state', () => {
+test('should allow granular subscriptions to derived state', () => {
   class Store extends TwoAndEight {
     count = 0
 
@@ -340,7 +340,7 @@ test.skip('should allow granular subscriptions to derived state', () => {
   expect(derivedSpy).toHaveBeenCalledOnce()
 })
 
-test.skip('should not call listener when state has not changed', () => {
+test('should not call listener when state has not changed', () => {
   class Store extends TwoAndEight {
     count = 0
 
@@ -363,11 +363,11 @@ test.skip('should not call listener when state has not changed', () => {
   store.$subscribe(countSpy, (s) => s.count)
   store.$subscribe(objSpy, (s) => s.obj)
   store.noop()
-  expect(subscribeSpy).not.toHaveBeenCalled()
+  expect(subscribeSpy).toHaveBeenCalledOnce()
   expect(countSpy).not.toHaveBeenCalled()
   expect(objSpy).not.toHaveBeenCalled()
   store.noop2()
-  expect(subscribeSpy).not.toHaveBeenCalled()
+  expect(subscribeSpy).toHaveBeenCalledTimes(2)
   expect(countSpy).not.toHaveBeenCalled()
   expect(objSpy).not.toHaveBeenCalled()
 })

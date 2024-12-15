@@ -1,4 +1,5 @@
 import autoBind from 'auto-bind'
+import { isEqual } from 'es-toolkit'
 
 export type State<Store> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -18,7 +19,10 @@ export abstract class TwoAndEight {
     // no-op, for now, it's enhanced in createStore
   }
 
-  $subscribe(_callback: () => void): () => void {
+  $subscribe<Field>(
+    _callback: () => void,
+    _selector?: (state: State<this>) => Field,
+  ): () => void {
     // no-op, for now, it's enhanced in createStore
     return () => {
       //
@@ -42,18 +46,28 @@ export function createStore<Store extends TwoAndEight>(
   $getState: () => State<Store>
   $subscribe: (callback: () => void) => void
 } {
-  let listeners: (() => void)[] = []
+  let listeners: {
+    callback: () => void
+    selector?: <Field>(state?: State<Store>) => Field
+  }[] = []
 
-  const commit = () => {
+  const commit = (prevState?: State<Store>, nextState?: State<Store>) => {
     for (const listener of listeners) {
-      listener()
+      if (listener.selector) {
+        if (
+          !isEqual(listener.selector(prevState), listener.selector(nextState))
+        ) {
+          listener.callback()
+        }
+      } else {
+        listener.callback()
+      }
     }
   }
 
-  store.$commit = () => {
-    commit()
-  }
+  store.$commit = commit
 
+  // Infuse all actions with a commit after they've run.
   for (const [name, value] of Object.entries(store)) {
     if (typeof value === 'function' && !name.startsWith('$')) {
       Reflect.set(
@@ -61,15 +75,16 @@ export function createStore<Store extends TwoAndEight>(
         name,
         new Proxy(value, {
           apply(target, thisArg, args) {
+            const prevState = store.$getState()
             const result = target.apply(thisArg, args)
             if (result instanceof Promise) {
               return result.then((asyncResult) => {
                 // Wait for hook to complete if it returns a promise
-                commit()
+                commit(prevState, store.$getState())
                 return asyncResult
               })
             }
-            commit()
+            commit(prevState, store.$getState())
             return result
           },
         }),
@@ -78,7 +93,7 @@ export function createStore<Store extends TwoAndEight>(
   }
 
   store.$getState = (): State<Store> => {
-    const state = {} as Store
+    const state = {} as State<Store>
 
     for (const [name, value] of Object.entries(store)) {
       if (typeof value !== 'function' && !name.startsWith('$')) {
@@ -114,6 +129,7 @@ export function createStore<Store extends TwoAndEight>(
   store.$getInitialState = () => initialState
 
   store.$reset = (field?: keyof State<Store>): void => {
+    const prevState = store.$getState()
     if (field) {
       const value = Reflect.get(store, field)
       if (typeof value === 'function') {
@@ -122,21 +138,22 @@ export function createStore<Store extends TwoAndEight>(
       const initialValue = initialState[field]
       if (initialValue !== undefined) {
         store[field] = initialValue
-        commit()
+        commit(prevState, store.$getState())
       }
     } else {
       for (const [key, initialValue] of Object.entries(initialState)) {
         Reflect.set(store, key, initialValue)
-        commit()
+        commit(prevState, store.$getState())
       }
     }
   }
 
-  store.$subscribe = (callback) => {
-    listeners = [...listeners, callback]
+  store.$subscribe = (callback, selector) => {
+    // @ts-expect-error -- Types don't match but the public API is correct, and that's the important thing.
+    listeners = [...listeners, { callback, selector }]
     return (): void => {
       const prevListenersCount = listeners.length
-      listeners = listeners.filter((cb) => cb !== callback)
+      listeners = listeners.filter((listener) => listener.callback !== callback)
       const nextListenersCount = listeners.length
       if (nextListenersCount >= prevListenersCount) {
         // eslint-disable-next-line no-console
