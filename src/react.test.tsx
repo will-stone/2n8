@@ -329,10 +329,23 @@ test('should remove listener on unmount', () => {
 
 test('should handle complex state', async () => {
   class Store extends TwoAndEight {
-    data: { bar: string; foo: number } = { bar: 'buz', foo: 1 }
+    data: { bar: string; foo?: number } = { bar: 'buz', foo: 1 }
+    arr = ['hello']
 
     changeData() {
       this.data = { bar: 'moo', foo: 5 }
+    }
+
+    changeDataDeep() {
+      this.data.bar = 'www'
+    }
+
+    deleteData() {
+      delete this.data.foo
+    }
+
+    addToArr() {
+      this.arr.push('bye')
     }
   }
 
@@ -340,12 +353,24 @@ test('should handle complex state', async () => {
 
   const App = () => {
     const data = useStore((s) => s.data)
+    const arr = useStore((s) => s.arr)
     const changeData = useStore((s) => s.changeData)
+    const changeDataDeep = useStore((s) => s.changeDataDeep)
+    const deleteData = useStore((s) => s.deleteData)
+    const addToArr = useStore((s) => s.addToArr)
     return (
       <div>
-        <div>Foo: {data.foo}</div>
+        {data.foo && <div>Foo: {data.foo}</div>}
         <div>Bar: {data.bar}</div>
+        <div>
+          {arr.map((a) => (
+            <div key={a}>{a}</div>
+          ))}
+        </div>
         <button onClick={changeData}>Change Data</button>
+        <button onClick={changeDataDeep}>Change Data Deep</button>
+        <button onClick={deleteData}>Delete Data</button>
+        <button onClick={addToArr}>Add To Array</button>
       </div>
     )
   }
@@ -357,6 +382,18 @@ test('should handle complex state', async () => {
   await user.click(screen.getByRole('button', { name: 'Change Data' }))
   expect(screen.getByText('Foo: 5')).toBeVisible()
   expect(screen.getByText('Bar: moo')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Change Data Deep' }))
+  expect(screen.getByText('Foo: 5')).toBeVisible()
+  expect(screen.getByText('Bar: www')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Delete Data' }))
+  expect(screen.queryByText('Foo:')).not.toBeInTheDocument()
+  expect(screen.getByText('Bar: www')).toBeVisible()
+
+  expect(screen.getByText('hello')).toBeVisible()
+  expect(screen.queryByText('bye')).not.toBeInTheDocument()
+  await user.click(screen.getByRole('button', { name: 'Add To Array' }))
+  expect(screen.getByText('hello')).toBeVisible()
+  expect(screen.getByText('bye')).toBeVisible()
 })
 
 test('should handle complex derived state', async () => {

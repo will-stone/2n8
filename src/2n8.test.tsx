@@ -157,6 +157,53 @@ test('should reset single field', () => {
   expect(store.untouched).toBe(true)
 })
 
+test('should reset complex state', () => {
+  class Store extends TwoAndEight {
+    arr = [{ foo: 'bar' }]
+
+    change() {
+      this.arr[0].foo = 'moo'
+    }
+
+    reset() {
+      this.$reset('arr')
+    }
+  }
+
+  const store = new Store()
+  expect(store.arr).toStrictEqual([{ foo: 'bar' }])
+  store.change()
+  expect(store.arr).toStrictEqual([{ foo: 'moo' }])
+  store.reset()
+  expect(store.arr).toStrictEqual([{ foo: 'bar' }])
+})
+
+test('should not mutate external objects', () => {
+  const initialState = {
+    obj: {
+      foo: 'bar',
+    },
+  }
+
+  class Store extends TwoAndEight {
+    obj = structuredClone(initialState.obj)
+
+    change() {
+      this.obj.foo = 'moo'
+    }
+  }
+
+  const store = new Store()
+  expect(store.obj).toStrictEqual({ foo: 'bar' })
+  expect(initialState).toStrictEqual({ obj: { foo: 'bar' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: 'moo' })
+  expect(initialState).toStrictEqual({ obj: { foo: 'bar' } })
+  store.$reset()
+  expect(store.obj).toStrictEqual({ foo: 'bar' })
+  expect(initialState).toStrictEqual({ obj: { foo: 'bar' } })
+})
+
 test('should compute derived value', () => {
   class Store extends TwoAndEight {
     count = 1
@@ -337,4 +384,57 @@ test('should warm store with state', () => {
   const store = new Store({ count: 123, greeting: 'hello' })
   expect(store.count).toBe(123)
   expect(store.greeting).toBe('hello')
+})
+
+test('should update deep state', () => {
+  class Store extends TwoAndEight {
+    obj: { foo: { bar?: string } } = { foo: { bar: 'baz' } }
+    arr = ['hello']
+    str = 'hello'
+
+    update() {
+      this.obj.foo.bar = 'moo'
+    }
+
+    delete() {
+      delete this.obj.foo.bar
+    }
+
+    noop() {
+      //
+    }
+
+    other() {
+      this.str = 'bye'
+    }
+
+    push() {
+      this.arr.push('bye')
+    }
+  }
+
+  const store = new Store()
+  const subscribeSpy = vi.fn()
+  const objSpy = vi.fn()
+  const arrSpy = vi.fn()
+  store.$subscribe(subscribeSpy)
+  store.$subscribe(objSpy, (s) => s.obj.foo.bar)
+  store.$subscribe(arrSpy, (s) => s.arr)
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(store.arr).toStrictEqual(['hello'])
+  store.update()
+  store.noop()
+  store.other()
+  store.push()
+  expect(subscribeSpy).toHaveBeenCalledTimes(3)
+  expect(objSpy).toHaveBeenCalledOnce()
+  expect(arrSpy).toHaveBeenCalledOnce()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  expect(store.arr).toStrictEqual(['hello', 'bye'])
+  store.delete()
+  expect(subscribeSpy).toHaveBeenCalledTimes(4)
+  expect(objSpy).toHaveBeenCalledTimes(2)
+  expect(arrSpy).toHaveBeenCalledOnce()
+  expect(store.obj).toStrictEqual({ foo: {} })
+  expect(store.arr).toStrictEqual(['hello', 'bye'])
 })
