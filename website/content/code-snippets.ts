@@ -1,4 +1,4 @@
-export const twoAndEight = `import { TwoAndEight, createStore } from '2n8'
+export const twoAndEight = `import { TwoAndEight, createReactStore } from '2n8'
 
 // Classes work really nicely with TypeScript. This class is
 // fully typed but there's no TypeScript syntax in sight!
@@ -20,7 +20,7 @@ class Store extends TwoAndEight {
 }
 
 // Create the React hook.
-const useStore = createStore(new Store())
+const useStore = createReactStore(new Store())
 
 const Counter = () => {
   // Use selectors to grab the required state and actions.

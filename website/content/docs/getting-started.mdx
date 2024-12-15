@@ -31,10 +31,10 @@ containers with a simple, powerful approach to state management.
 ## Create a store
 
 You store is a class, and turning it into a React hook is as easy as passing it
-to the `createStore` utility.
+to the `createReactStore` utility.
 
 ```ts title="store.ts"
-import { TwoAndEight, createStore } from '2n8'
+import { TwoAndEight, createReactStore } from '2n8'
 
 class Store extends TwoAndEight {
   expression: '🫤' | '🥸' = '🫤'
@@ -48,7 +48,7 @@ class Store extends TwoAndEight {
   }
 }
 
-export const useStore = createStore(new Store())
+export const useStore = createReactStore(new Store())
 ```
 
 ## Then use in your React components

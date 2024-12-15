@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { createStore, TwoAndEight } from '../../src/index.js'
+import { createReactStore, TwoAndEight } from '../../src/index.js'
 
 class Store extends TwoAndEight {
   count = 0
@@ -14,7 +14,7 @@ class Store extends TwoAndEight {
   }
 }
 
-const useStore = createStore(new Store())
+const useStore = createReactStore(new Store())
 
 const Counter: FC = () => {
   const count = useStore((state) => state.count)
