@@ -142,14 +142,14 @@ export function createStore<Store extends TwoAndEight>(
       if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset a method.')
       }
-      const initialValue = initialState[field]
+      const initialValue = structuredClone(initialState[field])
       if (initialValue !== undefined) {
         store[field] = initialValue
         commit(prevState, store.$getState())
       }
     } else {
       for (const [key, initialValue] of Object.entries(initialState)) {
-        Reflect.set(store, key, initialValue)
+        Reflect.set(store, key, structuredClone(initialValue))
         commit(prevState, store.$getState())
       }
     }
