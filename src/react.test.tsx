@@ -5,7 +5,7 @@ import { useRef } from 'react'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 
 import { TwoAndEight } from './2n8.js'
-import { createStore } from './react.js'
+import { createReactStore } from './react.js'
 
 const RenderCount: FC<{ title: string }> = ({ title }) => {
   const renderCount = useRef(0)
@@ -42,6 +42,7 @@ test('should update count component and not rerender others', async () => {
 
     async asyncButtonClicked() {
       this.count = this.count + 1
+      this.$commit()
       await new Promise((res) => {
         setTimeout(res, 10_000)
       })
@@ -49,7 +50,7 @@ test('should update count component and not rerender others', async () => {
     }
   }
 
-  const useStore = createStore(new Store())
+  const useStore = createReactStore(new Store())
 
   const Count: FC = () => {
     const count = useStore((s) => s.count)
@@ -132,7 +133,7 @@ test('should update count component and not rerender others', async () => {
   await user.click(screen.getByRole('button', { name: 'AsyncButton' }))
   expect(screen.getByText('Count: 3')).toBeVisible()
   expect(screen.getByText('Derived: 13')).toBeVisible()
-  await act(() => vi.advanceTimersByTime(10_001))
+  await vi.advanceTimersByTimeAsync(10_001)
   expect(screen.getByText('Count: 8')).toBeVisible()
   expect(screen.getByText('Derived: 18')).toBeVisible()
 })
@@ -148,7 +149,7 @@ test('should batch state updates', async () => {
     }
   }
 
-  const useStore = createStore(new Store())
+  const useStore = createReactStore(new Store())
 
   const Counts: FC = () => {
     const count = useStore((s) => s.count)
@@ -215,7 +216,7 @@ test('should render derived', async () => {
     }
   }
 
-  const useStore = createStore(new Store())
+  const useStore = createReactStore(new Store())
 
   const Total: FC = () => {
     const total = useStore((s) => s.total)
@@ -280,7 +281,7 @@ test('should reset state', async () => {
     }
   }
 
-  const useStore = createStore(new Store())
+  const useStore = createReactStore(new Store())
 
   const App = () => {
     const count = useStore((s) => s.count)
@@ -315,7 +316,7 @@ test('should remove listener on unmount', () => {
     count = 1
   }
 
-  const useStore = createStore(new Store())
+  const useStore = createReactStore(new Store())
 
   const App = () => {
     const count = useStore((s) => s.count)
@@ -349,7 +350,7 @@ test('should handle complex state', async () => {
     }
   }
 
-  const useStore = createStore(new Store())
+  const useStore = createReactStore(new Store())
 
   const App = () => {
     const data = useStore((s) => s.data)
@@ -421,7 +422,7 @@ test('should handle complex derived state', async () => {
     }
   }
 
-  const useStore = createStore(new Store())
+  const useStore = createReactStore(new Store())
 
   const App = () => {
     const derivedState = useStore((s) => s.derivedState)
