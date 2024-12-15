@@ -46,6 +46,13 @@ export function createStore<Store extends TwoAndEight>(
   $getState: () => State<Store>
   $subscribe: (callback: () => void) => void
 } {
+  // Clone all fields to themselves so that external state isn't mutated.
+  for (const [name, value] of Object.entries(store)) {
+    if (typeof value !== 'function' && !name.startsWith('$')) {
+      Reflect.set(store, name, structuredClone(value))
+    }
+  }
+
   let listeners: {
     callback: () => void
     selector?: <Field>(state?: State<Store>) => Field

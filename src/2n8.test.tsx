@@ -189,7 +189,7 @@ test('should not mutate external objects', () => {
   }
 
   class Store extends TwoAndEight {
-    obj = structuredClone(initialState.obj)
+    obj = initialState.obj
 
     change() {
       this.obj.foo = 'moo'
