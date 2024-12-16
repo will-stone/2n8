@@ -133,7 +133,7 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  store.$getInitialState = () => initialState
+  store.$getInitialState = () => structuredClone(initialState)
 
   store.$reset = (field?: keyof State<Store>): void => {
     const prevState = store.$getState()
@@ -142,14 +142,16 @@ export function createStore<Store extends TwoAndEight>(
       if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset a method.')
       }
-      const initialValue = structuredClone(initialState[field])
+      const initialValue = store.$getInitialState()[field]
       if (initialValue !== undefined) {
         store[field] = initialValue
         commit(prevState, store.$getState())
       }
     } else {
-      for (const [key, initialValue] of Object.entries(initialState)) {
-        Reflect.set(store, key, structuredClone(initialValue))
+      for (const [key, initialValue] of Object.entries(
+        store.$getInitialState(),
+      )) {
+        Reflect.set(store, key, initialValue)
         commit(prevState, store.$getState())
       }
     }
