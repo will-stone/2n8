@@ -85,9 +85,8 @@ export function createStore<Store extends TwoAndEight>(
             const prevState = store.$getState()
             const result = target.apply(thisArg, args)
             if (result instanceof Promise) {
-              return result.then((asyncResult) => {
+              return result.finally(() => {
                 commit(prevState, store.$getState())
-                return asyncResult
               })
             }
             commit(prevState, store.$getState())
