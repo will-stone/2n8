@@ -86,7 +86,6 @@ export function createStore<Store extends TwoAndEight>(
             const result = target.apply(thisArg, args)
             if (result instanceof Promise) {
               return result.then((asyncResult) => {
-                // Wait for hook to complete if it returns a promise
                 commit(prevState, store.$getState())
                 return asyncResult
               })
