@@ -1,5 +1,5 @@
 import autoBind from 'auto-bind'
-import { isEqual } from 'es-toolkit'
+import { cloneDeep, isEqual } from 'es-toolkit'
 
 export type State<Store> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -8,7 +8,18 @@ export type State<Store> = {
 
 export abstract class TwoAndEight {
   constructor() {
-    autoBind(this)
+    // Remove any references to set data.
+    const p = new Proxy(this, {
+      set(target, prop, value) {
+        Reflect.set(target, prop, cloneDeep(value))
+        return true
+      },
+    })
+
+    autoBind(p)
+
+    // eslint-disable-next-line no-constructor-return
+    return p
   }
 
   $commit(): void {

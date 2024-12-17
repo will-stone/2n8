@@ -182,29 +182,39 @@ test('should reset complex state', () => {
 })
 
 test('should not mutate external objects', () => {
-  const initialState = {
-    obj: {
-      foo: 'bar',
+  const externalObj = {
+    foo: {
+      bar: 'baz',
     },
   }
 
   class Store extends TwoAndEight {
-    obj = initialState.obj
+    obj = externalObj
+
+    loadExternalObj(ext: { foo: { bar: string } }) {
+      this.obj = ext
+    }
 
     change() {
-      this.obj.foo = 'moo'
+      this.obj.foo.bar = 'moo'
     }
   }
 
   const store = createStore(new Store())
-  expect(store.obj).toStrictEqual({ foo: 'bar' })
-  expect(initialState).toStrictEqual({ obj: { foo: 'bar' } })
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
   store.change()
-  expect(store.obj).toStrictEqual({ foo: 'moo' })
-  expect(initialState).toStrictEqual({ obj: { foo: 'bar' } })
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
   store.$reset()
-  expect(store.obj).toStrictEqual({ foo: 'bar' })
-  expect(initialState).toStrictEqual({ obj: { foo: 'bar' } })
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.loadExternalObj(externalObj)
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
 })
 
 test('should compute derived value', () => {
