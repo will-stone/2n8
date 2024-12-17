@@ -447,3 +447,14 @@ test('should handle complex derived state', async () => {
   await user.click(screen.getByRole('button', { name: 'Reset' }))
   expect(screen.getByTestId('derived')).toHaveTextContent('no')
 })
+
+test('should forward on API', () => {
+  class Store extends TwoAndEight {}
+  const s = new Store()
+  const useStore = createReactStore(s)
+  expect(useStore.$subscribe).toBe(s.$subscribe)
+  expect(useStore.$reset).toBe(s.$reset)
+  expect(useStore.$commit).toBe(s.$commit)
+  expect(useStore.$getInitialState).toBe(s.$getInitialState)
+  expect(useStore.$getState).toBe(s.$getState)
+})

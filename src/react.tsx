@@ -6,20 +6,33 @@ import { createStore } from './2n8.js'
 
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
-): <Field>(
+): (<Field>(
   selector: (
     state: Omit<
       Store,
       '$reset' | '$subscribe' | '$getState' | '$getInitialState'
     >,
   ) => Field,
-) => Field {
+) => Field) & {
+  $subscribe: Store['$subscribe']
+  $commit: Store['$commit']
+  $getInitialState: Store['$getInitialState']
+  $getState: Store['$getState']
+  $reset: Store['$reset']
+} {
   const store = createStore(rawStore)
 
   let cache = {} as State<Store>
 
-  return (selector) =>
-    useSyncExternalStore(
+  function hook<Field>(
+    selector: (
+      state: Omit<
+        Store,
+        '$reset' | '$subscribe' | '$getState' | '$getInitialState'
+      >,
+    ) => Field,
+  ): Field {
+    return useSyncExternalStore(
       store.$subscribe,
       () => {
         if (typeof selector(store) === 'function') {
@@ -38,4 +51,13 @@ export function createReactStore<Store extends TwoAndEight>(
       // @ts-expect-error -- Initial state doesn't (and shouldn't) include functions, but public selector API requires access to actions made by consumer.
       () => selector(store.$getInitialState()),
     )
+  }
+
+  hook.$subscribe = store.$subscribe
+  hook.$commit = store.$commit
+  hook.$getInitialState = store.$getInitialState
+  hook.$getState = store.$getState
+  hook.$reset = store.$reset
+
+  return hook
 }
