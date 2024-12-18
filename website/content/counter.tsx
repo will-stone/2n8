@@ -22,7 +22,7 @@ export const Counter: FC = () => {
   const resetClicked = useStore((state) => state.resetClicked)
   return (
     <div className="flex justify-center">
-      <div className="inline-flex border-8 border-stone-200 dark:border-stone-800 rounded-xl gap-4 p-4">
+      <div className="inline-flex gap-4 py-8">
         <div className="font-mono text-5xl">{count}</div>
         <div className="flex text-2xl font-bold gap-4 !m-0">
           <button
