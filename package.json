@@ -59,6 +59,7 @@
     "jsdom": "^25.0.1",
     "lint-staged": "^15.2.11",
     "prettier": "^3.4.2",
+    "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "rehype-external-links": "^3.0.0",
     "release-it": "^17.10.0",
