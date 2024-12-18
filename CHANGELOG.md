@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/will-stone/2n8/compare/0.5.3...0.5.4) (2024-12-18)
+
+### Patches
+
+- Improve npm README and fields
+  ([f6eaf4a](https://github.com/will-stone/2n8/commit/f6eaf4a6a2b8a456c8fffc2df15e5d7ef93c9536))
+
 ## [0.5.3](https://github.com/will-stone/2n8/compare/0.5.2...0.5.3) (2024-12-18)
 
 ### Patches
