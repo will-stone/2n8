@@ -1,5 +1,5 @@
 # 2n8
 
-> Oh dear, you seem to have got your store into a right two and eight.
+> Oh my, your store is in a right two and eight.
 
-Simple state management, on its way...
+[2n8.wstone.uk](https://2n8.wstone.uk/)

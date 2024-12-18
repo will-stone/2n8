@@ -2,6 +2,19 @@
   "name": "2n8",
   "version": "0.5.3",
   "description": "Simple state management.",
+  "keywords": [
+    "react",
+    "reactjs",
+    "state",
+    "store",
+    "state management",
+    "2n8"
+  ],
+  "homepage": "https://2n8.wstone.uk/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/will-stone/2n8.git"
+  },
   "license": "ISC",
   "author": "Will Stone",
   "sideEffects": false,
