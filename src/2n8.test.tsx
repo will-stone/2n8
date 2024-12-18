@@ -467,3 +467,29 @@ test('should update deep state', () => {
   expect(store.getState().obj).toStrictEqual({ foo: {} })
   expect(store.getState().arr).toStrictEqual(['hello', 'bye'])
 })
+
+test('should not fire subscription until end of action', () => {
+  class Store extends TwoAndEight {
+    count = 999
+
+    increment() {
+      this.count = this.count + 1
+    }
+
+    resetCount() {
+      this.$reset('count')
+      this.count = 10
+      this.$reset('count')
+      this.count = 3
+    }
+  }
+
+  const store = createStore(new Store())
+  const countSpy = vi.fn()
+  store.subscribe(countSpy, (s) => s.count)
+  store.getState().increment()
+  expect(countSpy).toHaveBeenCalledOnce()
+  store.getState().resetCount()
+  expect(store.getState().count).toBe(3)
+  expect(countSpy).toHaveBeenCalledTimes(2)
+})
