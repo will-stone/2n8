@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.5.3](https://github.com/will-stone/2n8/compare/0.5.2...0.5.3) (2024-12-18)
+
+### Patches
+
+- Internal refactor to fix lint issues
+  ([159a5d6](https://github.com/will-stone/2n8/commit/159a5d67105be9ffe03cd89c1149506d0bd7fff1))
+- Fix autoBind error in CJS envs
+  ([5315e73](https://github.com/will-stone/2n8/commit/5315e736d8fa1ecd437c58a60183d235e6be8a0e))
+
 ## [0.5.2](https://github.com/will-stone/2n8/compare/0.5.1...0.5.2) (2024-12-18)
 
 ### Patches
