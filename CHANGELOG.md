@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.0](https://github.com/will-stone/2n8/compare/0.3.4...0.4.0) (2024-12-18)
+
+### Minor changes
+
+- Change to a commit-based flow
+  ([d459837](https://github.com/will-stone/2n8/commit/d459837bc1ff62e6939011dd45d15be58058df6c))
+
+### Patches
+
+- Attach vanilla API to React hook
+  ([25a1d36](https://github.com/will-stone/2n8/commit/25a1d368faf880ebc68ea8114d86485ca7660766))
+- Do not mutate external objects
+  ([f62f3a3](https://github.com/will-stone/2n8/commit/f62f3a3f10f1f9f8c4ca8b790c740cea46d5a744))
+- Always commit changes
+  ([c1734f5](https://github.com/will-stone/2n8/commit/c1734f5abf1c783182e95b6982128b66a13b5a59))
+- Prevent changes to initial state
+  ([626ec28](https://github.com/will-stone/2n8/commit/626ec28b9de4633b5c9b6973fff1bb37600ef202))
+- Prevent mutation of external objects when setting up state
+  ([a9d0bd0](https://github.com/will-stone/2n8/commit/a9d0bd0e2753f92715792fb0bcca8e2b52a16e60))
+
 ## [0.3.4](https://github.com/will-stone/2n8/compare/0.3.3...0.3.4) (2024-12-11)
 
 ### Patches
