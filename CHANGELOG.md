@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/will-stone/2n8/compare/0.5.1...0.5.2) (2024-12-18)
+
+### Patches
+
+- Add compatibility with React 19
+  ([3ff8413](https://github.com/will-stone/2n8/commit/3ff841370dcee6f309a5810fd1ece6e2deb3520d))
+
 ## [0.5.1](https://github.com/will-stone/2n8/compare/0.5.0...0.5.1) (2024-12-18)
 
 ### Patches
