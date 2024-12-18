@@ -1,7 +1,7 @@
 import { copyFileSync } from 'node:fs'
 
+import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { defineConfig } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
