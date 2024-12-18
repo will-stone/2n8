@@ -16,7 +16,7 @@ class Store extends TwoAndEight {
 
 const useStore = createReactStore(new Store())
 
-const Counter: FC = () => {
+export const Counter: FC = () => {
   const count = useStore((state) => state.count)
   const addClicked = useStore((state) => state.addClicked)
   const resetClicked = useStore((state) => state.resetClicked)
@@ -44,5 +44,3 @@ const Counter: FC = () => {
     </div>
   )
 }
-
-export default Counter

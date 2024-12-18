@@ -1,4 +1,4 @@
-export const twoAndEight = `import { TwoAndEight, createReactStore } from '2n8'
+export const counter = `import { TwoAndEight, createReactStore } from '2n8'
 
 class Store extends TwoAndEight {
   count = 0
@@ -26,6 +26,46 @@ const Counter = () => {
     </div>
   )
 }`
+
+export const async = `import { TwoAndEight, createReactStore } from '2n8'
+
+class Store extends TwoAndEight {
+  status: 'idle' | 'pending' | 'success' = 'idle'
+
+  async buttonClicked() {
+    this.status = 'pending'
+    this.$commit()
+    await fetchData()
+    this.status = 'success'
+  }
+
+  resetClicked() {
+    this.$reset('status')
+  }
+}
+
+const useStore = createReactStore(new Store())
+
+const Async = () => {
+  const status = useStore((s) => s.status)
+  const buttonClicked = useStore((s) => s.buttonClicked)
+  const resetClicked = useStore((s) => s.resetClicked)
+  return (
+    <div>
+      <button onClick={buttonClicked}>
+        {status === 'idle' ? (
+          <DownArrowIcon />
+        ) : status === 'pending' ? (
+          <SpinnerIcon />
+        ) : (
+          <DoneIcon />
+        )}
+      </button>
+      <button onClick={resetClicked}>Reset</button>
+    </div>
+  )
+}`
+
 export const twoAndEightComments = `import { TwoAndEight, createReactStore } from '2n8'
 
 // Classes work really nicely with TypeScript. This class is
