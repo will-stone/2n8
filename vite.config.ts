@@ -12,9 +12,10 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['auto-bind', 'react', 'es-toolkit'],
+      external: ['react', 'es-toolkit'],
       output: {
         preserveModules: true,
+        preserveModulesRoot: 'src',
       },
     },
   },
