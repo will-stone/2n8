@@ -140,7 +140,7 @@ export function createStore<Store extends TwoAndEight>(
       }
       const initialValue = getInitialState()[field]
       if (initialValue !== undefined) {
-        // TODO use Reflect here?
+        Reflect.set(store, field, initialValue)
         store[field] = initialValue
       }
     } else {
