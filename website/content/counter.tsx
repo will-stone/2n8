@@ -63,6 +63,7 @@ const Counter: FC = () => {
               paddingLeft: '1rem',
               paddingRight: '1rem',
             }}
+            type="button"
           >
             + 1
           </button>
@@ -73,6 +74,7 @@ const Counter: FC = () => {
               paddingLeft: '1rem',
               paddingRight: '1rem',
             }}
+            type="button"
           >
             Reset
           </button>

@@ -7,7 +7,7 @@ import { afterEach, beforeEach, expect, expectTypeOf, test, vi } from 'vitest'
 import { TwoAndEight } from './2n8.js'
 import { createReactStore } from './react.js'
 
-const RenderCount: FC<{ title: string }> = ({ title }) => {
+const RenderCount: FC<{ readonly title: string }> = ({ title }) => {
   const renderCount = useRef(0)
 
   renderCount.current = renderCount.current + 1
@@ -363,17 +363,25 @@ test('should handle complex state', async () => {
     const addToArr = useStore((s) => s.addToArr)
     return (
       <div>
-        {data.foo && <div>Foo: {data.foo}</div>}
+        {data.foo ? <div>Foo: {data.foo}</div> : null}
         <div>Bar: {data.bar}</div>
         <div>
           {arr.map((a) => (
             <div key={a}>{a}</div>
           ))}
         </div>
-        <button onClick={changeData}>Change Data</button>
-        <button onClick={changeDataDeep}>Change Data Deep</button>
-        <button onClick={deleteData}>Delete Data</button>
-        <button onClick={addToArr}>Add To Array</button>
+        <button onClick={changeData} type="button">
+          Change Data
+        </button>
+        <button onClick={changeDataDeep} type="button">
+          Change Data Deep
+        </button>
+        <button onClick={deleteData} type="button">
+          Delete Data
+        </button>
+        <button onClick={addToArr} type="button">
+          Add To Array
+        </button>
       </div>
     )
   }
@@ -433,8 +441,12 @@ test('should handle complex derived state', async () => {
     const reset = useStore((s) => s.reset)
     return (
       <div>
-        <button onClick={add}>Add</button>
-        <button onClick={reset}>Reset</button>
+        <button onClick={add} type="button">
+          Add
+        </button>
+        <button onClick={reset} type="button">
+          Reset
+        </button>
         <div data-testid="derived">{derivedState.foo ? 'yes' : 'no'}</div>
         <div>{JSON.stringify(emptyObj)}</div>
       </div>

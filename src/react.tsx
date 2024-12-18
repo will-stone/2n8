@@ -20,7 +20,7 @@ export function createReactStore<Store extends TwoAndEight>(
 
   let cache = {} as State<Store>
 
-  function hook<Field>(
+  function useStore<Field>(
     selector: (state: Omit<Store, '$reset' | '$commit'>) => Field,
   ): Field {
     return useSyncExternalStore(
@@ -45,9 +45,9 @@ export function createReactStore<Store extends TwoAndEight>(
     )
   }
 
-  hook.subscribe = store.subscribe
-  hook.getInitialState = store.getInitialState
-  hook.getState = store.getState
+  useStore.subscribe = store.subscribe
+  useStore.getInitialState = store.getInitialState
+  useStore.getState = store.getState
 
-  return hook
+  return useStore
 }
