@@ -1,0 +1,80 @@
+---
+title: How it works
+---
+
+import { Steps } from '@astrojs/starlight/components'
+
+<Steps>
+
+1. Create your state using a class, extended from 2n8's parent class which
+   enhances your store with a few utilities.
+
+   ```tsx
+   import { TwoAndEight } from '2n8'
+
+   class Store extends TwoAndEight {
+     counter = 0
+     timestamp = 0
+   }
+   ```
+
+2. Add your actions that update the state.
+
+   ```tsx
+   import { TwoAndEight } from '2n8'
+
+   class Store extends TwoAndEight {
+     counter = 0
+     timestamp = 0
+
+     addButtonClicked() {
+       this.counter++
+       this.timestamp = Date.now()
+     }
+   }
+   ```
+
+   State changes are auto _committed_ at the end of each action. If you need to
+   commit early, you can use the special inbuilt `this.$commit()` action.
+
+   ```tsx
+   import { TwoAndEight } from '2n8'
+
+   class Store extends TwoAndEight {
+     counter = 0
+     timestamp = 0
+     data: { id: string; title: string }[]
+
+     async addButtonClicked() {
+       this.counter++
+       this.timestamp = Date.now()
+       this.$commit()
+       this.data = await fetchData()
+     }
+   }
+   ```
+
+3. Generate your React hook:
+
+   ```tsx
+   import { createReactStore } from '2n8'
+
+   const useStore = createReactStore(new Store())
+   ```
+
+   This uses React's `useSyncExternalStore` hook to map committed state to
+   selectors:
+
+   ```tsx
+   const Component = () => {
+     const counter = useStore((s) => s.counter)
+
+     return <div>{counter}</div>
+   }
+   ```
+
+   When, and only when, the selected state changes, the component is rerendered
+   by React. This is more optimal than simply passing state down the component
+   tree via props.
+
+</Steps>

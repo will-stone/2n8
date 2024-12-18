@@ -62,6 +62,15 @@ export default defineConfig({
       logo: {
         src: './website/assets/logo.png',
       },
+      sidebar: [
+        {
+          slug: 'index',
+        },
+        {
+          slug: 'getting-started',
+        },
+        { slug: 'how-it-works' },
+      ],
       social: {
         github: 'https://github.com/will-stone/2n8',
       },

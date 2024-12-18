@@ -4,7 +4,7 @@ class Store extends TwoAndEight {
   count = 0
 
   addClicked() {
-    this.count = this.count + 1
+    this.count++
   }
 
   resetClicked() {
