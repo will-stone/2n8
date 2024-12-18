@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/will-stone/2n8/compare/0.4.0...0.5.0) (2024-12-18)
+
+### Minor changes
+
+- Remove direct access to fields
+  ([cc1d3e3](https://github.com/will-stone/2n8/commit/cc1d3e3eb38830286b44a0d9ad593987adda7765))
+
 ## [0.4.0](https://github.com/will-stone/2n8/compare/0.3.4...0.4.0) (2024-12-18)
 
 ### Minor changes
