@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.5.1](https://github.com/will-stone/2n8/compare/0.5.0...0.5.1) (2024-12-18)
+
+### Patches
+
+- Fix types on createReactStore returned utils
+  ([fcc6155](https://github.com/will-stone/2n8/commit/fcc6155fdd6668b2eca6a89d5c376fa3e0cb52d5))
+- Refactor to use consistent internal store set
+  ([c0a2e42](https://github.com/will-stone/2n8/commit/c0a2e420d7741eb07844780f94a41e1243bffeb3))
+
 ## [0.5.0](https://github.com/will-stone/2n8/compare/0.4.0...0.5.0) (2024-12-18)
 
 ### Minor changes
