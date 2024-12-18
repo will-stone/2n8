@@ -1,5 +1,33 @@
 export const twoAndEight = `import { TwoAndEight, createReactStore } from '2n8'
 
+class Store extends TwoAndEight {
+  count = 0
+
+  addClicked() {
+    this.count = this.count + 1
+  }
+
+  resetClicked() {
+    this.$reset('count')
+  }
+}
+
+const useStore = createReactStore(new Store())
+
+const Counter = () => {
+  const count = useStore((s) => s.count)
+  const addClicked = useStore((s) => s.addClicked)
+  const resetClicked = useStore((s) => s.resetClicked)
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={addClicked}>One up</button>
+      <button onClick={resetClicked}>Reset</button>
+    </div>
+  )
+}`
+export const twoAndEightComments = `import { TwoAndEight, createReactStore } from '2n8'
+
 // Classes work really nicely with TypeScript. This class is
 // fully typed but there's no TypeScript syntax in sight!
 class Store extends TwoAndEight {

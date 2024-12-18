@@ -1,5 +1,6 @@
 import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
+import tailwind from '@astrojs/tailwind'
 import { defineConfig } from 'astro/config'
 import rehypeExternalLinks from 'rehype-external-links'
 
@@ -8,6 +9,7 @@ export default defineConfig({
   integrations: [
     react(),
     starlight({
+      customCss: ['./website/tailwind.css'],
       favicon: '/favicon.svg',
       head: [
         {
@@ -64,6 +66,9 @@ export default defineConfig({
         github: 'https://github.com/will-stone/2n8',
       },
       title: '2n8',
+    }),
+    tailwind({
+      applyBaseStyles: false,
     }),
   ],
   markdown: {

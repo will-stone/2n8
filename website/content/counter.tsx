@@ -21,59 +21,20 @@ const Counter: FC = () => {
   const addClicked = useStore((state) => state.addClicked)
   const resetClicked = useStore((state) => state.resetClicked)
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-    >
-      <div
-        style={{
-          alignItems: 'center',
-          border: '8px solid #222429',
-          borderRadius: '1rem',
-          display: 'inline-flex',
-          gap: '1rem',
-          justifyContent: 'center',
-          padding: '2rem',
-        }}
-      >
-        <div
-          style={{
-            fontFamily: 'monospace',
-            fontSize: '3rem',
-            lineHeight: 1,
-          }}
-        >
-          {count}
-        </div>
-        <div
-          style={{
-            alignItems: 'center',
-            display: 'flex',
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            gap: '1rem',
-            margin: 0,
-          }}
-        >
+    <div className="flex justify-center">
+      <div className="inline-flex border-8 border-stone-200 dark:border-stone-800 rounded-xl gap-4 p-4">
+        <div className="font-mono text-5xl">{count}</div>
+        <div className="flex text-2xl font-bold gap-4 !m-0">
           <button
+            className="px-4 rounded !m-0 bg-stone-300 dark:bg-stone-700"
             onClick={addClicked}
-            style={{
-              paddingLeft: '1rem',
-              paddingRight: '1rem',
-            }}
             type="button"
           >
             + 1
           </button>
           <button
+            className="px-4 rounded !m-0 bg-stone-300 dark:bg-stone-700"
             onClick={resetClicked}
-            style={{
-              marginTop: 0,
-              paddingLeft: '1rem',
-              paddingRight: '1rem',
-            }}
             type="button"
           >
             Reset

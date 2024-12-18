@@ -35,9 +35,16 @@ hero:
 
 import { Tabs, TabItem } from '@astrojs/starlight/components'
 import { Code } from '@astrojs/starlight/components'
-import { twoAndEight, zustand } from '../code-snippets.js'
+import { twoAndEight, twoAndEightComments } from '../code-snippets.js'
 import { Card, CardGrid } from '@astrojs/starlight/components'
 import Counter from '../counter.jsx'
 
-<Counter client:load />
-<Code code={twoAndEight} lang="tsx" title="Counter.tsx" />
+<Tabs>
+  <TabItem label="Counter">
+    <Counter client:load />
+    <Code code={twoAndEight} lang="tsx" title="Counter.tsx" />
+  </TabItem>
+  <TabItem label="Async">
+    <Code code={twoAndEightComments} lang="tsx" title="Counter.tsx" />
+  </TabItem>
+</Tabs>
