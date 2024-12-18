@@ -7,57 +7,44 @@ import { createStore } from './2n8.js'
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
 ): (<Field>(
-  selector: (
-    state: Omit<
-      Store,
-      '$reset' | '$subscribe' | '$getState' | '$getInitialState'
-    >,
-  ) => Field,
+  selector: (state: Omit<Store, '$reset' | '$commit'>) => Field,
 ) => Field) & {
-  $subscribe: Store['$subscribe']
-  $commit: Store['$commit']
-  $getInitialState: Store['$getInitialState']
-  $getState: Store['$getState']
-  $reset: Store['$reset']
+  subscribe: ReturnType<typeof createStore>['subscribe']
+  getInitialState: ReturnType<typeof createStore>['getInitialState']
+  getState: ReturnType<typeof createStore>['getState']
 } {
   const store = createStore(rawStore)
 
   let cache = {} as State<Store>
 
   function hook<Field>(
-    selector: (
-      state: Omit<
-        Store,
-        '$reset' | '$subscribe' | '$getState' | '$getInitialState'
-      >,
-    ) => Field,
+    selector: (state: Omit<Store, '$reset' | '$commit'>) => Field,
   ): Field {
     return useSyncExternalStore(
-      store.$subscribe,
+      store.subscribe,
       () => {
-        if (typeof selector(store) === 'function') {
-          return selector(store)
+        const state = store.getState()
+
+        if (typeof selector(state) === 'function') {
+          return selector(state)
         }
 
-        const state = cloneDeep(store.$getState())
-
         if (!isEqual(cache, state)) {
-          cache = state
+          // @ts-expect-error -- The actions have already been removed above.
+          cache = cloneDeep(state)
         }
 
         // @ts-expect-error -- selector expects functions (actions) but those have been dealt with above.
         return selector(cache)
       },
       // @ts-expect-error -- Initial state doesn't (and shouldn't) include functions, but public selector API requires access to actions made by consumer.
-      () => selector(store.$getInitialState()),
+      () => selector(store.getInitialState()),
     )
   }
 
-  hook.$subscribe = store.$subscribe
-  hook.$commit = store.$commit
-  hook.$getInitialState = store.$getInitialState
-  hook.$getState = store.$getState
-  hook.$reset = store.$reset
+  hook.subscribe = store.subscribe
+  hook.getInitialState = store.getInitialState
+  hook.getState = store.getState
 
   return hook
 }

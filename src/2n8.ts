@@ -26,36 +26,26 @@ export abstract class TwoAndEight {
     // no-op, for now, it's enhanced in createStore
   }
 
-  $reset(_field?: keyof this): void {
-    // no-op, for now, it's enhanced in createStore
-  }
+  $reset(field?: keyof this): void {
+    // No-op: it's enhanced in createStore.
 
-  $subscribe<Field>(
-    _callback: () => void,
-    _selector?: (state: State<this>) => Field,
-  ): () => void {
-    // no-op, for now, it's enhanced in createStore
-    return () => {
-      //
-    }
-  }
-
-  $getInitialState(): State<this> {
-    // no-op, for now, it's enhanced in createStore
-    return this
-  }
-
-  $getState(): State<this> {
-    // no-op, for now, it's enhanced in createStore
-    return this
+    // This doesn't really log anything, as the method is replaced in
+    // createStore, it's just to allow the arg to be defined without an
+    // underscore prefix.
+    // eslint-disable-next-line no-console
+    console.log(field)
   }
 }
 
 export function createStore<Store extends TwoAndEight>(
   store: Store,
-): Store & {
-  $getState: () => State<Store>
-  $subscribe: (callback: () => void) => void
+): {
+  getInitialState: () => State<Store>
+  getState: () => Omit<Store, '$reset' | '$commit'>
+  subscribe: <Field>(
+    callback: () => void,
+    selector?: (state: State<Store>) => Field,
+  ) => () => void
 } {
   // Clone all fields to themselves so that external state isn't mutated.
   for (const [name, value] of Object.entries(store)) {
@@ -69,7 +59,7 @@ export function createStore<Store extends TwoAndEight>(
     selector?: <Field>(state?: State<Store>) => Field
   }[] = []
 
-  const commit = (prevState?: State<Store>, nextState?: State<Store>) => {
+  const commit = (prevState?: Store, nextState?: Store) => {
     for (const listener of listeners) {
       if (listener.selector) {
         if (
@@ -83,38 +73,13 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  store.$commit = commit
+  store.$commit = () => commit()
 
-  // Infuse all actions with a commit after they've run.
-  for (const [name, value] of Object.entries(store)) {
-    if (typeof value === 'function' && !name.startsWith('$')) {
-      Reflect.set(
-        store,
-        name,
-        new Proxy(value, {
-          apply(target, thisArg, args) {
-            const prevState = store.$getState()
-            const result = target.apply(thisArg, args)
-            if (result instanceof Promise) {
-              return result.finally(() => {
-                commit(prevState, store.$getState())
-              })
-            }
-            commit(prevState, store.$getState())
-            return result
-          },
-        }),
-      )
-    }
-  }
-
-  store.$getState = (): State<Store> => {
-    const state = {} as State<Store>
+  function getState(): Store {
+    const state = {} as Store
 
     for (const [name, value] of Object.entries(store)) {
-      if (typeof value !== 'function' && !name.startsWith('$')) {
-        Reflect.set(state, name, value)
-      }
+      Reflect.set(state, name, value)
     }
 
     // Capture getters by finding all getter methods
@@ -134,39 +99,64 @@ export function createStore<Store extends TwoAndEight>(
     return state
   }
 
-  const initialState = {} as State<Store>
-
+  // Infuse all actions with a commit after they've run.
   for (const [name, value] of Object.entries(store)) {
-    if (typeof value !== 'function' && !name.startsWith('$')) {
-      Reflect.set(initialState, name, structuredClone(value))
+    if (typeof value === 'function' && !name.startsWith('$')) {
+      Reflect.set(
+        store,
+        name,
+        new Proxy(value, {
+          apply(target, thisArg, args) {
+            const prevState = getState()
+            const result = target.apply(thisArg, args)
+            if (result instanceof Promise) {
+              return result.finally(() => {
+                commit(prevState, getState())
+              })
+            }
+            commit(prevState, getState())
+            return result
+          },
+        }),
+      )
     }
   }
 
-  store.$getInitialState = () => structuredClone(initialState)
+  const initialState = {} as Store
+
+  for (const [name, value] of Object.entries(store)) {
+    Reflect.set(initialState, name, cloneDeep(value))
+  }
+
+  function getInitialState(): Store {
+    return cloneDeep(initialState)
+  }
 
   store.$reset = (field?: keyof State<Store>): void => {
-    const prevState = store.$getState()
     if (field) {
       const value = Reflect.get(store, field)
       if (typeof value === 'function') {
-        throw new TypeError('2n8: Cannot reset a method.')
+        throw new TypeError('2n8: Cannot reset an action.')
       }
-      const initialValue = store.$getInitialState()[field]
+      const initialValue = getInitialState()[field]
       if (initialValue !== undefined) {
+        // TODO use Reflect here?
         store[field] = initialValue
-        commit(prevState, store.$getState())
       }
     } else {
-      for (const [key, initialValue] of Object.entries(
-        store.$getInitialState(),
-      )) {
-        Reflect.set(store, key, initialValue)
-        commit(prevState, store.$getState())
+      for (const [key, initialValue] of Object.entries(getInitialState())) {
+        // No need to reset functions.
+        if (typeof initialValue !== 'function') {
+          Reflect.set(store, key, initialValue)
+        }
       }
     }
   }
 
-  store.$subscribe = (callback, selector) => {
+  function subscribe<Field>(
+    callback: () => void,
+    selector?: (state: State<Store>) => Field,
+  ): () => void {
     // @ts-expect-error -- Types don't match but the public API is correct, and that's the important thing.
     listeners = [...listeners, { callback, selector }]
     return (): void => {
@@ -180,5 +170,9 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  return store
+  return {
+    getInitialState,
+    getState,
+    subscribe,
+  }
 }

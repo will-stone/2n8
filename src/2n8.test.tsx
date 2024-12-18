@@ -30,16 +30,16 @@ test('should update when using async actions', async () => {
   }
 
   const store = createStore(new Store())
-  expectTypeOf(store.count).toMatchTypeOf<number>()
-  expect(store.count).toBe(0)
-  store.buttonClicked()
-  expect(store.count).toBe(1)
-  store.asyncButtonClicked()
-  expect(store.count).toBe(2)
+  expectTypeOf(store.getState().count).toMatchTypeOf<number>()
+  expect(store.getState().count).toBe(0)
+  store.getState().buttonClicked()
+  expect(store.getState().count).toBe(1)
+  store.getState().asyncButtonClicked()
+  expect(store.getState().count).toBe(2)
   await vi.advanceTimersByTimeAsync(2999)
-  expect(store.count).toBe(2)
+  expect(store.getState().count).toBe(2)
   await vi.advanceTimersByTimeAsync(1)
-  expect(store.count).toBe(7)
+  expect(store.getState().count).toBe(7)
 })
 
 test('should reset all state', () => {
@@ -74,47 +74,47 @@ test('should reset all state', () => {
 
   const store = createStore(new Store())
 
-  expect(store.greeting).toBe('hello')
-  expectTypeOf(store.greeting).toMatchTypeOf<string>()
-  expect(store.count).toBe(999)
-  expectTypeOf(store.count).toMatchTypeOf<number>()
-  expect(store.toggle).toBe(false)
-  expectTypeOf(store.toggle).toMatchTypeOf<boolean | 'a string'>()
-  expect(store.untouched).toBe(true)
+  expect(store.getState().greeting).toBe('hello')
+  expectTypeOf(store.getState().greeting).toMatchTypeOf<string>()
+  expect(store.getState().count).toBe(999)
+  expectTypeOf(store.getState().count).toMatchTypeOf<number>()
+  expect(store.getState().toggle).toBe(false)
+  expectTypeOf(store.getState().toggle).toMatchTypeOf<boolean | 'a string'>()
+  expect(store.getState().untouched).toBe(true)
 
-  store.switched()
-  store.switched()
-  store.increment()
-  store.gone()
+  store.getState().switched()
+  store.getState().switched()
+  store.getState().increment()
+  store.getState().gone()
 
-  expect(store.greeting).toBe('bye')
-  expect(store.count).toBe(1000)
-  expect(store.toggle).toBe('a string')
-  expect(store.untouched).toBe(true)
+  expect(store.getState().greeting).toBe('bye')
+  expect(store.getState().count).toBe(1000)
+  expect(store.getState().toggle).toBe('a string')
+  expect(store.getState().untouched).toBe(true)
 
-  store.$reset()
+  store.getState().resetAll()
 
-  expect(store.greeting).toBe('hello')
-  expect(store.count).toBe(999)
-  expect(store.toggle).toBe(false)
-  expect(store.untouched).toBe(true)
+  expect(store.getState().greeting).toBe('hello')
+  expect(store.getState().count).toBe(999)
+  expect(store.getState().toggle).toBe(false)
+  expect(store.getState().untouched).toBe(true)
 
-  store.switched()
-  store.switched()
-  store.increment()
-  store.gone()
+  store.getState().switched()
+  store.getState().switched()
+  store.getState().increment()
+  store.getState().gone()
 
-  expect(store.greeting).toBe('bye')
-  expect(store.count).toBe(1000)
-  expect(store.toggle).toBe('a string')
-  expect(store.untouched).toBe(true)
+  expect(store.getState().greeting).toBe('bye')
+  expect(store.getState().count).toBe(1000)
+  expect(store.getState().toggle).toBe('a string')
+  expect(store.getState().untouched).toBe(true)
 
-  store.resetAll()
+  store.getState().resetAll()
 
-  expect(store.greeting).toBe('hello')
-  expect(store.count).toBe(999)
-  expect(store.toggle).toBe(false)
-  expect(store.untouched).toBe(true)
+  expect(store.getState().greeting).toBe('hello')
+  expect(store.getState().count).toBe(999)
+  expect(store.getState().toggle).toBe(false)
+  expect(store.getState().untouched).toBe(true)
 })
 
 test('should reset single field', () => {
@@ -137,27 +137,27 @@ test('should reset single field', () => {
   }
 
   const store = createStore(new Store())
-  store.$reset('count')
-  expect(store.count).toBe(999)
-  expect(store.greeting).toBe('hello')
-  expect(store.untouched).toBe(true)
-  store.increment()
-  store.gone()
-  expect(store.count).toBe(1000)
-  expect(store.greeting).toBe('bye')
-  expect(store.untouched).toBe(true)
-  store.$reset('count')
-  expect(store.count).toBe(999)
-  expect(store.greeting).toBe('bye')
-  expect(store.untouched).toBe(true)
-  store.increment()
-  expect(store.count).toBe(1000)
-  expect(store.greeting).toBe('bye')
-  expect(store.untouched).toBe(true)
-  store.resetCount()
-  expect(store.count).toBe(999)
-  expect(store.greeting).toBe('bye')
-  expect(store.untouched).toBe(true)
+  store.getState().resetCount()
+  expect(store.getState().count).toBe(999)
+  expect(store.getState().greeting).toBe('hello')
+  expect(store.getState().untouched).toBe(true)
+  store.getState().increment()
+  store.getState().gone()
+  expect(store.getState().count).toBe(1000)
+  expect(store.getState().greeting).toBe('bye')
+  expect(store.getState().untouched).toBe(true)
+  store.getState().resetCount()
+  expect(store.getState().count).toBe(999)
+  expect(store.getState().greeting).toBe('bye')
+  expect(store.getState().untouched).toBe(true)
+  store.getState().increment()
+  expect(store.getState().count).toBe(1000)
+  expect(store.getState().greeting).toBe('bye')
+  expect(store.getState().untouched).toBe(true)
+  store.getState().resetCount()
+  expect(store.getState().count).toBe(999)
+  expect(store.getState().greeting).toBe('bye')
+  expect(store.getState().untouched).toBe(true)
 })
 
 test('should reset complex state', () => {
@@ -174,11 +174,11 @@ test('should reset complex state', () => {
   }
 
   const store = createStore(new Store())
-  expect(store.arr).toStrictEqual([{ foo: 'bar' }])
-  store.change()
-  expect(store.arr).toStrictEqual([{ foo: 'moo' }])
-  store.reset()
-  expect(store.arr).toStrictEqual([{ foo: 'bar' }])
+  expect(store.getState().arr).toStrictEqual([{ foo: 'bar' }])
+  store.getState().change()
+  expect(store.getState().arr).toStrictEqual([{ foo: 'moo' }])
+  store.getState().reset()
+  expect(store.getState().arr).toStrictEqual([{ foo: 'bar' }])
 })
 
 test('should not mutate external objects', () => {
@@ -198,22 +198,26 @@ test('should not mutate external objects', () => {
     change() {
       this.obj.foo.bar = 'moo'
     }
+
+    reset() {
+      this.$reset()
+    }
   }
 
   const store = createStore(new Store())
-  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.change()
-  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.getState().change()
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.$reset()
-  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.getState().reset()
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.loadExternalObj(externalObj)
-  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.getState().loadExternalObj(externalObj)
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.change()
-  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.getState().change()
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
 })
 
@@ -232,9 +236,9 @@ test('should compute derived value', () => {
   }
 
   const store = createStore(new Store())
-  expect(store.total).toBe(4)
-  store.increaseCount()
-  expect(store.total).toBe(5)
+  expect(store.getState().total).toBe(4)
+  store.getState().increaseCount()
+  expect(store.getState().total).toBe(5)
 })
 
 test('should throw if attempting to reset an action', () => {
@@ -244,15 +248,29 @@ test('should throw if attempting to reset an action', () => {
     increaseCount() {
       this.count = this.count + 1
     }
+
+    resetAction() {
+      this.$reset('increaseCount')
+    }
+
+    resetResetApi() {
+      this.$reset('$reset')
+    }
+
+    resetSubscribeApi() {
+      this.$reset('$commit')
+    }
   }
 
   const store = createStore(new Store())
-  expect(() => store.$reset('increaseCount')).toThrow(
-    '2n8: Cannot reset a method.',
+  expect(() => store.getState().resetAction()).toThrow(
+    '2n8: Cannot reset an action.',
   )
-  expect(() => store.$reset('$reset')).toThrow('2n8: Cannot reset a method.')
-  expect(() => store.$reset('$subscribe')).toThrow(
-    '2n8: Cannot reset a method.',
+  expect(() => store.getState().resetResetApi()).toThrow(
+    '2n8: Cannot reset an action.',
+  )
+  expect(() => store.getState().resetSubscribeApi()).toThrow(
+    '2n8: Cannot reset an action.',
   )
 })
 
@@ -267,13 +285,16 @@ test('should return initial state', () => {
   }
 
   const store = createStore(new Store())
-  store.increaseCount()
-  expect(store.$getInitialState()).toStrictEqual({
+  store.getState().increaseCount()
+  expect(store.getInitialState()).toStrictEqual({
+    $commit: expect.any(Function),
+    $reset: expect.any(Function),
     count: 0,
+    increaseCount: expect.any(Function),
     untouched: 'foo',
   })
-  expectTypeOf(store.$getInitialState().count).toMatchTypeOf<number>()
-  expectTypeOf(store.$getInitialState().untouched).toMatchTypeOf<string>()
+  expectTypeOf(store.getInitialState().count).toMatchTypeOf<number>()
+  expectTypeOf(store.getInitialState().untouched).toMatchTypeOf<string>()
 })
 
 test('should return current state', () => {
@@ -291,14 +312,17 @@ test('should return current state', () => {
   }
 
   const store = createStore(new Store())
-  store.increaseCount()
-  expect(store.$getState()).toStrictEqual({
+  store.getState().increaseCount()
+  expect(store.getState()).toStrictEqual({
+    $commit: expect.any(Function),
+    $reset: expect.any(Function),
     count: 1,
     derived: 11,
+    increaseCount: expect.any(Function),
     untouched: 'foo',
   })
-  expectTypeOf(store.$getState().count).toMatchTypeOf<number>()
-  expectTypeOf(store.$getState().untouched).toMatchTypeOf<string>()
+  expectTypeOf(store.getState().count).toMatchTypeOf<number>()
+  expectTypeOf(store.getState().untouched).toMatchTypeOf<string>()
 })
 
 test('should allow granular subscriptions', () => {
@@ -312,7 +336,7 @@ test('should allow granular subscriptions', () => {
   }
 
   const store = createStore(new Store())
-  expectTypeOf(store.$subscribe).toMatchTypeOf<
+  expectTypeOf(store.subscribe).toMatchTypeOf<
     (
       callback: () => void,
       selector?: (state: {
@@ -323,9 +347,9 @@ test('should allow granular subscriptions', () => {
   >()
   const countSpy = vi.fn()
   const untouchedSpy = vi.fn()
-  store.$subscribe(countSpy, (s) => s.count)
-  store.$subscribe(untouchedSpy, (s) => s.untouched)
-  store.increaseCount()
+  store.subscribe(countSpy, (s) => s.count)
+  store.subscribe(untouchedSpy, (s) => s.untouched)
+  store.getState().increaseCount()
   expect(countSpy).toHaveBeenCalledOnce()
   expect(untouchedSpy).not.toHaveBeenCalled()
 })
@@ -345,8 +369,8 @@ test('should allow granular subscriptions to derived state', () => {
 
   const store = createStore(new Store())
   const derivedSpy = vi.fn()
-  store.$subscribe(derivedSpy, (s) => s.derived)
-  store.increaseCount()
+  store.subscribe(derivedSpy, (s) => s.derived)
+  store.getState().increaseCount()
   expect(derivedSpy).toHaveBeenCalledOnce()
 })
 
@@ -369,14 +393,14 @@ test('should not call listener when state has not changed', () => {
   const subscribeSpy = vi.fn()
   const countSpy = vi.fn()
   const objSpy = vi.fn()
-  store.$subscribe(subscribeSpy)
-  store.$subscribe(countSpy, (s) => s.count)
-  store.$subscribe(objSpy, (s) => s.obj)
-  store.noop()
+  store.subscribe(subscribeSpy)
+  store.subscribe(countSpy, (s) => s.count)
+  store.subscribe(objSpy, (s) => s.obj)
+  store.getState().noop()
   expect(subscribeSpy).toHaveBeenCalledOnce()
   expect(countSpy).not.toHaveBeenCalled()
   expect(objSpy).not.toHaveBeenCalled()
-  store.noop2()
+  store.getState().noop2()
   expect(subscribeSpy).toHaveBeenCalledTimes(2)
   expect(countSpy).not.toHaveBeenCalled()
   expect(objSpy).not.toHaveBeenCalled()
@@ -428,18 +452,18 @@ test('should update deep state', () => {
 
   const store = createStore(new Store())
   const subscribeSpy = vi.fn()
-  store.$subscribe(subscribeSpy)
-  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
-  expect(store.arr).toStrictEqual(['hello'])
-  store.update()
-  store.noop()
-  store.other()
-  store.push()
+  store.subscribe(subscribeSpy)
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(store.getState().arr).toStrictEqual(['hello'])
+  store.getState().update()
+  store.getState().noop()
+  store.getState().other()
+  store.getState().push()
   expect(subscribeSpy).toHaveBeenCalledTimes(4)
-  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
-  expect(store.arr).toStrictEqual(['hello', 'bye'])
-  store.delete()
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
+  expect(store.getState().arr).toStrictEqual(['hello', 'bye'])
+  store.getState().delete()
   expect(subscribeSpy).toHaveBeenCalledTimes(5)
-  expect(store.obj).toStrictEqual({ foo: {} })
-  expect(store.arr).toStrictEqual(['hello', 'bye'])
+  expect(store.getState().obj).toStrictEqual({ foo: {} })
+  expect(store.getState().arr).toStrictEqual(['hello', 'bye'])
 })
