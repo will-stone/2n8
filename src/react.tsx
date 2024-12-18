@@ -9,9 +9,12 @@ export function createReactStore<Store extends TwoAndEight>(
 ): (<Field>(
   selector: (state: Omit<Store, '$reset' | '$commit'>) => Field,
 ) => Field) & {
-  subscribe: ReturnType<typeof createStore>['subscribe']
-  getInitialState: ReturnType<typeof createStore>['getInitialState']
-  getState: ReturnType<typeof createStore>['getState']
+  subscribe: <Field>(
+    callback: () => void,
+    selector?: (state: State<Store>) => Field,
+  ) => () => void
+  getInitialState: () => State<Store>
+  getState: () => Omit<Store, '$reset' | '$commit'>
 } {
   const store = createStore(rawStore)
 

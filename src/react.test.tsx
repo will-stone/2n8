@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import type { FC } from 'react'
 import { useRef } from 'react'
-import { afterEach, beforeEach, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, expect, expectTypeOf, test, vi } from 'vitest'
 
 import { TwoAndEight } from './2n8.js'
 import { createReactStore } from './react.js'
@@ -51,6 +51,8 @@ test('should update count component and not rerender others', async () => {
   }
 
   const useStore = createReactStore(new Store())
+
+  expectTypeOf(useStore.getState().count).toMatchTypeOf<number>()
 
   const Count: FC = () => {
     const count = useStore((s) => s.count)
