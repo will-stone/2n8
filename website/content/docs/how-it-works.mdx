@@ -6,19 +6,18 @@ import { Steps } from '@astrojs/starlight/components'
 
 <Steps>
 
-1. Create your state using a class, extended from 2n8's parent class which
-   enhances your store with a few utilities.
+1. State is initiated using a class. This class must be extended from 2n8's
+   parent class which enhances the store with a few utilities.
 
    ```tsx
    import { TwoAndEight } from '2n8'
 
    class Store extends TwoAndEight {
      counter = 0
-     timestamp = 0
    }
    ```
 
-2. Add your actions that update the state.
+2. State changes are made inside _actions_, which are simply class methods.
 
    ```tsx
    import { TwoAndEight } from '2n8'
@@ -29,25 +28,23 @@ import { Steps } from '@astrojs/starlight/components'
 
      addButtonClicked() {
        this.counter++
-       this.timestamp = Date.now()
      }
    }
    ```
 
-   State changes are auto _committed_ at the end of each action. If you need to
-   commit early, you can use the special inbuilt `this.$commit()` action.
+   When actions are called, any state mutations are auto _committed_ at the end
+   of the action. If you need to commit early, you can use the special inbuilt
+   `this.$commit()` action.
 
    ```tsx
    import { TwoAndEight } from '2n8'
 
    class Store extends TwoAndEight {
      counter = 0
-     timestamp = 0
      data: { id: string; title: string }[]
 
      async addButtonClicked() {
        this.counter++
-       this.timestamp = Date.now()
        this.$commit()
        this.data = await fetchData()
      }
@@ -62,8 +59,9 @@ import { Steps } from '@astrojs/starlight/components'
    const useStore = createReactStore(new Store())
    ```
 
-   This uses React's `useSyncExternalStore` hook to map committed state to
-   selectors:
+   This uses React's
+   [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore)
+   hook to map committed state to selectors:
 
    ```tsx
    const Component = () => {
@@ -76,5 +74,15 @@ import { Steps } from '@astrojs/starlight/components'
    When, and only when, the selected state changes, the component is rerendered
    by React. This is more optimal than simply passing state down the component
    tree via props.
+
+4. Select and call actions from the store:
+
+   ```tsx
+   const Component2 = () => {
+     const addButtonClicked = useStore((s) => s.addButtonClicked)
+
+     return <button onClick={addButtonClicked}>Add</button>
+   }
+   ```
 
 </Steps>
