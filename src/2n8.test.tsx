@@ -406,6 +406,59 @@ test('should not call listener when state has not changed', () => {
   expect(objSpy).not.toHaveBeenCalled()
 })
 
+test('should unsubscribe', () => {
+  class Store extends TwoAndEight {
+    count = 0
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+  }
+
+  const store = createStore(new Store())
+  const spy = vi.fn()
+  const unsubscribe = store.subscribe(spy)
+  store.getState().increaseCount()
+  expect(spy).toHaveBeenCalledOnce()
+  unsubscribe()
+  store.getState().increaseCount()
+  store.getState().increaseCount()
+  store.getState().increaseCount()
+  expect(spy).toHaveBeenCalledOnce()
+})
+
+test('should unsubscribe from allow granular subscriptions', () => {
+  class Store extends TwoAndEight {
+    count = 0
+    count2 = 0
+
+    increaseCount() {
+      this.count = this.count + 1
+    }
+
+    increaseCount2() {
+      this.count2 = this.count2 + 1
+    }
+  }
+
+  const store = createStore(new Store())
+  const countSpy = vi.fn()
+  const count2Spy = vi.fn()
+  const unsubscribe = store.subscribe(countSpy, (s) => s.count)
+  store.subscribe(count2Spy, (s) => s.count2)
+  store.getState().increaseCount()
+  expect(countSpy).toHaveBeenCalledOnce()
+  expect(count2Spy).not.toHaveBeenCalled()
+  store.getState().increaseCount2()
+  expect(countSpy).toHaveBeenCalledOnce()
+  expect(count2Spy).toHaveBeenCalledOnce()
+  unsubscribe()
+  store.getState().increaseCount()
+  store.getState().increaseCount2()
+  expect(countSpy).toHaveBeenCalledOnce()
+  expect(count2Spy).toHaveBeenCalledTimes(2)
+})
+
 test('should warm store with state', () => {
   class Store extends TwoAndEight {
     count = 0
