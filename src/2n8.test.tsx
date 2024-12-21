@@ -493,3 +493,14 @@ test('should not fire subscription until end of action', () => {
   expect(store.getState().count).toBe(3)
   expect(countSpy).toHaveBeenCalledTimes(2)
 })
+
+test("should fail types when store hasn't extended super class", () => {
+  class Store {
+    count = 0
+  }
+
+  // @ts-expect-error -- this should error, if this line is marked as an error then we know it's not typed correctly.
+  createStore(new Store())
+
+  expect.assertions(0)
+})
