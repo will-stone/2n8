@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.0](https://github.com/will-stone/2n8/compare/0.5.4...0.6.0) (2025-01-02)
+
+### Minor changes
+
+- Change special $commit action to $emit, to better represent what it does
+  ([468c725](https://github.com/will-stone/2n8/commit/468c72591d563763c370eaeaa432ae1376666f45))
+
+### Patches
+
+- Add getListenersCount
+  ([a7e78c4](https://github.com/will-stone/2n8/commit/a7e78c45255fee480aea0d43dbc2fcbe6cfb49cc))
+- Set React as an optional peerDep
+  ([231634d](https://github.com/will-stone/2n8/commit/231634dd5308cfca25c4d298c451dc5596d2614d))
+
 ## [0.5.4](https://github.com/will-stone/2n8/compare/0.5.3...0.5.4) (2024-12-18)
 
 ### Patches
