@@ -33,10 +33,10 @@ export const Async: FC = () => {
   const resetClicked = useStore((state) => state.resetClicked)
   return (
     <div className="flex justify-center">
-      <div className="flex text-2xl font-bold gap-4 !m-0 py-8">
-        <span className="text-5xl w-0">&nbsp;</span>
+      <div className="!m-0 flex gap-4 py-8 text-2xl font-bold">
+        <span className="w-0 text-5xl">&nbsp;</span>
         <button
-          className="px-4 rounded !m-0 bg-stone-300 dark:bg-stone-700"
+          className="!m-0 rounded bg-stone-300 px-4 dark:bg-stone-700"
           disabled={status !== 'idle'}
           onClick={buttonClicked}
           type="button"
@@ -74,7 +74,7 @@ export const Async: FC = () => {
           </span>
         </button>
         <button
-          className="px-4 rounded !m-0 bg-stone-300 dark:bg-stone-700"
+          className="!m-0 rounded bg-stone-300 px-4 dark:bg-stone-700"
           onClick={resetClicked}
           type="button"
         >

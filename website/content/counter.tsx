@@ -24,16 +24,16 @@ export const Counter: FC = () => {
     <div className="flex justify-center">
       <div className="inline-flex gap-4 py-8">
         <div className="font-mono text-5xl">{count}</div>
-        <div className="flex text-2xl font-bold gap-4 !m-0">
+        <div className="!m-0 flex gap-4 text-2xl font-bold">
           <button
-            className="px-4 rounded !m-0 bg-stone-300 dark:bg-stone-700"
+            className="!m-0 rounded bg-stone-300 px-4 dark:bg-stone-700"
             onClick={addClicked}
             type="button"
           >
             + 1
           </button>
           <button
-            className="px-4 rounded !m-0 bg-stone-300 dark:bg-stone-700"
+            className="!m-0 rounded bg-stone-300 px-4 dark:bg-stone-700"
             onClick={resetClicked}
             type="button"
           >
