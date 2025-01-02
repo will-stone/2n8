@@ -166,7 +166,7 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  // This is just for testing purposes really; nobody should really have to call
+  // This is just for testing purposes really; nobody should really have to call this.
   const getSubscribersCount = () => subscribers.size
 
   return {
