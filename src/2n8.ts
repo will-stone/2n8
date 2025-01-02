@@ -46,6 +46,7 @@ export function createStore<Store extends TwoAndEight>(
     callback: () => void,
     selector?: (state: State<Store>) => Field,
   ) => () => void
+  getListenersCount: () => number
 } {
   // Clone all fields to themselves so that external state isn't mutated.
   for (const [name, value] of Object.entries(store)) {
@@ -158,7 +159,7 @@ export function createStore<Store extends TwoAndEight>(
     selector?: (state: State<Store>) => Field,
   ): () => void {
     // @ts-expect-error -- Types don't match but the public API is correct, and that's the important thing.
-    listeners = [...listeners, { callback, selector }]
+    listeners.push({ callback, selector })
     return (): void => {
       const prevListenersCount = listeners.length
       listeners = listeners.filter((listener) => listener.callback !== callback)
@@ -170,8 +171,12 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
+  // This is just for testing purposes really; nobody should really have to call
+  const getListenersCount = () => listeners.length
+
   return {
     getInitialState,
+    getListenersCount,
     getState,
     subscribe,
   }

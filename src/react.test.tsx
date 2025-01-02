@@ -311,23 +311,80 @@ test('should reset state', async () => {
   expect(screen.getByText('Count: 1')).toBeVisible()
 })
 
-test('should remove listener on unmount', () => {
+test('should remove listener on unmount', async () => {
   const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => null)
 
   class Store extends TwoAndEight {
-    count = 1
+    something = 'something'
+    todos = ['a']
+
+    addTodo() {
+      const alphabet = 'abcdefghijk'
+      this.todos.push(alphabet[this.todos.length])
+    }
+
+    removeTodo() {
+      this.todos.pop()
+    }
   }
 
   const useStore = createReactStore(new Store())
 
-  const App = () => {
-    const count = useStore((s) => s.count)
-    return <div>Count: {count}</div>
+  const Something = () => {
+    const something = useStore((s) => s.something)
+    return something
   }
 
-  const { unmount } = render(<App />)
-  unmount()
+  const App = () => {
+    const todos = useStore((s) => s.todos)
+    const addTodo = useStore((s) => s.addTodo)
+    const removeTodo = useStore((s) => s.removeTodo)
+    return (
+      <>
+        {todos.map((todo) => (
+          <div key={todo}>
+            {todo}: <Something />
+          </div>
+        ))}
+        <button onClick={addTodo} type="button">
+          Add
+        </button>
+        <button onClick={removeTodo} type="button">
+          Remove
+        </button>
+      </>
+    )
+  }
+
+  const user = userEvent.setup()
+  render(<App />)
+  expect(screen.getByText('a: something')).toBeVisible()
+  expect(screen.queryByText('b: something')).not.toBeInTheDocument()
+  expect(useStore.getListenersCount()).toBe(4)
+  const addTodo = screen.getByText('Add')
+  await user.click(addTodo)
+  expect(screen.getByText('a: something')).toBeVisible()
+  expect(screen.getByText('b: something')).toBeVisible()
+  expect(useStore.getListenersCount()).toBe(5)
+  await user.click(addTodo)
+  expect(screen.getByText('a: something')).toBeVisible()
+  expect(screen.getByText('b: something')).toBeVisible()
+  expect(screen.getByText('c: something')).toBeVisible()
+  expect(useStore.getListenersCount()).toBe(6)
+  const removeTodo = screen.getByText('Remove')
+  await user.click(removeTodo)
+  expect(screen.getByText('a: something')).toBeVisible()
+  expect(screen.getByText('b: something')).toBeVisible()
+  expect(screen.queryByText('c: something')).not.toBeInTheDocument()
+  expect(useStore.getListenersCount()).toBe(5)
+  await user.click(removeTodo)
+  expect(screen.getByText('a: something')).toBeVisible()
+  expect(screen.queryByText('b: something')).not.toBeInTheDocument()
+  expect(useStore.getListenersCount()).toBe(4)
+  await user.click(removeTodo)
+  expect(screen.queryByText('a: something')).not.toBeInTheDocument()
   expect(errorSpy).not.toHaveBeenCalled()
+  expect(useStore.getListenersCount()).toBe(3)
 })
 
 test('should handle complex state', async () => {
