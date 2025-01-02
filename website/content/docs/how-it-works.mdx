@@ -32,9 +32,9 @@ import { Steps } from '@astrojs/starlight/components'
    }
    ```
 
-   When actions are called, any state mutations are auto _committed_ at the end
-   of the action. If you need to commit early, you can use the special inbuilt
-   `this.$commit()` action.
+   When actions are called, any state mutations are auto _emitted_ to
+   subscribers at the end of the action. If you need to emit early, you can use
+   the special inbuilt `this.$emit()` action.
 
    ```tsx
    import { TwoAndEight } from '2n8'
@@ -45,7 +45,7 @@ import { Steps } from '@astrojs/starlight/components'
 
      async addButtonClicked() {
        this.counter++
-       this.$commit()
+       this.$emit()
        this.data = await fetchData()
      }
    }
@@ -61,7 +61,7 @@ import { Steps } from '@astrojs/starlight/components'
 
    This uses React's
    [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore)
-   hook to map committed state to selectors:
+   hook to map emitted state to selectors:
 
    ```tsx
    const Component = () => {

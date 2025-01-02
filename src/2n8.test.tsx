@@ -21,7 +21,7 @@ test('should update when using async actions', async () => {
 
     async asyncButtonClicked() {
       this.count = this.count + 1
-      this.$commit()
+      this.$emit()
       await new Promise((res) => {
         setTimeout(res, 3000)
       })
@@ -39,6 +39,33 @@ test('should update when using async actions', async () => {
   await vi.advanceTimersByTimeAsync(2999)
   expect(store.getState().count).toBe(2)
   await vi.advanceTimersByTimeAsync(1)
+  expect(store.getState().count).toBe(7)
+})
+
+test('should always return master record', async () => {
+  class Store extends TwoAndEight {
+    count = 0
+
+    buttonClicked() {
+      this.count = this.count + 1
+    }
+
+    async asyncButtonClicked() {
+      this.count = this.count + 1
+      await new Promise((res) => {
+        setTimeout(res, 3000)
+      })
+      this.count = this.count + 5
+    }
+  }
+
+  const store = createStore(new Store())
+  expect(store.getState().count).toBe(0)
+  store.getState().asyncButtonClicked()
+  expect(store.getState().count).toBe(1)
+  store.getState().buttonClicked()
+  expect(store.getState().count).toBe(2)
+  await vi.advanceTimersByTimeAsync(3000)
   expect(store.getState().count).toBe(7)
 })
 
@@ -258,7 +285,7 @@ test('should throw if attempting to reset an action', () => {
     }
 
     resetSubscribeApi() {
-      this.$reset('$commit')
+      this.$reset('$emit')
     }
   }
 
@@ -287,7 +314,7 @@ test('should return initial state', () => {
   const store = createStore(new Store())
   store.getState().increaseCount()
   expect(store.getInitialState()).toStrictEqual({
-    $commit: expect.any(Function),
+    $emit: expect.any(Function),
     $reset: expect.any(Function),
     count: 0,
     increaseCount: expect.any(Function),
@@ -314,7 +341,7 @@ test('should return current state', () => {
   const store = createStore(new Store())
   store.getState().increaseCount()
   expect(store.getState()).toStrictEqual({
-    $commit: expect.any(Function),
+    $emit: expect.any(Function),
     $reset: expect.any(Function),
     count: 1,
     derived: 11,

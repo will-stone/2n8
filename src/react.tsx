@@ -7,21 +7,21 @@ import { createStore } from './2n8.js'
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
 ): (<Field>(
-  selector: (state: Omit<Store, '$reset' | '$commit'>) => Field,
+  selector: (state: Omit<Store, '$reset' | '$emit'>) => Field,
 ) => Field) & {
   subscribe: <Field>(
     callback: () => void,
     selector?: (state: State<Store>) => Field,
   ) => () => void
   getInitialState: () => State<Store>
-  getState: () => Omit<Store, '$reset' | '$commit'>
+  getState: () => Omit<Store, '$reset' | '$emit'>
 } {
   const store = createStore(rawStore)
 
   let cache = {} as State<Store>
 
   function useStore<Field>(
-    selector: (state: Omit<Store, '$reset' | '$commit'>) => Field,
+    selector: (state: Omit<Store, '$reset' | '$emit'>) => Field,
   ): Field {
     return useSyncExternalStore(
       store.subscribe,

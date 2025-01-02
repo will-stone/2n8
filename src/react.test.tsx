@@ -42,7 +42,7 @@ test('should update count component and not rerender others', async () => {
 
     async asyncButtonClicked() {
       this.count = this.count + 1
-      this.$commit()
+      this.$emit()
       await new Promise((res) => {
         setTimeout(res, 10_000)
       })

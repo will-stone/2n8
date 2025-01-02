@@ -15,7 +15,7 @@ class Store extends TwoAndEight {
 
   async buttonClicked() {
     this.status = 'pending'
-    this.$commit()
+    this.$emit()
     await dummyFetch()
     this.status = 'success'
   }

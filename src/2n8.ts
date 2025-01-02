@@ -22,7 +22,7 @@ export abstract class TwoAndEight {
     return p
   }
 
-  $commit(): void {
+  $emit(): void {
     // no-op, for now, it's enhanced in createStore
   }
 
@@ -41,7 +41,7 @@ export function createStore<Store extends TwoAndEight>(
   store: Store,
 ): {
   getInitialState: () => State<Store>
-  getState: () => Omit<Store, '$reset' | '$commit'>
+  getState: () => Omit<Store, '$reset' | '$emit'>
   subscribe: <Field>(
     callback: () => void,
     selector?: (state: State<Store>) => Field,
@@ -59,7 +59,7 @@ export function createStore<Store extends TwoAndEight>(
     selector?: <Field>(state?: State<Store>) => Field
   }[] = []
 
-  const commit = (prevState?: Store, nextState?: Store) => {
+  const emit = (prevState?: Store, nextState?: Store) => {
     for (const listener of listeners) {
       if (listener.selector) {
         if (
@@ -73,7 +73,7 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  store.$commit = () => commit()
+  store.$emit = () => emit()
 
   function getState(): Store {
     const state = {} as Store
@@ -99,7 +99,7 @@ export function createStore<Store extends TwoAndEight>(
     return state
   }
 
-  // Infuse all actions with a commit after they've run.
+  // Infuse all actions with an emit after they've run.
   for (const [name, value] of Object.entries(store)) {
     if (typeof value === 'function' && !name.startsWith('$')) {
       Reflect.set(
@@ -111,10 +111,10 @@ export function createStore<Store extends TwoAndEight>(
             const result = target.apply(thisArg, args)
             if (result instanceof Promise) {
               return result.finally(() => {
-                commit(prevState, getState())
+                emit(prevState, getState())
               })
             }
-            commit(prevState, getState())
+            emit(prevState, getState())
             return result
           },
         }),
