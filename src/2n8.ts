@@ -48,13 +48,6 @@ export function createStore<Store extends TwoAndEight>(
   ) => () => void
   getSubscribersCount: () => number
 } {
-  // Clone all fields to themselves so that external state isn't mutated.
-  for (const [name, value] of Object.entries(store)) {
-    if (typeof value !== 'function' && !name.startsWith('$')) {
-      Reflect.set(store, name, structuredClone(value))
-    }
-  }
-
   const subscribers = new Map<
     () => void,
     (<Field>(state?: State<Store>) => Field) | undefined
@@ -98,33 +91,37 @@ export function createStore<Store extends TwoAndEight>(
     return state
   }
 
-  // Infuse all actions with an emit after they've run.
-  for (const [name, value] of Object.entries(store)) {
-    if (typeof value === 'function' && !name.startsWith('$')) {
-      Reflect.set(
-        store,
-        name,
-        new Proxy(value, {
-          apply(target, thisArg, args) {
-            const prevState = getState()
-            const result = target.apply(thisArg, args)
-            if (result instanceof Promise) {
-              return result.finally(() => {
-                emit(prevState, getState())
-              })
-            }
-            emit(prevState, getState())
-            return result
-          },
-        }),
-      )
-    }
-  }
-
   const initialState = {} as Store
 
   for (const [name, value] of Object.entries(store)) {
     Reflect.set(initialState, name, cloneDeep(value))
+
+    if (!name.startsWith('$')) {
+      // Infuse all actions with an emit after they've run.
+      if (typeof value === 'function') {
+        Reflect.set(
+          store,
+          name,
+          new Proxy(value, {
+            apply(target, thisArg, args) {
+              const prevState = getState()
+              const result = target.apply(thisArg, args)
+              if (result instanceof Promise) {
+                return result.finally(() => {
+                  emit(prevState, getState())
+                })
+              }
+              emit(prevState, getState())
+              return result
+            },
+          }),
+        )
+      }
+      // Clone all fields to themselves so that external state isn't mutated.
+      else {
+        Reflect.set(store, name, structuredClone(value))
+      }
+    }
   }
 
   function getInitialState(): Store {
