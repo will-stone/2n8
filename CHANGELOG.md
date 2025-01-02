@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/will-stone/2n8/compare/0.6.0...0.7.0) (2025-01-02)
+
+### Minor changes
+
+- Change listeners to subscribers
+  ([4642a62](https://github.com/will-stone/2n8/commit/4642a62dd2f67273f30ceeaa45e3564a99a42220))
+
 ## [0.6.0](https://github.com/will-stone/2n8/compare/0.5.4...0.6.0) (2025-01-02)
 
 ### Minor changes
