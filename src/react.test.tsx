@@ -311,7 +311,7 @@ test('should reset state', async () => {
   expect(screen.getByText('Count: 1')).toBeVisible()
 })
 
-test('should remove listener on unmount', async () => {
+test('should remove subscriber on unmount', async () => {
   const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => null)
 
   class Store extends TwoAndEight {
@@ -360,31 +360,31 @@ test('should remove listener on unmount', async () => {
   render(<App />)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.getListenersCount()).toBe(4)
+  expect(useStore.getSubscribersCount()).toBe(4)
   const addTodo = screen.getByText('Add')
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
-  expect(useStore.getListenersCount()).toBe(5)
+  expect(useStore.getSubscribersCount()).toBe(5)
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.getByText('c: something')).toBeVisible()
-  expect(useStore.getListenersCount()).toBe(6)
+  expect(useStore.getSubscribersCount()).toBe(6)
   const removeTodo = screen.getByText('Remove')
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.queryByText('c: something')).not.toBeInTheDocument()
-  expect(useStore.getListenersCount()).toBe(5)
+  expect(useStore.getSubscribersCount()).toBe(5)
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.getListenersCount()).toBe(4)
+  expect(useStore.getSubscribersCount()).toBe(4)
   await user.click(removeTodo)
   expect(screen.queryByText('a: something')).not.toBeInTheDocument()
   expect(errorSpy).not.toHaveBeenCalled()
-  expect(useStore.getListenersCount()).toBe(3)
+  expect(useStore.getSubscribersCount()).toBe(3)
 })
 
 test('should handle complex state', async () => {

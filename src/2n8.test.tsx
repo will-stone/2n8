@@ -401,7 +401,7 @@ test('should allow granular subscriptions to derived state', () => {
   expect(derivedSpy).toHaveBeenCalledOnce()
 })
 
-test('should not call listener when state has not changed', () => {
+test('should not call subscriber when state has not changed', () => {
   class Store extends TwoAndEight {
     count = 0
 
@@ -473,7 +473,7 @@ test('should unsubscribe from allow granular subscriptions', () => {
   const count2Spy = vi.fn()
   const unsubscribe = store.subscribe(countSpy, (s) => s.count)
   store.subscribe(count2Spy, (s) => s.count2)
-  expect(store.getListenersCount()).toBe(2)
+  expect(store.getSubscribersCount()).toBe(2)
   store.getState().increaseCount()
   expect(countSpy).toHaveBeenCalledOnce()
   expect(count2Spy).not.toHaveBeenCalled()
@@ -481,7 +481,7 @@ test('should unsubscribe from allow granular subscriptions', () => {
   expect(countSpy).toHaveBeenCalledOnce()
   expect(count2Spy).toHaveBeenCalledOnce()
   unsubscribe()
-  expect(store.getListenersCount()).toBe(1)
+  expect(store.getSubscribersCount()).toBe(1)
   store.getState().increaseCount()
   store.getState().increaseCount2()
   expect(countSpy).toHaveBeenCalledOnce()

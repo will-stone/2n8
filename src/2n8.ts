@@ -43,10 +43,10 @@ export function createStore<Store extends TwoAndEight>(
   getInitialState: () => State<Store>
   getState: () => Omit<Store, '$reset' | '$emit'>
   subscribe: <Field>(
-    callback: () => void,
+    subscriber: () => void,
     selector?: (state: State<Store>) => Field,
   ) => () => void
-  getListenersCount: () => number
+  getSubscribersCount: () => number
 } {
   // Clone all fields to themselves so that external state isn't mutated.
   for (const [name, value] of Object.entries(store)) {
@@ -55,21 +55,19 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  let listeners: {
-    callback: () => void
-    selector?: <Field>(state?: State<Store>) => Field
-  }[] = []
+  const subscribers = new Map<
+    () => void,
+    (<Field>(state?: State<Store>) => Field) | undefined
+  >()
 
   const emit = (prevState?: Store, nextState?: Store) => {
-    for (const listener of listeners) {
-      if (listener.selector) {
-        if (
-          !isEqual(listener.selector(prevState), listener.selector(nextState))
-        ) {
-          listener.callback()
+    for (const [subscriber, selector] of subscribers) {
+      if (selector) {
+        if (!isEqual(selector(prevState), selector(nextState))) {
+          subscriber()
         }
       } else {
-        listener.callback()
+        subscriber()
       }
     }
   }
@@ -155,29 +153,29 @@ export function createStore<Store extends TwoAndEight>(
   }
 
   function subscribe<Field>(
-    callback: () => void,
+    subscriber: () => void,
     selector?: (state: State<Store>) => Field,
   ): () => void {
     // @ts-expect-error -- Types don't match but the public API is correct, and that's the important thing.
-    listeners.push({ callback, selector })
+    subscribers.set(subscriber, selector)
     return (): void => {
-      const prevListenersCount = listeners.length
-      listeners = listeners.filter((listener) => listener.callback !== callback)
-      const nextListenersCount = listeners.length
-      if (nextListenersCount >= prevListenersCount) {
+      const prevSubscribersCount = subscribers.size
+      subscribers.delete(subscriber)
+      const nextSubscribersCount = subscribers.size
+      if (nextSubscribersCount >= prevSubscribersCount) {
         // eslint-disable-next-line no-console
-        console.error("2n8: Listener wasn't removed on unsubscribe.")
+        console.error("2n8: Subscriber wasn't removed on unsubscribe.")
       }
     }
   }
 
   // This is just for testing purposes really; nobody should really have to call
-  const getListenersCount = () => listeners.length
+  const getSubscribersCount = () => subscribers.size
 
   return {
     getInitialState,
-    getListenersCount,
     getState,
+    getSubscribersCount,
     subscribe,
   }
 }

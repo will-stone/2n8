@@ -13,7 +13,7 @@ export function createReactStore<Store extends TwoAndEight>(
     callback: () => void,
     selector?: (state: State<Store>) => Field,
   ) => () => void
-  getListenersCount: () => number
+  getSubscribersCount: () => number
   getInitialState: () => State<Store>
   getState: () => Omit<Store, '$reset' | '$emit'>
 } {
@@ -49,7 +49,7 @@ export function createReactStore<Store extends TwoAndEight>(
   useStore.subscribe = store.subscribe
   useStore.getInitialState = store.getInitialState
   useStore.getState = store.getState
-  useStore.getListenersCount = store.getListenersCount
+  useStore.getSubscribersCount = store.getSubscribersCount
 
   return useStore
 }
