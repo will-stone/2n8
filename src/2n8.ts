@@ -1,5 +1,8 @@
 import autoBind from 'auto-bind'
-import { cloneDeep, isEqual, isPlainObject } from 'es-toolkit'
+import { isEqual, isPlainObject } from 'es-toolkit'
+import clone from 'rfdc'
+
+const cloneDeep = clone()
 
 export type State<Store> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type

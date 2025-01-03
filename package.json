@@ -29,6 +29,7 @@
     "./dist"
   ],
   "scripts": {
+    "bench": "vitest bench",
     "build": "vite build",
     "lint": "eslint .",
     "prepare": "simple-git-hooks",
@@ -52,7 +53,8 @@
   "prettier": "@will-stone/prettier-config",
   "dependencies": {
     "auto-bind": "^5.0.1",
-    "es-toolkit": "^1.30.1"
+    "es-toolkit": "^1.30.1",
+    "rfdc": "^1.4.1"
   },
   "devDependencies": {
     "@astrojs/react": "^4.1.1",
@@ -73,6 +75,7 @@
     "eslint": "^9.17.0",
     "jsdom": "^25.0.1",
     "lint-staged": "^15.2.11",
+    "mobx": "^6.13.5",
     "prettier": "^3.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

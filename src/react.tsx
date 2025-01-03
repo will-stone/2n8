@@ -1,5 +1,8 @@
-import { cloneDeep, isEqual } from 'es-toolkit'
+import { isEqual } from 'es-toolkit'
 import { useSyncExternalStore } from 'react'
+import clone from 'rfdc'
+
+const cloneDeep = clone()
 
 import type { State, TwoAndEight } from './2n8.js'
 import { createStore } from './2n8.js'
