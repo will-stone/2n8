@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.3](https://github.com/will-stone/2n8/compare/0.7.2...0.7.3) (2025-01-03)
+
+### Patches
+
+- Speed up internal cloning
+  ([81f5fa7](https://github.com/will-stone/2n8/commit/81f5fa7a1d2545672753bcb388a4e935360f65cf))
+
 ## [0.7.2](https://github.com/will-stone/2n8/compare/0.7.0...0.7.2) (2025-01-03)
 
 ### Patches
