@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.2](https://github.com/will-stone/2n8/compare/0.7.0...0.7.2) (2025-01-03)
+
+### Patches
+
+- Prevent mutating external objects on nested object state
+  ([b31d1b5](https://github.com/will-stone/2n8/commit/b31d1b51425a6109e27b3eaa109e5ee873b0ff3d))
+- Refactor-out multiple loops over the same object
+  ([4913d84](https://github.com/will-stone/2n8/commit/4913d84e3dbefb46f8f874943a77ba3515ba7e9f))
+
 ## [0.7.0](https://github.com/will-stone/2n8/compare/0.6.0...0.7.0) (2025-01-02)
 
 ### Minor changes
