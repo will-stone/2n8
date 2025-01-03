@@ -1,20 +1,41 @@
 import autoBind from 'auto-bind'
-import { cloneDeep, isEqual } from 'es-toolkit'
+import { cloneDeep, isEqual, isPlainObject } from 'es-toolkit'
 
 export type State<Store> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   [K in keyof Store as Store[K] extends Function ? never : K]: Store[K]
 }
 
+function createDeepProxy<T extends object>(rootTarget: T) {
+  const proxyHandler = {
+    get(target: T, property: string) {
+      const value = Reflect.get(target, property)
+      // Handle nested objects/arrays recursively
+      if (isPlainObject(value)) {
+        return createDeepProxy(value)
+      }
+
+      return value
+    },
+
+    set(target: T, property: string, value: unknown) {
+      Reflect.set(target, property, cloneDeep(value))
+      return true
+    },
+
+    deleteProperty(target: T, property: string) {
+      Reflect.deleteProperty(target, property)
+      return true
+    },
+  }
+
+  return new Proxy(rootTarget, proxyHandler)
+}
+
 export abstract class TwoAndEight {
   constructor() {
     // Remove any references to set data.
-    const p = new Proxy(this, {
-      set(target, prop, value) {
-        Reflect.set(target, prop, cloneDeep(value))
-        return true
-      },
-    })
+    const p = createDeepProxy(this)
 
     autoBind(p)
 
@@ -119,7 +140,7 @@ export function createStore<Store extends TwoAndEight>(
       }
       // Clone all fields to themselves so that external state isn't mutated.
       else {
-        Reflect.set(store, name, structuredClone(value))
+        Reflect.set(store, name, cloneDeep(value))
       }
     }
   }

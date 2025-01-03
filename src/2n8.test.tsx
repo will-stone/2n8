@@ -248,6 +248,42 @@ test('should not mutate external objects', () => {
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
 })
 
+test('should not mutate external objects in nested object state', () => {
+  const externalObj = { bar: 'baz' }
+
+  class Store extends TwoAndEight {
+    obj = { foo: externalObj }
+
+    loadExternalObj(ext: { bar: string }) {
+      this.obj.foo = ext
+    }
+
+    change() {
+      this.obj.foo.bar = 'moo'
+    }
+
+    reset() {
+      this.$reset()
+    }
+  }
+
+  const store = createStore(new Store())
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(externalObj).toStrictEqual({ bar: 'baz' })
+  store.getState().change()
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
+  expect(externalObj).toStrictEqual({ bar: 'baz' })
+  store.getState().reset()
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(externalObj).toStrictEqual({ bar: 'baz' })
+  store.getState().loadExternalObj(externalObj)
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(externalObj).toStrictEqual({ bar: 'baz' })
+  store.getState().change()
+  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
+  expect(externalObj).toStrictEqual({ bar: 'baz' })
+})
+
 test('should compute derived value', () => {
   class Store extends TwoAndEight {
     count = 1
