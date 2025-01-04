@@ -71,6 +71,7 @@
     "@types/react-dom": "^19.0.2",
     "@will-stone/eslint-config": "^12.1.0",
     "@will-stone/prettier-config": "^8.0.1",
+    "alien-signals": "^0.4.12",
     "astro": "^5.1.0",
     "eslint": "^9.17.0",
     "jsdom": "^25.0.1",
