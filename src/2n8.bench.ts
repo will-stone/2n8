@@ -4,9 +4,9 @@ import { bench, describe } from 'vitest'
 
 import { createStore, TwoAndEight } from './2n8.js'
 
-describe('2n8', () => {
-  bench('simple count', async () => {
-    class Store extends TwoAndEight {
+describe('simple count', () => {
+  bench('2n8', async () => {
+    class TwoAndEightStore extends TwoAndEight {
       count = 0
 
       increaseCount() {
@@ -18,12 +18,12 @@ describe('2n8', () => {
       }
     }
 
-    const store = createStore(new Store())
+    const twoAndEightStore = createStore(new TwoAndEightStore())
 
     const subscriptionComplete = new Promise<void>((resolve) => {
-      const unsubscribe = store.subscribe(
+      const unsubscribe = twoAndEightStore.subscribe(
         () => {
-          if (store.getState().count === 1) {
+          if (twoAndEightStore.getState().count === 1) {
             unsubscribe()
             resolve()
           }
@@ -32,16 +32,14 @@ describe('2n8', () => {
       )
     })
 
-    store.getState().increaseCount()
+    twoAndEightStore.getState().increaseCount()
 
     await subscriptionComplete
-    store.getState().resetAll()
+    twoAndEightStore.getState().resetAll()
   })
-})
 
-describe('mobx', () => {
-  bench('simple count', async () => {
-    class Store {
+  bench('mobx', async () => {
+    class MobxStore {
       count = 0
 
       constructor() {
@@ -57,37 +55,35 @@ describe('mobx', () => {
       }
     }
 
-    const store = new Store()
+    const mobxStore = new MobxStore()
 
     const subscriptionComplete = new Promise<void>((resolve) => {
       autorun(() => {
-        if (store.count === 1) {
+        if (mobxStore.count === 1) {
           resolve()
         }
       })
     })
 
-    store.increaseCount()
+    mobxStore.increaseCount()
 
     await subscriptionComplete
-    store.resetAll()
+    mobxStore.resetAll()
   })
-})
 
-describe('alien-signals', () => {
-  bench('simple count', async () => {
-    const count = signal(1)
+  bench('alien-signals', async () => {
+    const alienSignalsCount = signal(1)
 
     const subscriptionComplete = new Promise<void>((resolve) => {
       effect(() => {
-        if (count.get() === 1) {
+        if (alienSignalsCount.get() === 1) {
           resolve()
         }
       })
     })
 
-    count.set(1)
+    alienSignalsCount.set(1)
     await subscriptionComplete
-    count.set(0)
+    alienSignalsCount.set(0)
   })
 })
