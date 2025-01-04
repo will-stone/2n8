@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.7](https://github.com/will-stone/2n8/compare/0.7.6...0.7.7) (2025-01-04)
+
+### Patches
+
+- Remove duplicate set in reset
+  ([c527383](https://github.com/will-stone/2n8/commit/c527383f297f6fe5b7acb16ece0d84c0e1a885fa))
+
 ## [0.7.6](https://github.com/will-stone/2n8/compare/0.7.5...0.7.6) (2025-01-04)
 
 ### Patches
