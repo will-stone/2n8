@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.4](https://github.com/will-stone/2n8/compare/0.7.3...0.7.4) (2025-01-04)
+
+### Patches
+
+- Use faster deep equals
+  ([805ce0c](https://github.com/will-stone/2n8/commit/805ce0caee3928eaf7b5a25991bef3371e7efec5))
+
 ## [0.7.3](https://github.com/will-stone/2n8/compare/0.7.2...0.7.3) (2025-01-03)
 
 ### Patches
