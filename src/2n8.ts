@@ -3,7 +3,7 @@ import { isPlainObject } from 'es-toolkit'
 import { deepEqual } from 'fast-equals'
 import clone from 'rfdc'
 
-const cloneDeep = clone()
+const cloneDeep = clone({ proto: true })
 
 export type State<Store> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -93,11 +93,7 @@ export function createStore<Store extends TwoAndEight>(
   store.$emit = () => emit()
 
   function getState(): Store {
-    const state = {} as Store
-
-    for (const [name, value] of Object.entries(store)) {
-      Reflect.set(state, name, value)
-    }
+    const state = cloneDeep(store)
 
     // Capture getters by finding all getter methods
     for (const [propertyKey, descriptor] of Object.entries(
@@ -113,6 +109,7 @@ export function createStore<Store extends TwoAndEight>(
       }
     }
 
+    // return state
     return state
   }
 
