@@ -1,5 +1,6 @@
 import autoBind from 'auto-bind'
-import { isEqual, isPlainObject } from 'es-toolkit'
+import { isPlainObject } from 'es-toolkit'
+import { deepEqual } from 'fast-equals'
 import clone from 'rfdc'
 
 const cloneDeep = clone()
@@ -80,7 +81,7 @@ export function createStore<Store extends TwoAndEight>(
   const emit = (prevState?: Store, nextState?: Store) => {
     for (const [subscriber, selector] of subscribers) {
       if (selector) {
-        if (!isEqual(selector(prevState), selector(nextState))) {
+        if (!deepEqual(selector(prevState), selector(nextState))) {
           subscriber()
         }
       } else {
