@@ -95,12 +95,6 @@ export function createStore<Store extends TwoAndEight>(
   function getState(): Store {
     const state = cloneDeep(store)
 
-    // const descriptors = Object.getOwnPropertyDescriptors(
-    //   Object.getPrototypeOf(store),
-    // )
-    // Object.assign(state, descriptors)
-    // Object.defineProperties(state, descriptors)
-
     // Capture getters by finding all getter methods
     const prototype = Object.getPrototypeOf(store)
     const descriptors = Object.getOwnPropertyDescriptors(prototype)
@@ -166,7 +160,6 @@ export function createStore<Store extends TwoAndEight>(
       const initialValue = getInitialState()[field]
       if (initialValue !== undefined) {
         Reflect.set(store, field, initialValue)
-        store[field] = initialValue
       }
     } else {
       for (const [key, initialValue] of Object.entries(getInitialState())) {
