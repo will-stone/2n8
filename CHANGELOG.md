@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.6](https://github.com/will-stone/2n8/compare/0.7.5...0.7.6) (2025-01-04)
+
+### Patches
+
+- Speed up getState, slightly
+  ([37214fd](https://github.com/will-stone/2n8/commit/37214fd5441a1486a6068de379d49c421c9f150f))
+
 ## [0.7.5](https://github.com/will-stone/2n8/compare/0.7.4...0.7.5) (2025-01-04)
 
 ### Patches
