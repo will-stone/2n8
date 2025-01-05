@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import type { FC } from 'react'
 import { useRef } from 'react'
-import { afterEach, beforeEach, expect, expectTypeOf, test, vi } from 'vitest'
+import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 
 import { TwoAndEight } from './2n8.js'
 import { createReactStore } from './react.js'
@@ -52,10 +52,8 @@ test('should update count component and not rerender others', async () => {
 
   const useStore = createReactStore(new Store())
 
-  expectTypeOf(useStore.getState().count).toMatchTypeOf<number>()
-
   const Count: FC = () => {
-    const count = useStore((s) => s.count)
+    const count = useStore('count')
     return (
       <div>
         <div>Count: {count}</div>
@@ -65,7 +63,7 @@ test('should update count component and not rerender others', async () => {
   }
 
   const Derived: FC = () => {
-    const derived = useStore((s) => s.derived)
+    const derived = useStore('derived')
     return (
       <div>
         <div>Derived: {derived}</div>
@@ -75,7 +73,7 @@ test('should update count component and not rerender others', async () => {
   }
 
   const Button: FC = () => {
-    const buttonClicked = useStore((s) => s.buttonClicked)
+    const buttonClicked = useStore('buttonClicked')
     return (
       <div>
         <button onClick={buttonClicked} type="button">
@@ -87,7 +85,7 @@ test('should update count component and not rerender others', async () => {
   }
 
   const AsyncButton: FC = () => {
-    const asyncButtonClicked = useStore((s) => s.asyncButtonClicked)
+    const asyncButtonClicked = useStore('asyncButtonClicked')
     return (
       <div>
         <button onClick={asyncButtonClicked} type="button">
@@ -154,8 +152,8 @@ test('should batch state updates', async () => {
   const useStore = createReactStore(new Store())
 
   const Counts: FC = () => {
-    const count = useStore((s) => s.count)
-    const count2 = useStore((s) => s.count2)
+    const count = useStore('count')
+    const count2 = useStore('count2')
     return (
       <div>
         <div>Count: {count}</div>
@@ -166,7 +164,7 @@ test('should batch state updates', async () => {
   }
 
   const Button: FC = () => {
-    const buttonClicked = useStore((s) => s.buttonClicked)
+    const buttonClicked = useStore('buttonClicked')
     return (
       <div>
         <button onClick={buttonClicked} type="button">
@@ -221,7 +219,7 @@ test('should render derived', async () => {
   const useStore = createReactStore(new Store())
 
   const Total: FC = () => {
-    const total = useStore((s) => s.total)
+    const total = useStore('total')
     return (
       <div>
         <div>Total: {total}</div>
@@ -230,9 +228,9 @@ test('should render derived', async () => {
   }
 
   const Buttons: FC = () => {
-    const buttonClicked = useStore((s) => s.buttonClicked)
-    const reset = useStore((s) => s.reset)
-    const resetCount = useStore((s) => s.resetCount)
+    const buttonClicked = useStore('buttonClicked')
+    const reset = useStore('reset')
+    const resetCount = useStore('resetCount')
     return (
       <div>
         <button onClick={buttonClicked} type="button">
@@ -286,9 +284,9 @@ test('should reset state', async () => {
   const useStore = createReactStore(new Store())
 
   const App = () => {
-    const count = useStore((s) => s.count)
-    const addButtonClicked = useStore((s) => s.addButtonClicked)
-    const resetButtonClicked = useStore((s) => s.resetButtonClicked)
+    const count = useStore('count')
+    const addButtonClicked = useStore('addButtonClicked')
+    const resetButtonClicked = useStore('resetButtonClicked')
     return (
       <>
         <div>Count: {count}</div>
@@ -331,14 +329,14 @@ test('should remove subscriber on unmount', async () => {
   const useStore = createReactStore(new Store())
 
   const Something = () => {
-    const something = useStore((s) => s.something)
+    const something = useStore('something')
     return something
   }
 
   const App = () => {
-    const todos = useStore((s) => s.todos)
-    const addTodo = useStore((s) => s.addTodo)
-    const removeTodo = useStore((s) => s.removeTodo)
+    const todos = useStore('todos')
+    const addTodo = useStore('addTodo')
+    const removeTodo = useStore('removeTodo')
     return (
       <>
         {todos.map((todo) => (
@@ -360,31 +358,31 @@ test('should remove subscriber on unmount', async () => {
   render(<App />)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.getSubscribersCount()).toBe(4)
+  expect(useStore.$getSubscribersCount()).toBe(4)
   const addTodo = screen.getByText('Add')
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
-  expect(useStore.getSubscribersCount()).toBe(5)
+  expect(useStore.$getSubscribersCount()).toBe(5)
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.getByText('c: something')).toBeVisible()
-  expect(useStore.getSubscribersCount()).toBe(6)
+  expect(useStore.$getSubscribersCount()).toBe(6)
   const removeTodo = screen.getByText('Remove')
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.queryByText('c: something')).not.toBeInTheDocument()
-  expect(useStore.getSubscribersCount()).toBe(5)
+  expect(useStore.$getSubscribersCount()).toBe(5)
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.getSubscribersCount()).toBe(4)
+  expect(useStore.$getSubscribersCount()).toBe(4)
   await user.click(removeTodo)
   expect(screen.queryByText('a: something')).not.toBeInTheDocument()
   expect(errorSpy).not.toHaveBeenCalled()
-  expect(useStore.getSubscribersCount()).toBe(3)
+  expect(useStore.$getSubscribersCount()).toBe(3)
 })
 
 test('should handle complex state', async () => {
@@ -412,12 +410,12 @@ test('should handle complex state', async () => {
   const useStore = createReactStore(new Store())
 
   const App = () => {
-    const data = useStore((s) => s.data)
-    const arr = useStore((s) => s.arr)
-    const changeData = useStore((s) => s.changeData)
-    const changeDataDeep = useStore((s) => s.changeDataDeep)
-    const deleteData = useStore((s) => s.deleteData)
-    const addToArr = useStore((s) => s.addToArr)
+    const data = useStore('data')
+    const arr = useStore('arr')
+    const changeData = useStore('changeData')
+    const changeDataDeep = useStore('changeDataDeep')
+    const deleteData = useStore('deleteData')
+    const addToArr = useStore('addToArr')
     return (
       <div>
         {data.foo ? <div>Foo: {data.foo}</div> : null}
@@ -492,10 +490,10 @@ test('should handle complex derived state', async () => {
   const useStore = createReactStore(new Store())
 
   const App = () => {
-    const derivedState = useStore((s) => s.derivedState)
-    const emptyObj = useStore((s) => s.emptyObj)
-    const add = useStore((s) => s.add)
-    const reset = useStore((s) => s.reset)
+    const derivedState = useStore('derivedState')
+    const emptyObj = useStore('emptyObj')
+    const add = useStore('add')
+    const reset = useStore('reset')
     return (
       <div>
         <button onClick={add} type="button">
@@ -522,7 +520,7 @@ test('should handle complex derived state', async () => {
 test('should forward on API', () => {
   class Store extends TwoAndEight {}
   const useStore = createReactStore(new Store())
-  expect(useStore.subscribe).toStrictEqual(expect.any(Function))
-  expect(useStore.getState).toStrictEqual(expect.any(Function))
-  expect(useStore.getInitialState).toStrictEqual(expect.any(Function))
+  expect(useStore.$subscribe).toStrictEqual(expect.any(Function))
+  expect(useStore.$getInitialState).toStrictEqual(expect.any(Function))
+  expect(useStore.$getSubscribersCount).toStrictEqual(expect.any(Function))
 })

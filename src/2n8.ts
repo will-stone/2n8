@@ -1,50 +1,31 @@
 import autoBind from 'auto-bind'
-import { isPlainObject } from 'es-toolkit'
-import { deepEqual } from 'fast-equals'
-import clone from 'rfdc'
 
-const cloneDeep = clone({ proto: true })
+import { clone } from './clone.js'
+
+function infuseWithCallbackAfterRun(
+  fn: (...args: unknown[]) => unknown,
+  cb: () => void,
+) {
+  return function infused(...args: unknown[]) {
+    const result = fn.apply(fn, args)
+    if (result instanceof Promise) {
+      return result.finally(() => {
+        cb()
+      })
+    }
+    cb()
+    return result
+  }
+}
 
 export type State<Store> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   [K in keyof Store as Store[K] extends Function ? never : K]: Store[K]
 }
 
-function createDeepProxy<T extends object>(rootTarget: T) {
-  const proxyHandler = {
-    get(target: T, property: string) {
-      const value = Reflect.get(target, property)
-      // Handle nested objects/arrays recursively
-      if (isPlainObject(value)) {
-        return createDeepProxy(value)
-      }
-
-      return value
-    },
-
-    set(target: T, property: string, value: unknown) {
-      Reflect.set(target, property, cloneDeep(value))
-      return true
-    },
-
-    deleteProperty(target: T, property: string) {
-      Reflect.deleteProperty(target, property)
-      return true
-    },
-  }
-
-  return new Proxy(rootTarget, proxyHandler)
-}
-
 export abstract class TwoAndEight {
   constructor() {
-    // Remove any references to set data.
-    const p = createDeepProxy(this)
-
-    autoBind(p)
-
-    // eslint-disable-next-line no-constructor-return
-    return p
+    autoBind(this)
   }
 
   $emit(): void {
@@ -60,96 +41,60 @@ export abstract class TwoAndEight {
     // eslint-disable-next-line no-console
     console.log(field)
   }
+
+  $subscribe(subscriber: () => void): () => void {
+    // no-op, for now, it's enhanced in createStore
+    // eslint-disable-next-line no-console
+    console.log(subscriber)
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    return () => {}
+  }
+
+  $getInitialState(): State<this> {
+    // no-op, for now, it's enhanced in createStore
+    return this
+  }
+
+  $getSubscribersCount(): number {
+    return 0
+  }
 }
 
-export function createStore<Store extends TwoAndEight>(
-  store: Store,
-): {
-  getInitialState: () => State<Store>
-  getState: () => Omit<Store, '$reset' | '$emit'>
-  subscribe: <Field>(
-    subscriber: () => void,
-    selector?: (state: State<Store>) => Field,
-  ) => () => void
-  getSubscribersCount: () => number
-} {
-  const subscribers = new Map<
-    () => void,
-    (<Field>(state?: State<Store>) => Field) | undefined
-  >()
+export function createStore<Store extends TwoAndEight>(store: Store): Store {
+  const subscribers = new Set<() => void>()
 
-  const emit = (prevState?: Store, nextState?: Store) => {
-    for (const [subscriber, selector] of subscribers) {
-      if (selector) {
-        if (!deepEqual(selector(prevState), selector(nextState))) {
-          subscriber()
-        }
-      } else {
-        subscriber()
-      }
+  const emit = () => {
+    for (const subscriber of subscribers) {
+      subscriber()
     }
   }
 
   store.$emit = () => emit()
 
-  function getState(): Store {
-    const state = cloneDeep(store)
-
-    // Capture getters by finding all getter methods
-    const prototype = Object.getPrototypeOf(store)
-    const descriptors = Object.getOwnPropertyDescriptors(prototype)
-
-    for (const key in descriptors) {
-      if (typeof descriptors[key].get === 'function') {
-        try {
-          const value = Reflect.get(store, key)
-          Reflect.set(state, key, value)
-        } catch {
-          // Error retrieving getter
-        }
-      }
-    }
-
-    // return state
-    return state
-  }
-
   const initialState = {} as Store
 
   for (const [name, value] of Object.entries(store)) {
-    Reflect.set(initialState, name, cloneDeep(value))
+    if (typeof value !== 'function') {
+      Reflect.set(initialState, name, clone(value))
+    }
 
     if (!name.startsWith('$')) {
       // Infuse all actions with an emit after they've run.
       if (typeof value === 'function') {
-        Reflect.set(
-          store,
-          name,
-          new Proxy(value, {
-            apply(target, thisArg, args) {
-              const prevState = getState()
-              const result = target.apply(thisArg, args)
-              if (result instanceof Promise) {
-                return result.finally(() => {
-                  emit(prevState, getState())
-                })
-              }
-              emit(prevState, getState())
-              return result
-            },
-          }),
-        )
+        Reflect.set(store, name, infuseWithCallbackAfterRun(value, emit))
       }
       // Clone all fields to themselves so that external state isn't mutated.
       else {
-        Reflect.set(store, name, cloneDeep(value))
+        Reflect.set(store, name, clone(value))
       }
     }
   }
 
   function getInitialState(): Store {
-    return cloneDeep(initialState)
+    return clone(initialState)
   }
+
+  store.$getInitialState = getInitialState
 
   store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
@@ -171,12 +116,8 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  function subscribe<Field>(
-    subscriber: () => void,
-    selector?: (state: State<Store>) => Field,
-  ): () => void {
-    // @ts-expect-error -- Types don't match but the public API is correct, and that's the important thing.
-    subscribers.set(subscriber, selector)
+  function subscribe(subscriber: () => void): () => void {
+    subscribers.add(subscriber)
     return (): void => {
       const prevSubscribersCount = subscribers.size
       subscribers.delete(subscriber)
@@ -188,13 +129,12 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
+  store.$subscribe = subscribe
+
   // This is just for testing purposes really; nobody should really have to call this.
   const getSubscribersCount = () => subscribers.size
 
-  return {
-    getInitialState,
-    getState,
-    getSubscribersCount,
-    subscribe,
-  }
+  store.$getSubscribersCount = getSubscribersCount
+
+  return store
 }
