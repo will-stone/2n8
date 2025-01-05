@@ -63,13 +63,11 @@ export abstract class TwoAndEight {
 export function createStore<Store extends TwoAndEight>(store: Store): Store {
   const subscribers = new Set<() => void>()
 
-  const emit = () => {
+  store.$emit = () => {
     for (const subscriber of subscribers) {
       subscriber()
     }
   }
-
-  store.$emit = () => emit()
 
   const initialState = {} as Store
 
@@ -81,7 +79,7 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
     if (!name.startsWith('$')) {
       // Infuse all actions with an emit after they've run.
       if (typeof value === 'function') {
-        Reflect.set(store, name, infuseWithCallbackAfterRun(value, emit))
+        Reflect.set(store, name, infuseWithCallbackAfterRun(value, store.$emit))
       }
       // Clone all fields to themselves so that external state isn't mutated.
       else {
@@ -90,11 +88,7 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
     }
   }
 
-  function getInitialState(): Store {
-    return clone(initialState)
-  }
-
-  store.$getInitialState = getInitialState
+  store.$getInitialState = () => initialState
 
   store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
@@ -102,12 +96,12 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
       if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset an action.')
       }
-      const initialValue = getInitialState()[field]
+      const initialValue = initialState[field]
       if (initialValue !== undefined) {
         Reflect.set(store, field, initialValue)
       }
     } else {
-      for (const [key, initialValue] of Object.entries(getInitialState())) {
+      for (const [key, initialValue] of Object.entries(initialState)) {
         // No need to reset functions.
         if (typeof initialValue !== 'function') {
           Reflect.set(store, key, initialValue)
@@ -116,7 +110,7 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
     }
   }
 
-  function subscribe(subscriber: () => void): () => void {
+  store.$subscribe = (subscriber: () => void): (() => void) => {
     subscribers.add(subscriber)
     return (): void => {
       const prevSubscribersCount = subscribers.size
@@ -129,12 +123,8 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
     }
   }
 
-  store.$subscribe = subscribe
-
   // This is just for testing purposes really; nobody should really have to call this.
-  const getSubscribersCount = () => subscribers.size
-
-  store.$getSubscribersCount = getSubscribersCount
+  store.$getSubscribersCount = () => subscribers.size
 
   return store
 }
