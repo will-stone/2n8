@@ -520,7 +520,5 @@ test('should handle complex derived state', async () => {
 test('should forward on API', () => {
   class Store extends TwoAndEight {}
   const useStore = createReactStore(new Store())
-  expect(useStore.$subscribe).toStrictEqual(expect.any(Function))
-  expect(useStore.$getInitialState).toStrictEqual(expect.any(Function))
   expect(useStore.$getSubscribersCount).toStrictEqual(expect.any(Function))
 })

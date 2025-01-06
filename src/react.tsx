@@ -1,16 +1,25 @@
 import { isEqual } from 'es-toolkit'
 import { useSyncExternalStore } from 'react'
 
-import type { State, TwoAndEight } from './2n8.js'
+import type { TwoAndEight } from './2n8.js'
 import { createStore } from './2n8.js'
 import { clone } from './clone.js'
 
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
-): (<Field extends keyof Store>(field: Field) => Store[Field]) & {
-  $subscribe: (callback: () => void) => () => void
+): (<
+  Field extends keyof Omit<
+    Store,
+    | '$emit'
+    | '$getInitialState'
+    | '$getSubscribersCount'
+    | '$reset'
+    | '$subscribe'
+  >,
+>(
+  field: Field,
+) => Store[Field]) & {
   $getSubscribersCount: () => number
-  $getInitialState: () => State<Store>
 } {
   const store = createStore(rawStore)
 
@@ -38,8 +47,6 @@ export function createReactStore<Store extends TwoAndEight>(
     )
   }
 
-  useStore.$subscribe = store.$subscribe
-  useStore.$getInitialState = store.$getInitialState
   useStore.$getSubscribersCount = store.$getSubscribersCount
 
   return useStore
