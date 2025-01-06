@@ -28,9 +28,9 @@ class Store extends TwoAndEight {
 const useStore = createReactStore(new Store())
 
 export const Async: FC = () => {
-  const status = useStore((state) => state.status)
-  const buttonClicked = useStore((state) => state.buttonClicked)
-  const resetClicked = useStore((state) => state.resetClicked)
+  const status = useStore('status')
+  const buttonClicked = useStore('buttonClicked')
+  const resetClicked = useStore('resetClicked')
   return (
     <div className="flex justify-center">
       <div className="!m-0 flex gap-4 py-8 text-2xl font-bold">

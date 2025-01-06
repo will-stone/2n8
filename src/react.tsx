@@ -1,11 +1,9 @@
 import { isEqual } from 'es-toolkit'
 import { useSyncExternalStore } from 'react'
-import clone from 'rfdc'
-
-const cloneDeep = clone()
 
 import type { State, TwoAndEight } from './2n8.js'
 import { createStore } from './2n8.js'
+import { clone } from './clone.js'
 
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
@@ -30,13 +28,13 @@ export function createReactStore<Store extends TwoAndEight>(
         }
 
         if (!isEqual(storedValue, cachedValue)) {
-          cache[field] = cloneDeep(store[field])
+          cache[field] = clone(store[field])
         }
 
         return cache[field]
       },
       // @ts-expect-error -- Initial state doesn't (and shouldn't) include functions, but public selector API requires access to actions made by consumer.
-      () => selector(store.getInitialState()),
+      () => store.$getInitialState()[field],
     )
   }
 
