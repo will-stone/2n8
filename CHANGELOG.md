@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0](https://github.com/will-stone/2n8/compare/0.7.7...0.8.0) (2025-01-06)
+
+### Minor changes
+
+- Stop using proxies as they are slow
+  ([a284ab1](https://github.com/will-stone/2n8/commit/a284ab1b9077eb6f7883f18997e86b23b3d89f47))
+
+### Patches
+
+- Remove internal API from React field selectors
+  ([64fb7e9](https://github.com/will-stone/2n8/commit/64fb7e90fb8601f9fdce0ebf73105cc966311bb4))
+- Re-export clone utility
+  ([a6d8139](https://github.com/will-stone/2n8/commit/a6d81399aa47e2d317cdf9dd9eeab15717cf5583))
+
 ## [0.7.7](https://github.com/will-stone/2n8/compare/0.7.6...0.7.7) (2025-01-04)
 
 ### Patches
