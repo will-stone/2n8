@@ -1,58 +1,53 @@
 import { isEqual } from 'es-toolkit'
 import { useSyncExternalStore } from 'react'
-import clone from 'rfdc'
 
-const cloneDeep = clone()
-
-import type { State, TwoAndEight } from './2n8.js'
+import type { TwoAndEight } from './2n8.js'
 import { createStore } from './2n8.js'
+import { clone } from './clone.js'
 
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
-): (<Field>(
-  selector: (state: Omit<Store, '$reset' | '$emit'>) => Field,
-) => Field) & {
-  subscribe: <Field>(
-    callback: () => void,
-    selector?: (state: State<Store>) => Field,
-  ) => () => void
-  getSubscribersCount: () => number
-  getInitialState: () => State<Store>
-  getState: () => Omit<Store, '$reset' | '$emit'>
+): (<
+  Field extends keyof Omit<
+    Store,
+    | '$emit'
+    | '$getInitialState'
+    | '$getSubscribersCount'
+    | '$reset'
+    | '$subscribe'
+  >,
+>(
+  field: Field,
+) => Store[Field]) & {
+  $getSubscribersCount: () => number
 } {
   const store = createStore(rawStore)
 
-  let cache = {} as State<Store>
+  const cache = {} as Store
 
-  function useStore<Field>(
-    selector: (state: Omit<Store, '$reset' | '$emit'>) => Field,
-  ): Field {
+  function useStore<Field extends keyof Store>(field: Field): Store[Field] {
     return useSyncExternalStore(
-      store.subscribe,
+      store.$subscribe,
       () => {
-        const state = store.getState()
+        const storedValue = store[field]
+        const cachedValue = cache[field]
 
-        if (typeof selector(state) === 'function') {
-          return selector(state)
+        if (typeof storedValue === 'function') {
+          return storedValue
         }
 
-        if (!isEqual(cache, state)) {
-          // @ts-expect-error -- The actions have already been removed above.
-          cache = cloneDeep(state)
+        if (!isEqual(storedValue, cachedValue)) {
+          cache[field] = clone(store[field])
         }
 
-        // @ts-expect-error -- selector expects functions (actions) but those have been dealt with above.
-        return selector(cache)
+        return cache[field]
       },
       // @ts-expect-error -- Initial state doesn't (and shouldn't) include functions, but public selector API requires access to actions made by consumer.
-      () => selector(store.getInitialState()),
+      () => store.$getInitialState()[field],
     )
   }
 
-  useStore.subscribe = store.subscribe
-  useStore.getInitialState = store.getInitialState
-  useStore.getState = store.getState
-  useStore.getSubscribersCount = store.getSubscribersCount
+  useStore.$getSubscribersCount = store.$getSubscribersCount
 
   return useStore
 }

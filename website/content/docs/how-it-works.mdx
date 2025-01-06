@@ -65,7 +65,7 @@ import { Steps } from '@astrojs/starlight/components'
 
    ```tsx
    const Component = () => {
-     const counter = useStore((s) => s.counter)
+     const counter = useStore('counter')
 
      return <div>{counter}</div>
    }
@@ -79,7 +79,7 @@ import { Steps } from '@astrojs/starlight/components'
 
    ```tsx
    const Component2 = () => {
-     const addButtonClicked = useStore((s) => s.addButtonClicked)
+     const addButtonClicked = useStore('addButtonClicked')
 
      return <button onClick={addButtonClicked}>Add</button>
    }

@@ -15,9 +15,9 @@ class Store extends TwoAndEight {
 const useStore = createReactStore(new Store())
 
 const Counter = () => {
-  const count = useStore((s) => s.count)
-  const addClicked = useStore((s) => s.addClicked)
-  const resetClicked = useStore((s) => s.resetClicked)
+  const count = useStore('count')
+  const addClicked = useStore('addClicked')
+  const resetClicked = useStore('resetClicked')
   return (
     <div>
       <span>{count}</span>
@@ -47,9 +47,9 @@ class Store extends TwoAndEight {
 const useStore = createReactStore(new Store())
 
 const Async = () => {
-  const status = useStore((s) => s.status)
-  const buttonClicked = useStore((s) => s.buttonClicked)
-  const resetClicked = useStore((s) => s.resetClicked)
+  const status = useStore('status')
+  const buttonClicked = useStore('buttonClicked')
+  const resetClicked = useStore('resetClicked')
   return (
     <div>
       <button onClick={buttonClicked}>
@@ -94,9 +94,9 @@ const Counter = () => {
   // Use selectors to grab the required state and actions.
   // If you use the same one over-and-over, you can abstract
   // them to their own hooks, e.g. \`useCount()\`.
-  const count = useStore((s) => s.count)
-  const addClicked = useStore((s) => s.addClicked)
-  const resetClicked = useStore((s) => s.resetClicked)
+  const count = useStore('count')
+  const addClicked = useStore('addClicked')
+  const resetClicked = useStore('resetClicked')
   return (
     <div>
       <span>{count}</span>

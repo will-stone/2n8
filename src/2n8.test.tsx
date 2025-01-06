@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, expect, expectTypeOf, test, vi } from 'vitest'
 
 import { createStore, TwoAndEight } from './2n8.js'
+import { clone } from './clone.js'
 
 beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true })
@@ -30,16 +31,16 @@ test('should update when using async actions', async () => {
   }
 
   const store = createStore(new Store())
-  expectTypeOf(store.getState().count).toMatchTypeOf<number>()
-  expect(store.getState().count).toBe(0)
-  store.getState().buttonClicked()
-  expect(store.getState().count).toBe(1)
-  store.getState().asyncButtonClicked()
-  expect(store.getState().count).toBe(2)
+  expectTypeOf(store.count).toMatchTypeOf<number>()
+  expect(store.count).toBe(0)
+  store.buttonClicked()
+  expect(store.count).toBe(1)
+  store.asyncButtonClicked()
+  expect(store.count).toBe(2)
   await vi.advanceTimersByTimeAsync(2999)
-  expect(store.getState().count).toBe(2)
+  expect(store.count).toBe(2)
   await vi.advanceTimersByTimeAsync(1)
-  expect(store.getState().count).toBe(7)
+  expect(store.count).toBe(7)
 })
 
 test('should always return master record', async () => {
@@ -60,13 +61,13 @@ test('should always return master record', async () => {
   }
 
   const store = createStore(new Store())
-  expect(store.getState().count).toBe(0)
-  store.getState().asyncButtonClicked()
-  expect(store.getState().count).toBe(1)
-  store.getState().buttonClicked()
-  expect(store.getState().count).toBe(2)
+  expect(store.count).toBe(0)
+  store.asyncButtonClicked()
+  expect(store.count).toBe(1)
+  store.buttonClicked()
+  expect(store.count).toBe(2)
   await vi.advanceTimersByTimeAsync(3000)
-  expect(store.getState().count).toBe(7)
+  expect(store.count).toBe(7)
 })
 
 test('should reset all state', () => {
@@ -101,47 +102,47 @@ test('should reset all state', () => {
 
   const store = createStore(new Store())
 
-  expect(store.getState().greeting).toBe('hello')
-  expectTypeOf(store.getState().greeting).toMatchTypeOf<string>()
-  expect(store.getState().count).toBe(999)
-  expectTypeOf(store.getState().count).toMatchTypeOf<number>()
-  expect(store.getState().toggle).toBe(false)
-  expectTypeOf(store.getState().toggle).toMatchTypeOf<boolean | 'a string'>()
-  expect(store.getState().untouched).toBe(true)
+  expect(store.greeting).toBe('hello')
+  expectTypeOf(store.greeting).toMatchTypeOf<string>()
+  expect(store.count).toBe(999)
+  expectTypeOf(store.count).toMatchTypeOf<number>()
+  expect(store.toggle).toBe(false)
+  expectTypeOf(store.toggle).toMatchTypeOf<boolean | 'a string'>()
+  expect(store.untouched).toBe(true)
 
-  store.getState().switched()
-  store.getState().switched()
-  store.getState().increment()
-  store.getState().gone()
+  store.switched()
+  store.switched()
+  store.increment()
+  store.gone()
 
-  expect(store.getState().greeting).toBe('bye')
-  expect(store.getState().count).toBe(1000)
-  expect(store.getState().toggle).toBe('a string')
-  expect(store.getState().untouched).toBe(true)
+  expect(store.greeting).toBe('bye')
+  expect(store.count).toBe(1000)
+  expect(store.toggle).toBe('a string')
+  expect(store.untouched).toBe(true)
 
-  store.getState().resetAll()
+  store.resetAll()
 
-  expect(store.getState().greeting).toBe('hello')
-  expect(store.getState().count).toBe(999)
-  expect(store.getState().toggle).toBe(false)
-  expect(store.getState().untouched).toBe(true)
+  expect(store.greeting).toBe('hello')
+  expect(store.count).toBe(999)
+  expect(store.toggle).toBe(false)
+  expect(store.untouched).toBe(true)
 
-  store.getState().switched()
-  store.getState().switched()
-  store.getState().increment()
-  store.getState().gone()
+  store.switched()
+  store.switched()
+  store.increment()
+  store.gone()
 
-  expect(store.getState().greeting).toBe('bye')
-  expect(store.getState().count).toBe(1000)
-  expect(store.getState().toggle).toBe('a string')
-  expect(store.getState().untouched).toBe(true)
+  expect(store.greeting).toBe('bye')
+  expect(store.count).toBe(1000)
+  expect(store.toggle).toBe('a string')
+  expect(store.untouched).toBe(true)
 
-  store.getState().resetAll()
+  store.resetAll()
 
-  expect(store.getState().greeting).toBe('hello')
-  expect(store.getState().count).toBe(999)
-  expect(store.getState().toggle).toBe(false)
-  expect(store.getState().untouched).toBe(true)
+  expect(store.greeting).toBe('hello')
+  expect(store.count).toBe(999)
+  expect(store.toggle).toBe(false)
+  expect(store.untouched).toBe(true)
 })
 
 test('should reset single field', () => {
@@ -164,27 +165,27 @@ test('should reset single field', () => {
   }
 
   const store = createStore(new Store())
-  store.getState().resetCount()
-  expect(store.getState().count).toBe(999)
-  expect(store.getState().greeting).toBe('hello')
-  expect(store.getState().untouched).toBe(true)
-  store.getState().increment()
-  store.getState().gone()
-  expect(store.getState().count).toBe(1000)
-  expect(store.getState().greeting).toBe('bye')
-  expect(store.getState().untouched).toBe(true)
-  store.getState().resetCount()
-  expect(store.getState().count).toBe(999)
-  expect(store.getState().greeting).toBe('bye')
-  expect(store.getState().untouched).toBe(true)
-  store.getState().increment()
-  expect(store.getState().count).toBe(1000)
-  expect(store.getState().greeting).toBe('bye')
-  expect(store.getState().untouched).toBe(true)
-  store.getState().resetCount()
-  expect(store.getState().count).toBe(999)
-  expect(store.getState().greeting).toBe('bye')
-  expect(store.getState().untouched).toBe(true)
+  store.resetCount()
+  expect(store.count).toBe(999)
+  expect(store.greeting).toBe('hello')
+  expect(store.untouched).toBe(true)
+  store.increment()
+  store.gone()
+  expect(store.count).toBe(1000)
+  expect(store.greeting).toBe('bye')
+  expect(store.untouched).toBe(true)
+  store.resetCount()
+  expect(store.count).toBe(999)
+  expect(store.greeting).toBe('bye')
+  expect(store.untouched).toBe(true)
+  store.increment()
+  expect(store.count).toBe(1000)
+  expect(store.greeting).toBe('bye')
+  expect(store.untouched).toBe(true)
+  store.resetCount()
+  expect(store.count).toBe(999)
+  expect(store.greeting).toBe('bye')
+  expect(store.untouched).toBe(true)
 })
 
 test('should reset complex state', () => {
@@ -201,14 +202,14 @@ test('should reset complex state', () => {
   }
 
   const store = createStore(new Store())
-  expect(store.getState().arr).toStrictEqual([{ foo: 'bar' }])
-  store.getState().change()
-  expect(store.getState().arr).toStrictEqual([{ foo: 'moo' }])
-  store.getState().reset()
-  expect(store.getState().arr).toStrictEqual([{ foo: 'bar' }])
+  expect(store.arr).toStrictEqual([{ foo: 'bar' }])
+  store.change()
+  expect(store.arr).toStrictEqual([{ foo: 'moo' }])
+  store.reset()
+  expect(store.arr).toStrictEqual([{ foo: 'bar' }])
 })
 
-test('should not mutate external objects', () => {
+test('should not mutate external objects when cloned', () => {
   const externalObj = {
     foo: {
       bar: 'baz',
@@ -219,7 +220,7 @@ test('should not mutate external objects', () => {
     obj = externalObj
 
     loadExternalObj(ext: { foo: { bar: string } }) {
-      this.obj = ext
+      this.obj = clone(ext)
     }
 
     change() {
@@ -232,30 +233,30 @@ test('should not mutate external objects', () => {
   }
 
   const store = createStore(new Store())
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.getState().change()
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.getState().reset()
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.reset()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.getState().loadExternalObj(externalObj)
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.loadExternalObj(externalObj)
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
-  store.getState().change()
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
 })
 
-test('should not mutate external objects in nested object state', () => {
+test('should not mutate external objects in nested object state when cloned', () => {
   const externalObj = { bar: 'baz' }
 
   class Store extends TwoAndEight {
     obj = { foo: externalObj }
 
     loadExternalObj(ext: { bar: string }) {
-      this.obj.foo = ext
+      this.obj.foo = clone(ext)
     }
 
     change() {
@@ -268,19 +269,19 @@ test('should not mutate external objects in nested object state', () => {
   }
 
   const store = createStore(new Store())
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ bar: 'baz' })
-  store.getState().change()
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
   expect(externalObj).toStrictEqual({ bar: 'baz' })
-  store.getState().reset()
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.reset()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ bar: 'baz' })
-  store.getState().loadExternalObj(externalObj)
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.loadExternalObj(externalObj)
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ bar: 'baz' })
-  store.getState().change()
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
   expect(externalObj).toStrictEqual({ bar: 'baz' })
 })
 
@@ -299,9 +300,9 @@ test('should compute derived value', () => {
   }
 
   const store = createStore(new Store())
-  expect(store.getState().total).toBe(4)
-  store.getState().increaseCount()
-  expect(store.getState().total).toBe(5)
+  expect(store.total).toBe(4)
+  store.increaseCount()
+  expect(store.total).toBe(5)
 })
 
 test('should throw if attempting to reset an action', () => {
@@ -326,13 +327,9 @@ test('should throw if attempting to reset an action', () => {
   }
 
   const store = createStore(new Store())
-  expect(() => store.getState().resetAction()).toThrow(
-    '2n8: Cannot reset an action.',
-  )
-  expect(() => store.getState().resetResetApi()).toThrow(
-    '2n8: Cannot reset an action.',
-  )
-  expect(() => store.getState().resetSubscribeApi()).toThrow(
+  expect(() => store.resetAction()).toThrow('2n8: Cannot reset an action.')
+  expect(() => store.resetResetApi()).toThrow('2n8: Cannot reset an action.')
+  expect(() => store.resetSubscribeApi()).toThrow(
     '2n8: Cannot reset an action.',
   )
 })
@@ -348,16 +345,13 @@ test('should return initial state', () => {
   }
 
   const store = createStore(new Store())
-  store.getState().increaseCount()
-  expect(store.getInitialState()).toStrictEqual({
-    $emit: expect.any(Function),
-    $reset: expect.any(Function),
+  store.increaseCount()
+  expect(store.$getInitialState()).toStrictEqual({
     count: 0,
-    increaseCount: expect.any(Function),
     untouched: 'foo',
   })
-  expectTypeOf(store.getInitialState().count).toMatchTypeOf<number>()
-  expectTypeOf(store.getInitialState().untouched).toMatchTypeOf<string>()
+  expectTypeOf(store.$getInitialState().count).toMatchTypeOf<number>()
+  expectTypeOf(store.$getInitialState().untouched).toMatchTypeOf<string>()
 })
 
 test('should return current state', () => {
@@ -375,66 +369,20 @@ test('should return current state', () => {
   }
 
   const store = createStore(new Store())
-  store.getState().increaseCount()
-  expect(store.getState()).toStrictEqual({
+  store.increaseCount()
+  expect(clone(store)).toStrictEqual({
     $emit: expect.any(Function),
+    $getInitialState: expect.any(Function),
+    $getSubscribersCount: expect.any(Function),
     $reset: expect.any(Function),
+    $subscribe: expect.any(Function),
     count: 1,
-    derived: 11,
     increaseCount: expect.any(Function),
     untouched: 'foo',
   })
-  expectTypeOf(store.getState().count).toMatchTypeOf<number>()
-  expectTypeOf(store.getState().untouched).toMatchTypeOf<string>()
-})
-
-test('should allow granular subscriptions', () => {
-  class Store extends TwoAndEight {
-    count = 0
-    untouched = 'foo'
-
-    increaseCount() {
-      this.count = this.count + 1
-    }
-  }
-
-  const store = createStore(new Store())
-  expectTypeOf(store.subscribe).toMatchTypeOf<
-    (
-      callback: () => void,
-      selector?: (state: {
-        count: number
-        untouched: string
-      }) => number | string,
-    ) => void
-  >()
-  const countSpy = vi.fn()
-  const untouchedSpy = vi.fn()
-  store.subscribe(countSpy, (s) => s.count)
-  store.subscribe(untouchedSpy, (s) => s.untouched)
-  store.getState().increaseCount()
-  expect(countSpy).toHaveBeenCalledOnce()
-  expect(untouchedSpy).not.toHaveBeenCalled()
-})
-
-test('should allow granular subscriptions to derived state', () => {
-  class Store extends TwoAndEight {
-    count = 0
-
-    get derived() {
-      return this.count + 10
-    }
-
-    increaseCount() {
-      this.count = this.count + 1
-    }
-  }
-
-  const store = createStore(new Store())
-  const derivedSpy = vi.fn()
-  store.subscribe(derivedSpy, (s) => s.derived)
-  store.getState().increaseCount()
-  expect(derivedSpy).toHaveBeenCalledOnce()
+  expect(store.derived).toBe(11)
+  expectTypeOf(store.count).toMatchTypeOf<number>()
+  expectTypeOf(store.untouched).toMatchTypeOf<string>()
 })
 
 test('should not call subscriber when state has not changed', () => {
@@ -454,19 +402,11 @@ test('should not call subscriber when state has not changed', () => {
 
   const store = createStore(new Store())
   const subscribeSpy = vi.fn()
-  const countSpy = vi.fn()
-  const objSpy = vi.fn()
-  store.subscribe(subscribeSpy)
-  store.subscribe(countSpy, (s) => s.count)
-  store.subscribe(objSpy, (s) => s.obj)
-  store.getState().noop()
+  store.$subscribe(subscribeSpy)
+  store.noop()
   expect(subscribeSpy).toHaveBeenCalledOnce()
-  expect(countSpy).not.toHaveBeenCalled()
-  expect(objSpy).not.toHaveBeenCalled()
-  store.getState().noop2()
+  store.noop2()
   expect(subscribeSpy).toHaveBeenCalledTimes(2)
-  expect(countSpy).not.toHaveBeenCalled()
-  expect(objSpy).not.toHaveBeenCalled()
 })
 
 test('should unsubscribe', () => {
@@ -480,48 +420,14 @@ test('should unsubscribe', () => {
 
   const store = createStore(new Store())
   const spy = vi.fn()
-  const unsubscribe = store.subscribe(spy)
-  store.getState().increaseCount()
+  const unsubscribe = store.$subscribe(spy)
+  store.increaseCount()
   expect(spy).toHaveBeenCalledOnce()
   unsubscribe()
-  store.getState().increaseCount()
-  store.getState().increaseCount()
-  store.getState().increaseCount()
+  store.increaseCount()
+  store.increaseCount()
+  store.increaseCount()
   expect(spy).toHaveBeenCalledOnce()
-})
-
-test('should unsubscribe from allow granular subscriptions', () => {
-  class Store extends TwoAndEight {
-    count = 0
-    count2 = 0
-
-    increaseCount() {
-      this.count = this.count + 1
-    }
-
-    increaseCount2() {
-      this.count2 = this.count2 + 1
-    }
-  }
-
-  const store = createStore(new Store())
-  const countSpy = vi.fn()
-  const count2Spy = vi.fn()
-  const unsubscribe = store.subscribe(countSpy, (s) => s.count)
-  store.subscribe(count2Spy, (s) => s.count2)
-  expect(store.getSubscribersCount()).toBe(2)
-  store.getState().increaseCount()
-  expect(countSpy).toHaveBeenCalledOnce()
-  expect(count2Spy).not.toHaveBeenCalled()
-  store.getState().increaseCount2()
-  expect(countSpy).toHaveBeenCalledOnce()
-  expect(count2Spy).toHaveBeenCalledOnce()
-  unsubscribe()
-  expect(store.getSubscribersCount()).toBe(1)
-  store.getState().increaseCount()
-  store.getState().increaseCount2()
-  expect(countSpy).toHaveBeenCalledOnce()
-  expect(count2Spy).toHaveBeenCalledTimes(2)
 })
 
 test('should warm store with state', () => {
@@ -570,20 +476,20 @@ test('should update deep state', () => {
 
   const store = createStore(new Store())
   const subscribeSpy = vi.fn()
-  store.subscribe(subscribeSpy)
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'baz' } })
-  expect(store.getState().arr).toStrictEqual(['hello'])
-  store.getState().update()
-  store.getState().noop()
-  store.getState().other()
-  store.getState().push()
+  store.$subscribe(subscribeSpy)
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  expect(store.arr).toStrictEqual(['hello'])
+  store.update()
+  store.noop()
+  store.other()
+  store.push()
   expect(subscribeSpy).toHaveBeenCalledTimes(4)
-  expect(store.getState().obj).toStrictEqual({ foo: { bar: 'moo' } })
-  expect(store.getState().arr).toStrictEqual(['hello', 'bye'])
-  store.getState().delete()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  expect(store.arr).toStrictEqual(['hello', 'bye'])
+  store.delete()
   expect(subscribeSpy).toHaveBeenCalledTimes(5)
-  expect(store.getState().obj).toStrictEqual({ foo: {} })
-  expect(store.getState().arr).toStrictEqual(['hello', 'bye'])
+  expect(store.obj).toStrictEqual({ foo: {} })
+  expect(store.arr).toStrictEqual(['hello', 'bye'])
 })
 
 test('should not fire subscription until end of action', () => {
@@ -603,13 +509,13 @@ test('should not fire subscription until end of action', () => {
   }
 
   const store = createStore(new Store())
-  const countSpy = vi.fn()
-  store.subscribe(countSpy, (s) => s.count)
-  store.getState().increment()
-  expect(countSpy).toHaveBeenCalledOnce()
-  store.getState().resetCount()
-  expect(store.getState().count).toBe(3)
-  expect(countSpy).toHaveBeenCalledTimes(2)
+  const subscribeSpy = vi.fn()
+  store.$subscribe(subscribeSpy)
+  store.increment()
+  expect(subscribeSpy).toHaveBeenCalledOnce()
+  store.resetCount()
+  expect(store.count).toBe(3)
+  expect(subscribeSpy).toHaveBeenCalledTimes(2)
 })
 
 test("should fail types when store hasn't extended super class", () => {

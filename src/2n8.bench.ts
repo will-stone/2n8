@@ -1,6 +1,6 @@
-import { effect, signal } from 'alien-signals'
 import { autorun, makeAutoObservable } from 'mobx'
 import { bench, describe } from 'vitest'
+import { createStore as zustandCreateStore } from 'zustand/vanilla'
 
 import { createStore, TwoAndEight } from './2n8.js'
 
@@ -21,19 +21,16 @@ describe('simple count', () => {
 
   bench('2n8', async () => {
     const subscriptionComplete = new Promise<void>((resolve) => {
-      twoAndEightStore.subscribe(
-        () => {
-          if (twoAndEightStore.getState().count === 1) {
-            resolve()
-          }
-        },
-        (s) => s.count,
-      )
+      twoAndEightStore.$subscribe(() => {
+        if (twoAndEightStore.count === 1) {
+          resolve()
+        }
+      })
     })
 
-    twoAndEightStore.getState().increaseCount()
+    twoAndEightStore.increaseCount()
     await subscriptionComplete
-    twoAndEightStore.getState().resetAll()
+    twoAndEightStore.resetAll()
   })
 
   class MobxStore {
@@ -43,11 +40,11 @@ describe('simple count', () => {
       makeAutoObservable(this)
     }
 
-    increaseCount() {
+    increaseCount = () => {
       this.count = this.count + 1
     }
 
-    resetAll() {
+    resetAll = () => {
       this.count = 0
     }
   }
@@ -69,19 +66,32 @@ describe('simple count', () => {
     mobxStore.resetAll()
   })
 
-  const alienSignalsCount = signal(1)
+  type ZustandStoreState = { count: number }
 
-  bench('alien-signals', async () => {
+  type ZustandStoreActions = {
+    increaseCount: () => void
+    resetAll: () => void
+  }
+
+  type ZustandStore = ZustandStoreState & ZustandStoreActions
+
+  const zustandStore = zustandCreateStore<ZustandStore>()((set) => ({
+    count: 0,
+    increaseCount: () => set((state) => ({ ...state, count: state.count + 1 })),
+    resetAll: () => set((state) => ({ ...state, count: 0 })),
+  }))
+
+  bench('zustand', async () => {
     const subscriptionComplete = new Promise<void>((resolve) => {
-      effect(() => {
-        if (alienSignalsCount.get() === 1) {
+      zustandStore.subscribe((state) => {
+        if (state.count === 1) {
           resolve()
         }
       })
     })
 
-    alienSignalsCount.set(1)
+    zustandStore.getState().increaseCount()
     await subscriptionComplete
-    alienSignalsCount.set(0)
+    zustandStore.getState().resetAll()
   })
 })

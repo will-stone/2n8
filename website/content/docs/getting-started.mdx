@@ -56,15 +56,15 @@ re-renders to reflect those changes.
 
 ```tsx title="Expression.tsx"
 function Expression() {
-  const expression = useStore((s) => s.expression)
+  const expression = useStore('expression')
   return <h1>{expression}</h1>
 }
 ```
 
 ```tsx title="App.tsx"
 function App() {
-  const addDisguise = useStore((s) => s.addDisguise)
-  const resetToConfusion = useStore((s) => s.resetToConfusion)
+  const addDisguise = useStore('addDisguise')
+  const resetToConfusion = useStore('resetToConfusion')
   return (
     <>
       <button onClick={addDisguise}>Hide!</button>

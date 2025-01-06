@@ -17,9 +17,9 @@ class Store extends TwoAndEight {
 const useStore = createReactStore(new Store())
 
 export const Counter: FC = () => {
-  const count = useStore((state) => state.count)
-  const addClicked = useStore((state) => state.addClicked)
-  const resetClicked = useStore((state) => state.resetClicked)
+  const count = useStore('count')
+  const addClicked = useStore('addClicked')
+  const resetClicked = useStore('resetClicked')
   return (
     <div className="flex justify-center">
       <div className="inline-flex gap-4 py-8">
