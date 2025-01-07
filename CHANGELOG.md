@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/will-stone/2n8/compare/0.8.1...0.8.2) (2025-01-07)
+
+### Patches
+
+- Fix initial state being mutated
+  ([eead54d](https://github.com/will-stone/2n8/commit/eead54dd7d29fb3d15e786eafa57e7d2da53eab6))
+
 ## [0.8.1](https://github.com/will-stone/2n8/compare/0.8.0...0.8.1) (2025-01-07)
 
 ### Patches
