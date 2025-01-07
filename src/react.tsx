@@ -18,9 +18,7 @@ export function createReactStore<Store extends TwoAndEight>(
   >,
 >(
   field: Field,
-) => Store[Field]) & {
-  $getSubscribersCount: () => number
-} {
+) => Store[Field]) & { store: Store } {
   const store = createStore(rawStore)
 
   const cache = {} as Store
@@ -47,7 +45,7 @@ export function createReactStore<Store extends TwoAndEight>(
     )
   }
 
-  useStore.$getSubscribersCount = store.$getSubscribersCount
+  useStore.store = store
 
   return useStore
 }

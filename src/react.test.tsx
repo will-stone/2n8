@@ -358,31 +358,31 @@ test('should remove subscriber on unmount', async () => {
   render(<App />)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.$getSubscribersCount()).toBe(4)
+  expect(useStore.store.$getSubscribersCount()).toBe(4)
   const addTodo = screen.getByText('Add')
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
-  expect(useStore.$getSubscribersCount()).toBe(5)
+  expect(useStore.store.$getSubscribersCount()).toBe(5)
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.getByText('c: something')).toBeVisible()
-  expect(useStore.$getSubscribersCount()).toBe(6)
+  expect(useStore.store.$getSubscribersCount()).toBe(6)
   const removeTodo = screen.getByText('Remove')
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.queryByText('c: something')).not.toBeInTheDocument()
-  expect(useStore.$getSubscribersCount()).toBe(5)
+  expect(useStore.store.$getSubscribersCount()).toBe(5)
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.$getSubscribersCount()).toBe(4)
+  expect(useStore.store.$getSubscribersCount()).toBe(4)
   await user.click(removeTodo)
   expect(screen.queryByText('a: something')).not.toBeInTheDocument()
   expect(errorSpy).not.toHaveBeenCalled()
-  expect(useStore.$getSubscribersCount()).toBe(3)
+  expect(useStore.store.$getSubscribersCount()).toBe(3)
 })
 
 test('should handle complex state', async () => {
@@ -518,7 +518,19 @@ test('should handle complex derived state', async () => {
 })
 
 test('should forward on API', () => {
-  class Store extends TwoAndEight {}
+  class Store extends TwoAndEight {
+    count = 1
+
+    get countPlusOne() {
+      return this.count + 1
+    }
+  }
   const useStore = createReactStore(new Store())
-  expect(useStore.$getSubscribersCount).toStrictEqual(expect.any(Function))
+  expect(useStore.store.$emit).toBeDefined()
+  expect(useStore.store.$getInitialState).toBeDefined()
+  expect(useStore.store.$getSubscribersCount).toBeDefined()
+  expect(useStore.store.$reset).toBeDefined()
+  expect(useStore.store.$subscribe).toBeDefined()
+  expect(useStore.store.count).toBe(1)
+  expect(useStore.store.countPlusOne).toBe(2)
 })
