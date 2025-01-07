@@ -6,8 +6,8 @@ import { Steps } from '@astrojs/starlight/components'
 
 <Steps>
 
-1. State is initiated using a class. This class must be extended from 2n8's
-   parent class which enhances the store with a few utilities.
+1. _State_ is initiated using class fields. The class must be extended from
+   2n8's parent class which enhances the store with a few utilities.
 
    ```tsx
    import { TwoAndEight } from '2n8'
@@ -17,36 +17,17 @@ import { Steps } from '@astrojs/starlight/components'
    }
    ```
 
-2. State changes are made inside _actions_, which are simply class methods.
+2. State changes are made inside _actions_, which are simply class methods that
+   mutate the fields.
 
    ```tsx
    import { TwoAndEight } from '2n8'
 
    class Store extends TwoAndEight {
      counter = 0
-     timestamp = 0
 
      addButtonClicked() {
        this.counter++
-     }
-   }
-   ```
-
-   When actions are called, any state mutations are auto _emitted_ to
-   subscribers at the end of the action. If you need to emit early, you can use
-   the special inbuilt `this.$emit()` action.
-
-   ```tsx
-   import { TwoAndEight } from '2n8'
-
-   class Store extends TwoAndEight {
-     counter = 0
-     data: { id: string; title: string }[]
-
-     async addButtonClicked() {
-       this.counter++
-       this.$emit()
-       this.data = await fetchData()
      }
    }
    ```
@@ -61,7 +42,7 @@ import { Steps } from '@astrojs/starlight/components'
 
    This uses React's
    [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore)
-   hook to map emitted state to selectors:
+   hook to _subscribe_ to state changes:
 
    ```tsx
    const Component = () => {
@@ -84,5 +65,8 @@ import { Steps } from '@astrojs/starlight/components'
      return <button onClick={addButtonClicked}>Add</button>
    }
    ```
+
+   When actions are called, the current values of all state is _emitted_ to the
+   subscribers at the end of the action.
 
 </Steps>
