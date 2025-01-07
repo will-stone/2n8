@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/will-stone/2n8/compare/0.8.0...0.8.1) (2025-01-07)
+
+### Patches
+
+- Expose store on useStore
+  ([a93a31c](https://github.com/will-stone/2n8/commit/a93a31c5d63b735743210fafef3a627fc423dfb3))
+
 ## [0.8.0](https://github.com/will-stone/2n8/compare/0.7.7...0.8.0) (2025-01-06)
 
 ### Minor changes
