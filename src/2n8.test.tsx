@@ -209,6 +209,47 @@ test('should reset complex state', () => {
   expect(store.arr).toStrictEqual([{ foo: 'bar' }])
 })
 
+test('should not mutate initial state on reset', () => {
+  class Store extends TwoAndEight {
+    obj = {
+      foo: {
+        bar: 'baz',
+      },
+    }
+
+    change() {
+      this.obj.foo.bar = 'moo'
+    }
+
+    reset() {
+      this.$reset()
+    }
+
+    resetObj() {
+      this.$reset('obj')
+    }
+  }
+
+  const store = createStore(new Store())
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.reset()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.reset()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.resetObj()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+  store.change()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
+  store.resetObj()
+  expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
+})
+
 test('should not mutate external objects when cloned', () => {
   const externalObj = {
     foo: {

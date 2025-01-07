@@ -88,7 +88,7 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
     }
   }
 
-  store.$getInitialState = () => initialState
+  store.$getInitialState = () => clone(initialState)
 
   store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
@@ -96,12 +96,14 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
       if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset an action.')
       }
-      const initialValue = initialState[field]
+      const initialValue = store.$getInitialState()[field]
       if (initialValue !== undefined) {
         Reflect.set(store, field, initialValue)
       }
     } else {
-      for (const [key, initialValue] of Object.entries(initialState)) {
+      for (const [key, initialValue] of Object.entries(
+        store.$getInitialState(),
+      )) {
         // No need to reset functions.
         if (typeof initialValue !== 'function') {
           Reflect.set(store, key, initialValue)
