@@ -67,6 +67,8 @@ export default defineConfig({
         { slug: 'getting-started' },
         { slug: 'state-and-actions' },
         { slug: 'async-actions' },
+        { slug: 'derived-state' },
+        { slug: 'reset-state' },
       ],
       social: {
         github: 'https://github.com/will-stone/2n8',
