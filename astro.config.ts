@@ -63,12 +63,16 @@ export default defineConfig({
         src: './website/assets/logo.png',
       },
       sidebar: [
-        { slug: 'index' },
-        { slug: 'getting-started' },
-        { slug: 'state-and-actions' },
-        { slug: 'async-actions' },
-        { slug: 'derived-state' },
-        { slug: 'reset-state' },
+        'getting-started',
+        {
+          items: [
+            'state-and-actions',
+            'async-actions',
+            'derived-state',
+            'reset-state',
+          ],
+          label: 'Guides',
+        },
       ],
       social: {
         github: 'https://github.com/will-stone/2n8',
