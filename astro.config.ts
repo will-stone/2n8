@@ -73,6 +73,15 @@ export default defineConfig({
           ],
           label: 'Guides',
         },
+        {
+          items: [
+            'two-and-eight',
+            'create-store',
+            'create-react-store',
+            'clone',
+          ],
+          label: 'API',
+        },
       ],
       social: {
         github: 'https://github.com/will-stone/2n8',
