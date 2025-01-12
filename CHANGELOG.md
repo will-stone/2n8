@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/will-stone/2n8/compare/0.8.2...0.8.3) (2025-01-12)
+
+### Patches
+
+- Test release
+  ([2f23d6b](https://github.com/will-stone/2n8/commit/2f23d6b1c223583c13dfae5a6fb17e776a7e9c6a))
+
 ## [0.8.2](https://github.com/will-stone/2n8/compare/0.8.1...0.8.2) (2025-01-07)
 
 ### Patches
