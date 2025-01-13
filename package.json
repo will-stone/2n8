@@ -40,7 +40,7 @@
     "website:preview": "astro preview"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx --no lint-staged"
+    "pre-commit": "pnpm exec lint-staged"
   },
   "lint-staged": {
     "*.{js,ts}": [
