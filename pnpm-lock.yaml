@@ -61,8 +61,8 @@ importers:
         specifier: ^12.1.0
         version: 12.1.0(eslint@9.18.0(jiti@1.21.7))(tailwindcss@3.4.17)(typescript@5.7.3)(vitest@2.1.8(@types/node@22.10.6)(jsdom@25.0.1))
       '@will-stone/prettier-config':
-        specifier: ^9.0.0
-        version: 9.0.0(prettier@3.4.2)
+        specifier: ^9.0.1
+        version: 9.0.1(prettier@3.4.2)
       astro:
         specifier: ^5.1.5
         version: 5.1.6(@types/node@22.10.6)(jiti@1.21.7)(rollup@4.30.1)(typescript@5.7.3)(yaml@2.7.0)
@@ -1383,8 +1383,8 @@ packages:
     peerDependencies:
       eslint: '>=9.15.0'
 
-  '@will-stone/prettier-config@9.0.0':
-    resolution: {integrity: sha512-caNuiiZBP6+Tc5ret1SYpVszixnxt9ogxJMlNnwE72Dj8abLCXknGvy9Fh8M0sg8hHdjq2gxQvJtN4adcoocYQ==}
+  '@will-stone/prettier-config@9.0.1':
+    resolution: {integrity: sha512-ea6FQFUTr/UwnLYnrl9wLbxJOYG3lNpcV3xaZWBQwbvL7Z1LQcjDHJstqlvOjzhQ7YHzDqayjR9MH3XqZo2u2A==}
     peerDependencies:
       prettier: 3.x
 
@@ -6534,7 +6534,7 @@ snapshots:
       - typescript
       - vitest
 
-  '@will-stone/prettier-config@9.0.0(prettier@3.4.2)':
+  '@will-stone/prettier-config@9.0.1(prettier@3.4.2)':
     dependencies:
       prettier: 3.4.2
       prettier-plugin-packagejson: 2.5.7(prettier@3.4.2)
