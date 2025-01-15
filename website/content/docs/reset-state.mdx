@@ -2,4 +2,44 @@
 title: Reset State
 ---
 
-TODO
+If you need to reset a state value to its initial value, you can call the
+special `$reset` action.
+
+```tsx title="store.ts"
+import { TwoAndEight } from '2n8'
+
+class Store extends TwoAndEight {
+  counter = 0
+
+  addButtonClicked() {
+    this.counter++
+  }
+
+  resetButtonClicked() {
+    this.$reset('counter')
+  }
+}
+
+export const useStore = createReactStore(new Store())
+```
+
+```tsx title="Component.tsx"
+import { useStore } from './store'
+
+const Component = () => {
+  const counter = useStore('counter')
+  const addButtonClicked = useStore('addButtonClicked')
+  const resetButtonClicked = useStore('resetButtonClicked')
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={addButtonClicked}>Add</button>
+      <button onClick={resetButtonClicked}>Reset</button>
+    </div>
+  )
+}
+```
+
+In the above example, clicking `Add` will update the displayed `counter` to `1`.
+Clicking `Reset` will put the `counter` back to `0`.

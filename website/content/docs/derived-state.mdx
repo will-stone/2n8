@@ -2,4 +2,33 @@
 title: Derived State
 ---
 
-TODO
+State values based on one or more other state values, known as derived state,
+can be created using _getters_.
+
+```tsx title="store.ts"
+import { TwoAndEight } from '2n8'
+
+class Store extends TwoAndEight {
+  counter = 0
+  secondCounter = 10
+
+  get totalCounters() {
+    return this.counter + this.secondCounter
+  }
+}
+
+export const useStore = createReactStore(new Store())
+```
+
+Any subscribers to `totalCounters` will update when either `counter` or
+`secondCounter` are updated.
+
+```tsx title="Component.tsx"
+import { useStore } from './store'
+
+const Component = () => {
+  const totalCounters = useStore('totalCounters')
+
+  return <div>{totalCounters}</div>
+}
+```
