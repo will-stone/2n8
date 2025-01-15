@@ -63,6 +63,7 @@ export default defineConfig({
         src: './website/assets/logo.png',
       },
       sidebar: [
+        'index',
         'getting-started',
         {
           items: [
