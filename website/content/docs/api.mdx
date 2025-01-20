@@ -4,14 +4,194 @@ title: API
 
 ## `TwoAndEight`
 
+The abstract class that all stores must extend if you would like to use the
+following utility methods. The class also
+[auto-binds](https://www.npmjs.com/package/auto-bind) your actions so you don't
+need to use arrow functions or bind methods in the constructor.
+
+```ts
+class Store extends TwoAndEight {
+  // ...
+}
+```
+
+### Fields
+
+Custom fields are your state, and should only be mutated in your actions.
+
 ### Methods
+
+Custom methods are your actions, and should be used to mutate state.
+
+There are also some in-built actions. All in-built actions will always be
+prefixed with a `$` to avoid clashing with your own action names.
 
 #### `$emit`
 
+```ts
+$emit(): void
+```
+
+Emit to subscribers early instead of waiting until the end of the action. This
+is useful in asynchronous actions where you may want subscribers to update
+before the async event has finished.
+
+```ts
+class Store extends TwoAndEight {
+  isFetching = false
+
+  async actionName() {
+    this.isFetching = true
+    this.$emit()
+    await fetchThing()
+    this.isFetching = false
+  }
+}
+```
+
 #### `$reset`
+
+```ts
+$reset(stateName?: string): void
+```
+
+Call this to reset the state to its original value. Use a state name to reset a
+single field of state, or call it without any arguments to reset _all_ state to
+their original values.
+
+```ts
+this.$reset()
+this.$reset('stateName')
+```
+
+```ts
+class Store extends TwoAndEight {
+  counter = 0
+
+  resetCounter() {
+    this.$reset('counter')
+  }
+
+  resetAll() {
+    this.$reset()
+  }
+}
+```
 
 ## `createReactStore`
 
+```ts
+createReactStore(store: Store extends TwoAndEight): useStore
+```
+
+Enhances a store instance, returning a React Hook with API utilities attached.
+This should only be called _outside_ of components.
+
+```ts
+const useStore = createReactStore(new Store())
+
+const Component = () => {
+  const actionName = useStore('actionName')
+  const stateName = useStore('stateName')
+  // ...
+}
+```
+
+### `useStore.store`
+
+```ts
+useStore.store: Store
+```
+
+A re-export of the store, useful in subscribers where hooks are not available.
+
+### `useStore.subscribe`
+
+```ts
+useStore.subscribe(callback: () => void): () => void
+```
+
+Subscribes to state updates; registers a callback that fires whenever the
+store's state updates. This can be used to trigger events when all or certain
+state changes.
+
+```ts
+useStore.subscribe(() => {
+  writeCounterToFile(useStore.store.counter)
+})
+```
+
+Note that this will be called on every emitted state from the store. If you'd
+like optimise, it is advised to optimise using if statements and external
+cacheing:
+
+```ts
+let counterCache = useStore.store.counter
+
+useStore.subscribe(() => {
+  if (useStore.store.counter !== counterCache) {
+    writeCounterToFile(useStore.store.counter)
+  }
+})
+```
+
+### `useStore.getSubscribersCount`
+
+```ts
+useStore.getSubscribersCount(): number
+```
+
+Returns the current number of subscribers.
+
 ## `createStore`
 
+```ts
+createStore(store: Store extends TwoAndEight): store
+```
+
+This is the vanilla store creator used by `createReactStore`. You should only
+need this if you are creating other, non-React, integrations with a 2n8 store.
+
+### `store.store`
+
+```ts
+store.store: Store
+```
+
+A re-export of the store, useful in subscribers where hooks are not available.
+
+### `store.subscribe`
+
+```ts
+store.subscribe(callback: () => void): () => void
+```
+
+Subscribes to state updates; registers a callback that fires whenever the
+store's state updates. This can be used to trigger events when all or certain
+state changes.
+
+### `store.getSubscribersCount`
+
+```ts
+store.getSubscribersCount(): number
+```
+
+Returns the current number of subscribers.
+
+### `store.getInitialState`
+
+```ts
+store.getInitialState(): Store
+```
+
+Returns the initial state snapshot, before any mutations have occurred.
+
 ## `clone`
+
+```ts
+clone(value: unknown): value
+```
+
+This is the internal value cloning tool used by the library. It is re-exported
+for your convenience, in case you need to clone an external object or array in
+an action, to stop it being mutated when the state changes.
