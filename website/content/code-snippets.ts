@@ -122,7 +122,7 @@ const initialState: State = {
 class Store {
   count = initialState.count
 
-  constructor(savedState?: State) {
+  constructor() {
     makeAutoObservable(this)
   }
 
