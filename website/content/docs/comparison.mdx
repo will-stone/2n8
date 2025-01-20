@@ -47,7 +47,7 @@ actions.
 
 |                                                 | 2n8                               | Zustand                                                                                                 | MobX                       |
 | ----------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------- |
-| When do subscribers run?                        | After action (or on manual emit). | After set state.                                                                                        | At the end of actions      |
+| When do subscribers run?                        | After action (or on manual emit). | After set state.                                                                                        | At the end of actions.     |
 | What equality checks are made on state changes? | Deep equality check is built-in.  | Uses `Object.is` by default for equality, and shallow or deep equality checking must be manually added. | Deep changes are observed. |
 
 ## Bundle size
