@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.9.1](https://github.com/will-stone/2n8/compare/0.9.0...0.9.1) (2025-01-20)
+
+### Patches
+
+- Do not bundle rfdc
+  ([2413bf7](https://github.com/will-stone/2n8/commit/2413bf79d8096a42fbfca9ecb85d51063e2e9034))
+- Remove unused dep
+  ([6e68181](https://github.com/will-stone/2n8/commit/6e68181381c102caf63cbc702a3c37284ce78955))
+
 ## [0.9.0](https://github.com/will-stone/2n8/compare/0.8.3...0.9.0) (2025-01-20)
 
 ### Minor changes
