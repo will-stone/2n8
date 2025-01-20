@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/will-stone/2n8/compare/0.8.3...0.9.0) (2025-01-20)
+
+### Minor changes
+
+- Export API from create function rather than off the store class
+  ([5561a49](https://github.com/will-stone/2n8/commit/5561a49015595d41a8a65735a5cb947e47eacdcb))
+
 ## [0.8.3](https://github.com/will-stone/2n8/compare/0.8.2...0.8.3) (2025-01-12)
 
 ### Patches
