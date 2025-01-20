@@ -50,6 +50,7 @@
       "prettier --write"
     ]
   },
+  "prettier": "@will-stone/prettier-config",
   "dependencies": {
     "auto-bind": "^5.0.1",
     "es-toolkit": "^1.30.1",
