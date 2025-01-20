@@ -10,6 +10,9 @@ export default defineConfig({
     react(),
     starlight({
       customCss: ['./website/tailwind.css'],
+      editLink: {
+        baseUrl: 'https://github.com/will-stone/2n8/edit/main/',
+      },
       favicon: '/favicon.svg',
       head: [
         {
