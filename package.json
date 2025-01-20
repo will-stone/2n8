@@ -63,6 +63,7 @@
     "@astrojs/starlight-tailwind": "^3.0.0",
     "@astrojs/tailwind": "^5.1.4",
     "@commits-with-character/conventional-changelog-preset": "^2.0.0",
+    "@expressive-code/plugin-line-numbers": "^0.40.1",
     "@release-it/conventional-changelog": "^10.0.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

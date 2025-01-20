@@ -77,6 +77,7 @@ export default defineConfig({
           ],
           label: 'Guides',
         },
+        'comparison',
         'api',
       ],
       social: {

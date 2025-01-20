@@ -1,0 +1,48 @@
+---
+title: Comparison
+---
+
+import { Code, Tabs, TabItem, Aside } from '@astrojs/starlight/components'
+import { counter, zustand, mobx } from '../code-snippets.js'
+
+2n8 feels like a blend between two excellent state management libraries:
+[Zustand](https://zustand.docs.pmnd.rs/) and [MobX](https://mobx.js.org/).
+Therefore, here's a quick comparison with those two packages.
+
+<Aside>
+  There are always compromises. 2n8 aims for simplicity when setting up your
+  store code using TypeScript, but the other two libraries mentioned here are
+  far more mature and have a great ecosystem and community. Please use the tool
+  that best suits your use case.
+</Aside>
+
+## Boilerplate
+
+The main reason for creating 2n8 was to limit the amount of boilerplate and
+repetition required to make a store when using TypeScript. Here's a simple
+counter example:
+
+<Tabs>
+  <TabItem label="2n8">
+    <Code showLineNumbers code={counter} lang="tsx" title="Counter.tsx" />
+  </TabItem>
+  <TabItem label="Zustand">
+    <Code showLineNumbers code={zustand} lang="tsx" title="Counter.tsx" />
+  </TabItem>
+  <TabItem label="MobX">
+    <Code showLineNumbers code={mobx} lang="tsx" title="Counter.tsx" />
+  </TabItem>
+</Tabs>
+
+In this example, 2n8 requires the least store boilerplate whereas MobX needs
+less component binding.
+
+The advantage of 2n8's concise store implementation is that it doesn't require
+external type definitions or an initial state object. TypeScript can infer types
+inside the class too; take another look at the 2n8 example, there's no types in
+sight, but this store automatically has the correct types for both state and
+actions.
+
+## Bundle size
+
+## Benchmarks

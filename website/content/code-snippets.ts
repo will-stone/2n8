@@ -66,46 +66,6 @@ const Async = () => {
   )
 }`
 
-export const twoAndEightComments = `import { TwoAndEight, createReactStore } from '2n8'
-
-// Classes work really nicely with TypeScript. This class is
-// fully typed but there's no TypeScript syntax in sight!
-class Store extends TwoAndEight {
-  // Set your initial state. In this case the type
-  // is also automatically inferred as \`number\`.
-  count = 0
-
-  // An action that can be called to modify state.
-  addClicked() {
-    this.count = this.count + 1
-  }
-
-  resetClicked() {
-    // Built in reset mechanism means you don't
-    // need to keep track of initial state.
-    this.$reset('count')
-  }
-}
-
-// Create the React hook.
-const useStore = createReactStore(new Store())
-
-const Counter = () => {
-  // Use selectors to grab the required state and actions.
-  // If you use the same one over-and-over, you can abstract
-  // them to their own hooks, e.g. \`useCount()\`.
-  const count = useStore('count')
-  const addClicked = useStore('addClicked')
-  const resetClicked = useStore('resetClicked')
-  return (
-    <div>
-      <span>{count}</span>
-      <button onClick={addClicked}>One up</button>
-      <button onClick={resetClicked}>Reset</button>
-    </div>
-  )
-}`
-
 export const zustand = `import { create } from 'zustand'
 
 type State = {
@@ -118,13 +78,21 @@ type Actions = {
 }
 
 const initialState: State = {
-  count: 0
+  count: 0,
 }
 
 const useStore = create<State & Actions>()((set) => ({
   ...initialState,
-  addClicked: () => set((state) => ({ count: state.count + 1 })),
-  resetClicked: () => set((state) => initialState),
+  addClicked: () =>
+    set((state) => ({
+      ...state,
+      count: state.count + 1,
+    })),
+  resetClicked: () =>
+    set((state) => ({
+      ...state,
+      count: initialState.count,
+    })),
 }))
 
 const Counter = () => {
@@ -139,3 +107,42 @@ const Counter = () => {
     </div>
   )
 }`
+
+export const mobx = `import { observer } from 'mobx-react-lite'
+import { makeAutoObservable } from "mobx"
+
+type State = {
+  count: number
+}
+
+const initialState: State = {
+  count: 0
+}
+
+class Store {
+  count = initialState.count
+
+  constructor(savedState?: State) {
+    makeAutoObservable(this)
+  }
+
+  addClicked() {
+    this.count++
+  }
+
+  resetClicked() {
+    this.count = initialState.count
+  }
+}
+
+const store = new Store()
+
+const Counter = observer(() => {
+  return (
+    <div>
+      <span>{store.count}</span>
+      <button onClick={store.addClicked}>One up</button>
+      <button onClick={store.resetClicked}>Reset</button>
+    </div>
+  )
+})`
