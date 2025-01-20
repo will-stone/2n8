@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/will-stone/2n8/compare/0.10.0...0.10.1) (2025-01-20)
+
+### Patches
+
+- Replace equality checker package for a faster one
+  ([dcf68d9](https://github.com/will-stone/2n8/commit/dcf68d9ceddce3aca42d084462037aff8d8055cc))
+
 ## [0.10.0](https://github.com/will-stone/2n8/compare/0.9.1...0.10.0) (2025-01-20)
 
 ### Minor changes
