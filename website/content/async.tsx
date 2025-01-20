@@ -75,6 +75,7 @@ export const Async: FC = () => {
         </button>
         <button
           className="!m-0 rounded bg-stone-300 px-4 dark:bg-stone-700"
+          disabled={status !== 'success'}
           onClick={resetClicked}
           type="button"
         >
