@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "before:init": ["pnpm run lint", "pnpm run build"]
+    "before:init": ["pnpm lint", "pnpm build"]
   },
   "github": {
     "release": true
