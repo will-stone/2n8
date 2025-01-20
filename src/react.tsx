@@ -7,25 +7,21 @@ import { clone } from './clone.js'
 
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
-): (<
-  Field extends keyof Omit<
-    Store,
-    | '$emit'
-    | '$getInitialState'
-    | '$getSubscribersCount'
-    | '$reset'
-    | '$subscribe'
-  >,
->(
+): (<Field extends keyof Omit<Store, '$emit' | '$reset'>>(
   field: Field,
-) => Store[Field]) & { store: Store } {
-  const store = createStore(rawStore)
+) => Store[Field]) & {
+  store: Store
+  subscribe: (subscriber: () => void) => () => void
+  getSubscribersCount: () => number
+} {
+  const { getInitialState, getSubscribersCount, store, subscribe } =
+    createStore(rawStore)
 
   const cache = {} as Store
 
   function useStore<Field extends keyof Store>(field: Field): Store[Field] {
     return useSyncExternalStore(
-      store.$subscribe,
+      subscribe,
       () => {
         const storedValue = store[field]
         const cachedValue = cache[field]
@@ -41,11 +37,13 @@ export function createReactStore<Store extends TwoAndEight>(
         return cache[field]
       },
       // @ts-expect-error -- Initial state doesn't (and shouldn't) include functions, but public selector API requires access to actions made by consumer.
-      () => store.$getInitialState()[field],
+      () => getInitialState()[field],
     )
   }
 
   useStore.store = store
+  useStore.subscribe = subscribe
+  useStore.getSubscribersCount = getSubscribersCount
 
   return useStore
 }

@@ -41,26 +41,16 @@ export abstract class TwoAndEight {
     // eslint-disable-next-line no-console
     console.log(field)
   }
-
-  $subscribe(subscriber: () => void): () => void {
-    // no-op, for now, it's enhanced in createStore
-    // eslint-disable-next-line no-console
-    console.log(subscriber)
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return () => {}
-  }
-
-  $getInitialState(): State<this> {
-    // no-op, for now, it's enhanced in createStore
-    return this
-  }
-
-  $getSubscribersCount(): number {
-    return 0
-  }
 }
 
-export function createStore<Store extends TwoAndEight>(store: Store): Store {
+export function createStore<Store extends TwoAndEight>(
+  store: Store,
+): {
+  getInitialState: () => State<Store>
+  store: Store
+  subscribe: (subscriber: () => void) => () => void
+  getSubscribersCount: () => number
+} {
   const subscribers = new Set<() => void>()
 
   store.$emit = () => {
@@ -88,7 +78,7 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
     }
   }
 
-  store.$getInitialState = () => clone(initialState)
+  const getInitialState = () => clone(initialState)
 
   store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
@@ -96,14 +86,12 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
       if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset an action.')
       }
-      const initialValue = store.$getInitialState()[field]
+      const initialValue = getInitialState()[field]
       if (initialValue !== undefined) {
         Reflect.set(store, field, initialValue)
       }
     } else {
-      for (const [key, initialValue] of Object.entries(
-        store.$getInitialState(),
-      )) {
+      for (const [key, initialValue] of Object.entries(getInitialState())) {
         // No need to reset functions.
         if (typeof initialValue !== 'function') {
           Reflect.set(store, key, initialValue)
@@ -112,7 +100,7 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
     }
   }
 
-  store.$subscribe = (subscriber: () => void): (() => void) => {
+  const subscribe = (subscriber: () => void): (() => void) => {
     subscribers.add(subscriber)
     return (): void => {
       const prevSubscribersCount = subscribers.size
@@ -126,7 +114,12 @@ export function createStore<Store extends TwoAndEight>(store: Store): Store {
   }
 
   // This is just for testing purposes really; nobody should really have to call this.
-  store.$getSubscribersCount = () => subscribers.size
+  const getSubscribersCount = () => subscribers.size
 
-  return store
+  return {
+    getInitialState,
+    getSubscribersCount,
+    store,
+    subscribe,
+  }
 }

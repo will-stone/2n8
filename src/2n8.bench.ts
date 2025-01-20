@@ -17,11 +17,12 @@ describe('simple count', () => {
     }
   }
 
-  const twoAndEightStore = createStore(new TwoAndEightStore())
+  const { store: twoAndEightStore, subscribe: twoAndEightSubscribe } =
+    createStore(new TwoAndEightStore())
 
   bench('2n8', async () => {
     const subscriptionComplete = new Promise<void>((resolve) => {
-      twoAndEightStore.$subscribe(() => {
+      twoAndEightSubscribe(() => {
         if (twoAndEightStore.count === 1) {
           resolve()
         }

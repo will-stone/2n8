@@ -358,31 +358,31 @@ test('should remove subscriber on unmount', async () => {
   render(<App />)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.store.$getSubscribersCount()).toBe(4)
+  expect(useStore.getSubscribersCount()).toBe(4)
   const addTodo = screen.getByText('Add')
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
-  expect(useStore.store.$getSubscribersCount()).toBe(5)
+  expect(useStore.getSubscribersCount()).toBe(5)
   await user.click(addTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.getByText('c: something')).toBeVisible()
-  expect(useStore.store.$getSubscribersCount()).toBe(6)
+  expect(useStore.getSubscribersCount()).toBe(6)
   const removeTodo = screen.getByText('Remove')
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.queryByText('c: something')).not.toBeInTheDocument()
-  expect(useStore.store.$getSubscribersCount()).toBe(5)
+  expect(useStore.getSubscribersCount()).toBe(5)
   await user.click(removeTodo)
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
-  expect(useStore.store.$getSubscribersCount()).toBe(4)
+  expect(useStore.getSubscribersCount()).toBe(4)
   await user.click(removeTodo)
   expect(screen.queryByText('a: something')).not.toBeInTheDocument()
   expect(errorSpy).not.toHaveBeenCalled()
-  expect(useStore.store.$getSubscribersCount()).toBe(3)
+  expect(useStore.getSubscribersCount()).toBe(3)
 })
 
 test('should handle complex state', async () => {
@@ -409,22 +409,36 @@ test('should handle complex state', async () => {
 
   const useStore = createReactStore(new Store())
 
-  const App = () => {
+  const Data = () => {
     const data = useStore('data')
+
+    return (
+      <div>
+        {data.foo ? <div>Foo: {data.foo}</div> : null}
+        <div>Bar: {data.bar}</div>
+      </div>
+    )
+  }
+
+  const Arr = () => {
     const arr = useStore('arr')
+
+    return (
+      <div>
+        {arr.map((a) => (
+          <div key={a}>{a}</div>
+        ))}
+      </div>
+    )
+  }
+
+  const Buttons = () => {
     const changeData = useStore('changeData')
     const changeDataDeep = useStore('changeDataDeep')
     const deleteData = useStore('deleteData')
     const addToArr = useStore('addToArr')
     return (
       <div>
-        {data.foo ? <div>Foo: {data.foo}</div> : null}
-        <div>Bar: {data.bar}</div>
-        <div>
-          {arr.map((a) => (
-            <div key={a}>{a}</div>
-          ))}
-        </div>
         <button onClick={changeData} type="button">
           Change Data
         </button>
@@ -437,6 +451,16 @@ test('should handle complex state', async () => {
         <button onClick={addToArr} type="button">
           Add To Array
         </button>
+      </div>
+    )
+  }
+
+  const App = () => {
+    return (
+      <div>
+        <Data />
+        <Arr />
+        <Buttons />
       </div>
     )
   }
@@ -527,10 +551,9 @@ test('should forward on API', () => {
   }
   const useStore = createReactStore(new Store())
   expect(useStore.store.$emit).toBeDefined()
-  expect(useStore.store.$getInitialState).toBeDefined()
-  expect(useStore.store.$getSubscribersCount).toBeDefined()
+  expect(useStore.getSubscribersCount).toBeDefined()
   expect(useStore.store.$reset).toBeDefined()
-  expect(useStore.store.$subscribe).toBeDefined()
+  expect(useStore.subscribe).toBeDefined()
   expect(useStore.store.count).toBe(1)
   expect(useStore.store.countPlusOne).toBe(2)
 })

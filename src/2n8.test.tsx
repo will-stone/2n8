@@ -30,7 +30,7 @@ test('should update when using async actions', async () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expectTypeOf(store.count).toMatchTypeOf<number>()
   expect(store.count).toBe(0)
   store.buttonClicked()
@@ -60,7 +60,7 @@ test('should always return master record', async () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expect(store.count).toBe(0)
   store.asyncButtonClicked()
   expect(store.count).toBe(1)
@@ -100,7 +100,7 @@ test('should reset all state', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
 
   expect(store.greeting).toBe('hello')
   expectTypeOf(store.greeting).toMatchTypeOf<string>()
@@ -164,7 +164,7 @@ test('should reset single field', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   store.resetCount()
   expect(store.count).toBe(999)
   expect(store.greeting).toBe('hello')
@@ -201,7 +201,7 @@ test('should reset complex state', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expect(store.arr).toStrictEqual([{ foo: 'bar' }])
   store.change()
   expect(store.arr).toStrictEqual([{ foo: 'moo' }])
@@ -230,7 +230,7 @@ test('should not mutate initial state on reset', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   store.change()
   expect(store.obj).toStrictEqual({ foo: { bar: 'moo' } })
@@ -273,7 +273,7 @@ test('should not mutate external objects when cloned', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ foo: { bar: 'baz' } })
   store.change()
@@ -309,7 +309,7 @@ test('should not mutate external objects in nested object state when cloned', ()
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(externalObj).toStrictEqual({ bar: 'baz' })
   store.change()
@@ -340,7 +340,7 @@ test('should compute derived value', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expect(store.total).toBe(4)
   store.increaseCount()
   expect(store.total).toBe(5)
@@ -367,7 +367,7 @@ test('should throw if attempting to reset an action', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store } = createStore(new Store())
   expect(() => store.resetAction()).toThrow('2n8: Cannot reset an action.')
   expect(() => store.resetResetApi()).toThrow('2n8: Cannot reset an action.')
   expect(() => store.resetSubscribeApi()).toThrow(
@@ -385,14 +385,14 @@ test('should return initial state', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { getInitialState, store } = createStore(new Store())
   store.increaseCount()
-  expect(store.$getInitialState()).toStrictEqual({
+  expect(getInitialState()).toStrictEqual({
     count: 0,
     untouched: 'foo',
   })
-  expectTypeOf(store.$getInitialState().count).toMatchTypeOf<number>()
-  expectTypeOf(store.$getInitialState().untouched).toMatchTypeOf<string>()
+  expectTypeOf(getInitialState().count).toMatchTypeOf<number>()
+  expectTypeOf(getInitialState().untouched).toMatchTypeOf<string>()
 })
 
 test('should return current state', () => {
@@ -409,18 +409,17 @@ test('should return current state', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { getSubscribersCount, store, subscribe } = createStore(new Store())
   store.increaseCount()
   expect(clone(store)).toStrictEqual({
     $emit: expect.any(Function),
-    $getInitialState: expect.any(Function),
-    $getSubscribersCount: expect.any(Function),
     $reset: expect.any(Function),
-    $subscribe: expect.any(Function),
     count: 1,
     increaseCount: expect.any(Function),
     untouched: 'foo',
   })
+  expect(subscribe).toStrictEqual(expect.any(Function))
+  expect(getSubscribersCount).toStrictEqual(expect.any(Function))
   expect(store.derived).toBe(11)
   expectTypeOf(store.count).toMatchTypeOf<number>()
   expectTypeOf(store.untouched).toMatchTypeOf<string>()
@@ -441,9 +440,9 @@ test('should not call subscriber when state has not changed', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store, subscribe } = createStore(new Store())
   const subscribeSpy = vi.fn()
-  store.$subscribe(subscribeSpy)
+  subscribe(subscribeSpy)
   store.noop()
   expect(subscribeSpy).toHaveBeenCalledOnce()
   store.noop2()
@@ -459,9 +458,9 @@ test('should unsubscribe', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store, subscribe } = createStore(new Store())
   const spy = vi.fn()
-  const unsubscribe = store.$subscribe(spy)
+  const unsubscribe = subscribe(spy)
   store.increaseCount()
   expect(spy).toHaveBeenCalledOnce()
   unsubscribe()
@@ -515,9 +514,9 @@ test('should update deep state', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store, subscribe } = createStore(new Store())
   const subscribeSpy = vi.fn()
-  store.$subscribe(subscribeSpy)
+  subscribe(subscribeSpy)
   expect(store.obj).toStrictEqual({ foo: { bar: 'baz' } })
   expect(store.arr).toStrictEqual(['hello'])
   store.update()
@@ -549,9 +548,9 @@ test('should not fire subscription until end of action', () => {
     }
   }
 
-  const store = createStore(new Store())
+  const { store, subscribe } = createStore(new Store())
   const subscribeSpy = vi.fn()
-  store.$subscribe(subscribeSpy)
+  subscribe(subscribeSpy)
   store.increment()
   expect(subscribeSpy).toHaveBeenCalledOnce()
   store.resetCount()
