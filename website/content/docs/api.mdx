@@ -135,14 +135,6 @@ useStore.subscribe(() => {
 })
 ```
 
-### `useStore.getSubscribersCount`
-
-```ts
-useStore.getSubscribersCount(): number
-```
-
-Returns the current number of subscribers.
-
 ## `createStore`
 
 ```ts
@@ -169,14 +161,6 @@ store.subscribe(callback: () => void): () => void
 Subscribes to state updates; registers a callback that fires whenever the
 store's state updates. This can be used to trigger events when all or certain
 state changes.
-
-### `store.getSubscribersCount`
-
-```ts
-store.getSubscribersCount(): number
-```
-
-Returns the current number of subscribers.
 
 ### `store.getInitialState`
 

@@ -409,7 +409,7 @@ test('should return current state', () => {
     }
   }
 
-  const { getSubscribersCount, store, subscribe } = createStore(new Store())
+  const { store, subscribe } = createStore(new Store())
   store.increaseCount()
   expect(clone(store)).toStrictEqual({
     $emit: expect.any(Function),
@@ -419,7 +419,6 @@ test('should return current state', () => {
     untouched: 'foo',
   })
   expect(subscribe).toStrictEqual(expect.any(Function))
-  expect(getSubscribersCount).toStrictEqual(expect.any(Function))
   expect(store.derived).toBe(11)
   expectTypeOf(store.count).toMatchTypeOf<number>()
   expectTypeOf(store.untouched).toMatchTypeOf<string>()

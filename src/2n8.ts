@@ -49,7 +49,6 @@ export function createStore<Store extends TwoAndEight>(
   getInitialState: () => State<Store>
   store: Store
   subscribe: (subscriber: () => void) => () => void
-  getSubscribersCount: () => number
 } {
   const subscribers = new Set<() => void>()
 
@@ -102,23 +101,11 @@ export function createStore<Store extends TwoAndEight>(
 
   const subscribe = (subscriber: () => void): (() => void) => {
     subscribers.add(subscriber)
-    return (): void => {
-      const prevSubscribersCount = subscribers.size
-      subscribers.delete(subscriber)
-      const nextSubscribersCount = subscribers.size
-      if (nextSubscribersCount >= prevSubscribersCount) {
-        // eslint-disable-next-line no-console
-        console.error("2n8: Subscriber wasn't removed on unsubscribe.")
-      }
-    }
+    return () => subscribers.delete(subscriber)
   }
-
-  // This is just for testing purposes really; nobody should really have to call this.
-  const getSubscribersCount = () => subscribers.size
 
   return {
     getInitialState,
-    getSubscribersCount,
     store,
     subscribe,
   }
