@@ -12,7 +12,7 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['react', 'es-toolkit'],
+      external: ['react', 'es-toolkit', 'rfdc'],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',
