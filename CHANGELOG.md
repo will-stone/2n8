@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/will-stone/2n8/compare/0.10.1...0.10.2) (2025-01-21)
+
+### Patches
+
+- Add emoji-logo to README title
+  ([248faeb](https://github.com/will-stone/2n8/commit/248faeb31690a7955995bbdc5cdff6bacea5af4a))
+
 ## [0.10.1](https://github.com/will-stone/2n8/compare/0.10.0...0.10.1) (2025-01-20)
 
 ### Patches
