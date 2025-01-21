@@ -1,4 +1,4 @@
-# 2n8
+# 🫤 2n8
 
 > Oh my, your store is in a right two and eight.
 
