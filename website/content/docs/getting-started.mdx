@@ -48,13 +48,14 @@ class Store extends TwoAndEight {
 export const useStore = createReactStore(new Store())
 ```
 
-## Import into your React components
+## Import the hook into your React components
 
-The hook provides flexible state management that can be used directly in any
-component. When you modify the state, the consuming component automatically
-re-renders to reflect those changes.
+The hook provides a direct connection to your store. When you modify the state,
+the consuming component automatically re-renders to reflect those changes.
 
 ```tsx title="Expression.tsx"
+import { useStore } from './store'
+
 function Expression() {
   const expression = useStore('expression')
   return <h1>{expression}</h1>
@@ -62,6 +63,8 @@ function Expression() {
 ```
 
 ```tsx title="App.tsx"
+import { useStore } from './store'
+
 function App() {
   const addDisguise = useStore('addDisguise')
   const resetToConfusion = useStore('resetToConfusion')

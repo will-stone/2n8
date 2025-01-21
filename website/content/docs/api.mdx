@@ -111,9 +111,8 @@ A re-export of the store, useful in subscribers where hooks are not available.
 useStore.subscribe(callback: () => void): () => void
 ```
 
-Subscribes to state updates; registers a callback that fires whenever the
-store's state updates. This can be used to trigger events when all or certain
-state changes.
+Subscribes to state updates; registers a callback that fires whenever an action
+emits. This can be used to trigger events when all or certain state changes.
 
 ```ts
 useStore.subscribe(() => {
@@ -122,8 +121,7 @@ useStore.subscribe(() => {
 ```
 
 Note that this will be called on every emitted state from the store. If you'd
-like optimise, it is advised to optimise using if statements and external
-cacheing:
+like to optimise, it is advisable to use `if` statements and an external cache:
 
 ```ts
 let counterCache = useStore.store.counter
@@ -158,9 +156,8 @@ A re-export of the store, useful in subscribers where hooks are not available.
 store.subscribe(callback: () => void): () => void
 ```
 
-Subscribes to state updates; registers a callback that fires whenever the
-store's state updates. This can be used to trigger events when all or certain
-state changes.
+Subscribes to state updates; registers a callback that fires whenever an action
+emits. This can be used to trigger events when all or certain state changes.
 
 ### `store.getInitialState`
 
@@ -178,4 +175,4 @@ clone(value: unknown): value
 
 This is the internal value cloning tool used by the library. It is re-exported
 for your convenience, in case you need to clone an external object or array in
-an action, to stop it being mutated when the state changes.
+an action to stop it being mutated when the state changes.
