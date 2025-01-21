@@ -84,7 +84,7 @@ export default defineConfig({
         },
         {
           attrs: {
-            content: '/favicon.svg',
+            content: '/web-app-manifest-512x512.png',
             property: 'og:image',
           },
           tag: 'meta',
