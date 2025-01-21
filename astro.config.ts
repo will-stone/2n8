@@ -61,6 +61,34 @@ export default defineConfig({
           },
           tag: 'link',
         },
+        {
+          attrs: {
+            content: '2n8 - state management',
+            property: 'og:title',
+          },
+          tag: 'meta',
+        },
+        {
+          attrs: {
+            content: 'Minimal state boilerplate.',
+            property: 'og:description',
+          },
+          tag: 'meta',
+        },
+        {
+          attrs: {
+            content: 'website',
+            property: 'og:type',
+          },
+          tag: 'meta',
+        },
+        {
+          attrs: {
+            content: '/favicon.svg',
+            property: 'og:image',
+          },
+          tag: 'meta',
+        },
       ],
       logo: {
         src: './website/assets/logo.png',
