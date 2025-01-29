@@ -129,6 +129,7 @@ let counterCache = useStore.store.counter
 useStore.subscribe(() => {
   if (useStore.store.counter !== counterCache) {
     writeCounterToFile(useStore.store.counter)
+    counterCache = useStore.store.counter
   }
 })
 ```
