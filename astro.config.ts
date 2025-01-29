@@ -89,6 +89,15 @@ export default defineConfig({
           },
           tag: 'meta',
         },
+        {
+          attrs: {
+            'data-domains': '2n8.wstone.uk',
+            'data-website-id': '36524414-8144-452a-88e1-69e1b31c722d',
+            defer: true,
+            src: 'https://celadon-seriema.pikapod.net/script.js',
+          },
+          tag: 'script',
+        },
       ],
       logo: {
         src: './website/assets/logo.png',
