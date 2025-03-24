@@ -108,10 +108,12 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.2.1",
+  "packageManager": "pnpm@10.6.5",
   "pnpm": {
     "onlyBuiltDependencies": [
-      "simple-git-hooks"
+      "simple-git-hooks",
+      "esbuild",
+      "sharp"
     ]
   },
   "overrides": {
