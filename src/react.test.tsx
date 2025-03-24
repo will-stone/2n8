@@ -110,30 +110,39 @@ test('should update count component and not rerender others', async () => {
 
   const user = userEvent.setup()
   render(<App />)
+
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 1')).toBeVisible()
   expect(screen.getByText('Count: 0')).toBeVisible()
   expect(screen.getByText('Derived component: 1')).toBeVisible()
   expect(screen.getByText('Derived: 10')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Button' }))
+
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 2')).toBeVisible()
   expect(screen.getByText('Count: 1')).toBeVisible()
   expect(screen.getByText('Derived component: 2')).toBeVisible()
   expect(screen.getByText('Derived: 11')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Button' }))
+
   expect(screen.getByText('App component: 1')).toBeVisible()
   expect(screen.getByText('Count component: 3')).toBeVisible()
   expect(screen.getByText('Count: 2')).toBeVisible()
   expect(screen.getByText('Derived component: 3')).toBeVisible()
   expect(screen.getByText('Derived: 12')).toBeVisible()
   expect(screen.getByText('Button component: 1')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'AsyncButton' }))
+
   expect(screen.getByText('Count: 3')).toBeVisible()
   expect(screen.getByText('Derived: 13')).toBeVisible()
+
   await vi.advanceTimersByTimeAsync(10_001)
+
   expect(screen.getByText('Count: 8')).toBeVisible()
   expect(screen.getByText('Derived: 18')).toBeVisible()
 })
@@ -185,10 +194,13 @@ test('should batch state updates', async () => {
 
   const user = userEvent.setup()
   render(<App />)
+
   expect(screen.getByText('Counts component: 1')).toBeVisible()
   expect(screen.getByText('Count: 1')).toBeVisible()
   expect(screen.getByText('Count2: 3')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Button' }))
+
   expect(screen.getByText('Counts component: 2')).toBeVisible()
   expect(screen.getByText('Count: 2')).toBeVisible()
   expect(screen.getByText('Count2: 4')).toBeVisible()
@@ -257,14 +269,23 @@ test('should render derived', async () => {
 
   const user = userEvent.setup()
   render(<App />)
+
   expect(screen.getByText('Total: 4')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Add' }))
+
   expect(screen.getByText('Total: 5')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Reset' }))
+
   expect(screen.getByText('Total: 4')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Add' }))
+
   expect(screen.getByText('Total: 5')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Reset Count' }))
+
   expect(screen.getByText('Total: 4')).toBeVisible()
 })
 
@@ -302,10 +323,15 @@ test('should reset state', async () => {
 
   const user = userEvent.setup()
   render(<App />)
+
   expect(screen.getByText('Count: 1')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Add Button' }))
+
   expect(screen.getByText('Count: 2')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Reset Button' }))
+
   expect(screen.getByText('Count: 1')).toBeVisible()
 })
 
@@ -356,25 +382,36 @@ test('should remove subscriber on unmount', async () => {
 
   const user = userEvent.setup()
   render(<App />)
+
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
+
   const addTodo = screen.getByText('Add')
   await user.click(addTodo)
+
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
+
   await user.click(addTodo)
+
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.getByText('c: something')).toBeVisible()
+
   const removeTodo = screen.getByText('Remove')
   await user.click(removeTodo)
+
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.getByText('b: something')).toBeVisible()
   expect(screen.queryByText('c: something')).not.toBeInTheDocument()
+
   await user.click(removeTodo)
+
   expect(screen.getByText('a: something')).toBeVisible()
   expect(screen.queryByText('b: something')).not.toBeInTheDocument()
+
   await user.click(removeTodo)
+
   expect(screen.queryByText('a: something')).not.toBeInTheDocument()
   expect(errorSpy).not.toHaveBeenCalled()
 })
@@ -461,21 +498,30 @@ test('should handle complex state', async () => {
 
   const user = userEvent.setup()
   render(<App />)
+
   expect(screen.getByText('Foo: 1')).toBeVisible()
   expect(screen.getByText('Bar: buz')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Change Data' }))
+
   expect(screen.getByText('Foo: 5')).toBeVisible()
   expect(screen.getByText('Bar: moo')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Change Data Deep' }))
+
   expect(screen.getByText('Foo: 5')).toBeVisible()
   expect(screen.getByText('Bar: www')).toBeVisible()
+
   await user.click(screen.getByRole('button', { name: 'Delete Data' }))
+
   expect(screen.queryByText('Foo:')).not.toBeInTheDocument()
   expect(screen.getByText('Bar: www')).toBeVisible()
 
   expect(screen.getByText('hello')).toBeVisible()
   expect(screen.queryByText('bye')).not.toBeInTheDocument()
+
   await user.click(screen.getByRole('button', { name: 'Add To Array' }))
+
   expect(screen.getByText('hello')).toBeVisible()
   expect(screen.getByText('bye')).toBeVisible()
 })
@@ -528,10 +574,15 @@ test('should handle complex derived state', async () => {
 
   const user = userEvent.setup()
   render(<App />)
+
   expect(screen.getByTestId('derived')).toHaveTextContent('no')
+
   await user.click(screen.getByRole('button', { name: 'Add' }))
+
   expect(screen.getByTestId('derived')).toHaveTextContent('yes')
+
   await user.click(screen.getByRole('button', { name: 'Reset' }))
+
   expect(screen.getByTestId('derived')).toHaveTextContent('no')
 })
 
@@ -544,6 +595,7 @@ test('should forward on API', () => {
     }
   }
   const useStore = createReactStore(new Store())
+
   expect(useStore.store.$emit).toBeDefined()
   expect(useStore.store.$reset).toBeDefined()
   expect(useStore.subscribe).toBeDefined()
