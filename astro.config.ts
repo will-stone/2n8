@@ -117,9 +117,13 @@ export default defineConfig({
         'comparison',
         'api',
       ],
-      social: {
-        github: 'https://github.com/will-stone/2n8',
-      },
+      social: [
+        {
+          href: 'https://github.com/will-stone/2n8',
+          icon: 'github',
+          label: 'GitHub',
+        },
+      ],
       title: '2n8',
     }),
     tailwind({
