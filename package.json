@@ -95,7 +95,7 @@
     "vite-plugin-dts": "^4.5.3",
     "vitest": "^3.1.1",
     "vitest-fail-on-console": "^0.7.1",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.3"
   },
   "peerDependencies": {
     "react": "^18.3.1 || ^19.0.0"
