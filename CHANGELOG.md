@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.0](https://github.com/will-stone/2n8/compare/0.10.3...0.11.0) (2025-04-10)
+
+### Minor changes
+
+- Refactor auto-binding
+  ([1d8903c](https://github.com/will-stone/2n8/commit/1d8903cfec39f0e1323f5c91419e3102f9edde23))
+- Refactor auto-binding
+  ([4840377](https://github.com/will-stone/2n8/commit/4840377fbc648e1062165146e07cf6c1557d544a))
+
 ## [0.10.3](https://github.com/will-stone/2n8/compare/0.10.2...0.10.3) (2025-04-10)
 
 ### Patches
