@@ -49,8 +49,8 @@
   },
   "prettier": "@will-stone/prettier-config",
   "dependencies": {
+    "@ver0/deep-equal": "^1.0.0",
     "auto-bind": "^5.0.1",
-    "fast-equals": "^5.2.2",
     "rfdc": "^1.4.1"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { deepEqual } from 'fast-equals'
+import { isEqual } from '@ver0/deep-equal'
 import { useSyncExternalStore } from 'react'
 
 import type { TwoAndEight } from './2n8.js'
@@ -28,7 +28,7 @@ export function createReactStore<Store extends TwoAndEight>(
           return storedValue
         }
 
-        if (!deepEqual(storedValue, cachedValue)) {
+        if (!isEqual(storedValue, cachedValue)) {
           cache[field] = clone(store[field])
         }
 

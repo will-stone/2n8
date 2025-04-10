@@ -8,12 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@ver0/deep-equal':
+        specifier: ^1.0.0
+        version: 1.0.0
       auto-bind:
         specifier: ^5.0.1
         version: 5.0.1
-      fast-equals:
-        specifier: ^5.2.2
-        version: 5.2.2
       rfdc:
         specifier: ^1.4.1
         version: 1.4.1
@@ -1526,6 +1526,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@ver0/deep-equal@1.0.0':
+    resolution: {integrity: sha512-XKIlF1i6UJiyTL52mDrSDDgRX7Qr5yJ7ts9zn2liZEmhiAEum4XKrJRAWmHdFwCQeGBU+rb+/b0ldw/9V8lOWw==}
+    engines: {node: '>=18'}
+
   '@vitejs/plugin-react@4.3.4':
     resolution: {integrity: sha512-SCCPBJtYLdE8PX/7ZQAs1QAZ8Jqwih+0VBLum1EGqmCCQal+MIUqLCzj3ZUy8ufbC0cAM4LRlSTm7IQJwWT4ug==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -2646,10 +2650,6 @@ packages:
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-
-  fast-equals@5.2.2:
-    resolution: {integrity: sha512-V7/RktU11J3I36Nwq2JnZEM7tNm17eBJz+u25qdxBZeCKiX6BkVSZQjwWIr+IobgnZy+ag73tTZgZi7tr0LrBw==}
-    engines: {node: '>=6.0.0'}
 
   fast-glob@3.3.3:
     resolution: {integrity: sha512-7MptL8U0cqcFdzIzwOTHoilX9x5BrNqye7Z/LuC7kCMRio1EMSyqRK3BEAUD7sXRq4iT4AzTVuZdhgQ2TCvYLg==}
@@ -6730,6 +6730,8 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.4.1':
     optional: true
 
+  '@ver0/deep-equal@1.0.0': {}
+
   '@vitejs/plugin-react@4.3.4(vite@6.2.5(@types/node@22.14.0)(jiti@1.21.7)(yaml@2.7.1))':
     dependencies:
       '@babel/core': 7.26.10
@@ -8153,8 +8155,6 @@ snapshots:
   fast-content-type-parse@2.0.1: {}
 
   fast-deep-equal@3.1.3: {}
-
-  fast-equals@5.2.2: {}
 
   fast-glob@3.3.3:
     dependencies:
