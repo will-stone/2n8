@@ -50,7 +50,6 @@
   "prettier": "@will-stone/prettier-config",
   "dependencies": {
     "@ver0/deep-equal": "^1.0.0",
-    "auto-bind": "^5.0.1",
     "rfdc": "^1.4.1"
   },
   "devDependencies": {
