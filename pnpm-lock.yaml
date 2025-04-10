@@ -11,9 +11,6 @@ importers:
       '@ver0/deep-equal':
         specifier: ^1.0.0
         version: 1.0.0
-      auto-bind:
-        specifier: ^5.0.1
-        version: 5.0.1
       rfdc:
         specifier: ^1.4.1
         version: 1.4.1
@@ -1819,10 +1816,6 @@ packages:
 
   atomically@2.0.3:
     resolution: {integrity: sha512-kU6FmrwZ3Lx7/7y3hPS5QnbJfaohcIul5fGqf7ok+4KklIEk9tJ0C2IQPdacSbVUWv6zVHXEBWoWd6NrVMT7Cw==}
-
-  auto-bind@5.0.1:
-    resolution: {integrity: sha512-ooviqdwwgfIfNmDwo94wlshcdzfO64XV0Cg6oDsDYBJfITDz1EngD2z7DkbvCWn+XIMsIqW27sEVF6qcpJrRcg==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   autoprefixer@10.4.21:
     resolution: {integrity: sha512-O+A6LWV5LDHSJD3LjHYoNi4VLsj/Whi7k6zG12xTYaU4cQ8oxQGckXNX8cRHK5yOZ/ppVHe0ZBXGzSV9jXdVbQ==}
@@ -7155,8 +7148,6 @@ snapshots:
     dependencies:
       stubborn-fs: 1.2.5
       when-exit: 2.1.4
-
-  auto-bind@5.0.1: {}
 
   autoprefixer@10.4.21(postcss@8.5.3):
     dependencies:
