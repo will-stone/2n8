@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.3](https://github.com/will-stone/2n8/compare/0.10.2...0.10.3) (2025-04-10)
+
+### Patches
+
+- Swap fast-equals for @ver0/deep-equal
+  ([9e4e359](https://github.com/will-stone/2n8/commit/9e4e3593bbcb55adc350977de154212cb834b91f))
+
 ## [0.10.2](https://github.com/will-stone/2n8/compare/0.10.1...0.10.2) (2025-01-21)
 
 ### Patches
