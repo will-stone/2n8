@@ -167,13 +167,3 @@ store.getInitialState(): Store
 ```
 
 Returns the initial state snapshot, before any mutations have occurred.
-
-## `clone`
-
-```ts
-clone(value: unknown): value
-```
-
-This is the internal value cloning tool used by the library. It is re-exported
-for your convenience, in case you need to clone an external object or array in
-an action to stop it being mutated when the state changes.
