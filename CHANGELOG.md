@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.12.0](https://github.com/will-stone/2n8/compare/0.11.0...0.12.0) (2025-04-13)
+
+### Minor changes
+
+- Use structuredClone instead of rfdc
+  ([4a65e21](https://github.com/will-stone/2n8/commit/4a65e211be506460d9d09b53e7d11eb57fc98e4e))
+- Use structuredClone instead of rfdc
+  ([59b1b3e](https://github.com/will-stone/2n8/commit/59b1b3e6b5059c127f75bbb14ffc4108daa165c1))
+
 ## [0.11.0](https://github.com/will-stone/2n8/compare/0.10.3...0.11.0) (2025-04-10)
 
 ### Minor changes
