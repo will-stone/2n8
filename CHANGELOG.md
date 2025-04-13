@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/will-stone/2n8/compare/0.12.0...0.12.1) (2025-04-13)
+
+### Patches
+
+- Fix custom auto-binding not working
+  ([22a6667](https://github.com/will-stone/2n8/commit/22a666715bcfa93d6260e9db15c1a6186422544f))
+
 ## [0.12.0](https://github.com/will-stone/2n8/compare/0.11.0...0.12.0) (2025-04-13)
 
 ### Minor changes
