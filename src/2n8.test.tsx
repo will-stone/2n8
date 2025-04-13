@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, expect, expectTypeOf, test, vi } from 'vitest'
 
 import { createStore, TwoAndEight } from './2n8.js'
-import { clone } from './clone.js'
 
 beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true })
@@ -315,7 +314,7 @@ test('should not mutate external objects when cloned', () => {
     obj = externalObj
 
     loadExternalObj(ext: { foo: { bar: string } }) {
-      this.obj = clone(ext)
+      this.obj = structuredClone(ext)
     }
 
     change() {
@@ -360,7 +359,7 @@ test('should not mutate external objects in nested object state when cloned', ()
     obj = { foo: externalObj }
 
     loadExternalObj(ext: { bar: string }) {
-      this.obj.foo = clone(ext)
+      this.obj.foo = structuredClone(ext)
     }
 
     change() {
@@ -490,13 +489,11 @@ test('should return current state', () => {
   const { store, subscribe } = createStore(new Store())
   store.increaseCount()
 
-  expect(clone(store)).toStrictEqual({
-    $emit: expect.any(Function),
-    $reset: expect.any(Function),
-    count: 1,
-    increaseCount: expect.any(Function),
-    untouched: 'foo',
-  })
+  expect(store.$emit).toStrictEqual(expect.any(Function))
+  expect(store.$reset).toStrictEqual(expect.any(Function))
+  expect(store.increaseCount).toStrictEqual(expect.any(Function))
+  expect(store.count).toBe(1)
+  expect(store.untouched).toBe('foo')
   expect(subscribe).toStrictEqual(expect.any(Function))
   expect(store.derived).toBe(11)
 

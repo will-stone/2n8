@@ -49,8 +49,7 @@
   },
   "prettier": "@will-stone/prettier-config",
   "dependencies": {
-    "@ver0/deep-equal": "^1.0.0",
-    "rfdc": "^1.4.1"
+    "@ver0/deep-equal": "^1.0.0"
   },
   "devDependencies": {
     "@astrojs/react": "^4.2.3",

@@ -3,7 +3,6 @@ import { useSyncExternalStore } from 'react'
 
 import type { TwoAndEight } from './2n8.js'
 import { createStore } from './2n8.js'
-import { clone } from './clone.js'
 
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
@@ -29,7 +28,7 @@ export function createReactStore<Store extends TwoAndEight>(
         }
 
         if (!isEqual(storedValue, cachedValue)) {
-          cache[field] = clone(store[field])
+          cache[field] = structuredClone(store[field])
         }
 
         return cache[field]

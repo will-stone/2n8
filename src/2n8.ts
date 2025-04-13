@@ -1,5 +1,3 @@
-import { clone } from './clone.js'
-
 function infuseWithCallbackAfterRun(
   fn: (...args: unknown[]) => unknown,
   cb: () => void,
@@ -74,7 +72,7 @@ export function createStore<Store extends TwoAndEight>(
 
   for (const [name, value] of Object.entries(store)) {
     if (typeof value !== 'function') {
-      Reflect.set(initialState, name, clone(value))
+      Reflect.set(initialState, name, structuredClone(value))
     }
 
     if (!name.startsWith('$')) {
@@ -83,13 +81,13 @@ export function createStore<Store extends TwoAndEight>(
         Reflect.set(store, name, infuseWithCallbackAfterRun(value, store.$emit))
       }
       // Clone all fields to themselves so that external state isn't mutated.
-      else {
-        Reflect.set(store, name, clone(value))
+      else if (typeof value !== 'function') {
+        Reflect.set(store, name, structuredClone(value))
       }
     }
   }
 
-  const getInitialState = () => clone(initialState)
+  const getInitialState = () => structuredClone(initialState)
 
   store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
