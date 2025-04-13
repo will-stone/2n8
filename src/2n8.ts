@@ -1,3 +1,5 @@
+import autoBind from 'auto-bind'
+
 function infuseWithCallbackAfterRun(
   fn: (...args: unknown[]) => unknown,
   cb: () => void,
@@ -21,21 +23,7 @@ export type State<Store> = {
 
 export abstract class TwoAndEight {
   constructor() {
-    // Auto-bind actions.
-    const prototype = Reflect.getPrototypeOf(this)
-
-    if (prototype) {
-      for (const method of Object.getOwnPropertyNames(prototype)) {
-        if (
-          method !== 'constructor' &&
-          typeof (prototype as Record<string, unknown>)[method] === 'function'
-        ) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-          const thisAsRecord = this as unknown as Record<string, Function>
-          thisAsRecord[method] = thisAsRecord[method].bind(this)
-        }
-      }
-    }
+    autoBind(this)
   }
 
   $emit(): void {
