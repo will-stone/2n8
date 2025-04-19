@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/will-stone/2n8/compare/0.12.2...0.13.0) (2025-04-19)
+
+### Minor changes
+
+- ESM only
+  ([63752cd](https://github.com/will-stone/2n8/commit/63752cda768753c9510ba377c7bdfde0ad477ef7))
+
 ## [0.12.2](https://github.com/will-stone/2n8/compare/0.12.1...0.12.2) (2025-04-19)
 
 ### Patches
