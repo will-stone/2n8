@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.12.2](https://github.com/will-stone/2n8/compare/0.12.1...0.12.2) (2025-04-19)
+
+### Patches
+
+- Move docs to README, no more website
+  ([9c2e7fb](https://github.com/will-stone/2n8/commit/9c2e7fb40b2bbfb5b5be8857fc339c1b0e956615))
+- Fix deps getting bundled in build
+  ([70749f1](https://github.com/will-stone/2n8/commit/70749f1a0d808eae324cfe6c3ebeeec64b32321a))
+
 ## [0.12.1](https://github.com/will-stone/2n8/compare/0.12.0...0.12.1) (2025-04-13)
 
 ### Patches
