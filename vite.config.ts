@@ -36,7 +36,7 @@ export default defineConfig({
         '**/*.test.tsx',
       ],
       include: ['src'],
-      tsconfigPath: './tsconfig.src.json',
+      tsconfigPath: './tsconfig.json',
     }),
   ],
 })
