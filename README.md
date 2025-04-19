@@ -4,7 +4,8 @@
   <img src="https://raw.githubusercontent.com/will-stone/2n8/main/media/logo.png" alt="tings" width="200" height="200" />
 </p>
 
-> Oh my, your store is in a right two and eight.
+> Oh my, your store is in a right
+> [two and eight](https://cockneyrhymingslang.co.uk/slang/two_and_eight/).
 
 A lightweight JavaScript / TypeScript state management library that uses a
 class-based store.
