@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1](https://github.com/will-stone/2n8/compare/0.13.0...0.13.1) (2025-04-19)
+
+### Patches
+
+- Add link to name background
+  ([7bcd3f6](https://github.com/will-stone/2n8/commit/7bcd3f671db6b035cb237e4cb7e8f7186ca231e5))
+
 ## [0.13.0](https://github.com/will-stone/2n8/compare/0.12.2...0.13.0) (2025-04-19)
 
 ### Minor changes
