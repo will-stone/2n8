@@ -12,7 +12,7 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['react', 'fast-equals', 'rfdc'],
+      external: ['react', '@ver0/deep-equal', 'auto-bind'],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',
