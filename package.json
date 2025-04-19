@@ -31,45 +31,36 @@
     "release": "release-it",
     "test": "vitest --typecheck"
   },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix"
-    ],
-    "*.{css,json,md,js,ts}": [
-      "prettier --write"
-    ]
-  },
-  "prettier": "@will-stone/prettier-config",
   "dependencies": {
     "@ver0/deep-equal": "^1.0.0",
     "auto-bind": "^5.0.1"
   },
   "devDependencies": {
-    "@commits-with-character/conventional-changelog-preset": "^2.0.0",
-    "@release-it/conventional-changelog": "^10.0.0",
+    "@commits-with-character/conventional-changelog-preset": "^4.0.0",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^22.14.0",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "@vitest/eslint-plugin": "^1.1.39",
-    "@will-stone/eslint-config": "^15.0.5",
-    "@will-stone/prettier-config": "^9.0.2",
-    "eslint": "^9.24.0",
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitest/eslint-plugin": "^1.1.43",
+    "@will-stone/eslint-config": "^16.0.0",
+    "@will-stone/prettier-config": "^11.0.1",
+    "eslint": "^9.25.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
-    "jsdom": "^26.0.0",
-    "lint-staged": "^15.5.0",
+    "jsdom": "^26.1.0",
+    "lint-staged": "^15.5.1",
     "mobx": "^6.13.7",
     "mobx-react-lite": "^4.1.0",
     "prettier": "^3.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "release-it": "^18.1.2",
+    "release-it": "^19.0.1",
     "typescript": "^5.8.3",
-    "vite": "^6.2.5",
+    "vite": "^6.3.2",
     "vite-plugin-dts": "^4.5.3",
     "vitest": "^3.1.1",
     "vitest-fail-on-console": "^0.7.1",
