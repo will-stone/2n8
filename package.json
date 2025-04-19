@@ -19,12 +19,7 @@
   "author": "Will Stone",
   "sideEffects": false,
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
+  "exports": "./dist/index.js",
   "files": [
     "./dist"
   ],
