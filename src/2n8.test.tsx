@@ -16,11 +16,11 @@ test('should update when using async actions', async () => {
     count = 0
 
     buttonClicked() {
-      this.count = this.count + 1
+      this.count++
     }
 
     async asyncButtonClicked() {
-      this.count = this.count + 1
+      this.count++
       this.$emit()
       await new Promise((res) => {
         setTimeout(res, 3000)
@@ -57,11 +57,11 @@ test('should always return master record', async () => {
     count = 0
 
     buttonClicked() {
-      this.count = this.count + 1
+      this.count++
     }
 
     async asyncButtonClicked() {
-      this.count = this.count + 1
+      this.count++
       await new Promise((res) => {
         setTimeout(res, 3000)
       })
@@ -94,7 +94,7 @@ test('should reset all state', () => {
     count = 999
 
     increment() {
-      this.count = this.count + 1
+      this.count++
     }
 
     gone() {
@@ -174,7 +174,7 @@ test('should reset single field', () => {
     count = 999
 
     increment() {
-      this.count = this.count + 1
+      this.count++
     }
 
     gone() {
@@ -407,7 +407,7 @@ test('should compute derived value', () => {
     }
 
     increaseCount() {
-      this.count = this.count + 1
+      this.count++
     }
   }
 
@@ -425,7 +425,7 @@ test('should throw if attempting to reset an action', () => {
     count = 0
 
     increaseCount() {
-      this.count = this.count + 1
+      this.count++
     }
 
     resetAction() {
@@ -456,7 +456,7 @@ test('should return initial state', () => {
     untouched = 'foo'
 
     increaseCount() {
-      this.count = this.count + 1
+      this.count++
     }
   }
 
@@ -482,7 +482,7 @@ test('should return current state', () => {
     }
 
     increaseCount() {
-      this.count = this.count + 1
+      this.count++
     }
   }
 
@@ -533,7 +533,7 @@ test('should unsubscribe', () => {
     count = 0
 
     increaseCount() {
-      this.count = this.count + 1
+      this.count++
     }
   }
 
@@ -625,7 +625,7 @@ test('should not fire subscription until end of action', () => {
     count = 999
 
     increment() {
-      this.count = this.count + 1
+      this.count++
     }
 
     resetCount() {
