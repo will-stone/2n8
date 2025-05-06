@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.4](https://github.com/will-stone/2n8/compare/0.13.3...0.13.4) (2025-05-06)
+
+### Patches
+
+- Forgot to export id
+  ([022262c](https://github.com/will-stone/2n8/commit/022262c26f1a4288cb77defbc4ed646c8b056738))
+
 ## [0.13.3](https://github.com/will-stone/2n8/compare/0.13.2...0.13.3) (2025-05-06)
 
 ### Patches
