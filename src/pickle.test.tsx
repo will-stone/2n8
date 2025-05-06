@@ -4,7 +4,7 @@ import type { FC } from 'react'
 import { useRef } from 'react'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 
-import { createBaseStore, createStore } from './pickle.js'
+import { createBaseStore, createStore, id } from './pickle.js'
 
 const RenderCount: FC<{ readonly title: string }> = ({ title }) => {
   const renderCount = useRef(0)
@@ -33,7 +33,7 @@ test('should set state on base store', () => {
   const { dispatch, getState } = createBaseStore({
     initialState: {
       count: 1,
-      obj: { a: 'b', c: 'd' },
+      obj: id<{ a: 'b'; c: 'd' | 'z' }>({ a: 'b', c: 'd' }),
     },
 
     events: ({ set, get, reset }) => ({
@@ -659,10 +659,6 @@ test('should remove subscriber on unmount', async () => {
   expect(screen.queryByText('a: something')).not.toBeInTheDocument()
   expect(errorSpy).not.toHaveBeenCalled()
 })
-
-function id<T>(t: T): T {
-  return t
-}
 
 test('should handle complex state', async () => {
   const { useDispatch, useStore } = createStore({

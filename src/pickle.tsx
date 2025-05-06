@@ -2,6 +2,13 @@ import { isEqual } from '@ver0/deep-equal'
 import { produce } from 'immer'
 import { useSyncExternalStore } from 'react'
 
+/**
+ * Simply returns what it's given, used for typing.
+ */
+export function id<T>(arg: T): T {
+  return arg
+}
+
 type Entries<T> = {
   [K in keyof T]: [K, T[K]]
 }[keyof T][]
