@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.13.2](https://github.com/will-stone/2n8/compare/0.13.1...0.13.2) (2025-05-06)
+
+### Patches
+
+- Completely different API! Zustand meets Redux meets Pinia
+  ([d22d8ca](https://github.com/will-stone/2n8/commit/d22d8caf0e695ed6461b6e7fae7d9bbeeb46a94c))
+
+  This is a complete change to the API. I got fed up of dealing with classes and
+  `this` 😱 Much more fun to play with functional! This is essentially Zustand
+  but how _I_ would have built it 🤓 Immer is built in, actions are called
+  events (as they should be), and selectors are moved to the store. This is
+  going out as a patch, living next to the original 2n8 until I've tested it in
+  projects.
+
 ## [0.13.1](https://github.com/will-stone/2n8/compare/0.13.0...0.13.1) (2025-04-19)
 
 ### Patches
