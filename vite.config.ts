@@ -10,7 +10,7 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['react', '@ver0/deep-equal', 'auto-bind'],
+      external: ['react', '@ver0/deep-equal', 'auto-bind', 'immer'],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

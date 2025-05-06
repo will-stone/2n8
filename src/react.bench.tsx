@@ -14,7 +14,7 @@ describe('simple count', () => {
     count = 0
 
     addButtonClicked() {
-      this.count = this.count + 1
+      this.count++
     }
 
     resetClicked() {
@@ -61,7 +61,7 @@ describe('simple count', () => {
     }
 
     addButtonClicked = () => {
-      this.count = this.count + 1
+      this.count++
     }
 
     resetClicked = () => {

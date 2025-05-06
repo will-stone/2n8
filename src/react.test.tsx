@@ -10,7 +10,7 @@ import { createReactStore } from './react.js'
 const RenderCount: FC<{ readonly title: string }> = ({ title }) => {
   const renderCount = useRef(0)
 
-  renderCount.current = renderCount.current + 1
+  renderCount.current++
 
   return (
     <div>
@@ -37,11 +37,11 @@ test('should update count component and not rerender others', async () => {
     }
 
     buttonClicked() {
-      this.count = this.count + 1
+      this.count++
     }
 
     async asyncButtonClicked() {
-      this.count = this.count + 1
+      this.count++
       this.$emit()
       await new Promise((res) => {
         setTimeout(res, 10_000)
@@ -153,8 +153,8 @@ test('should batch state updates', async () => {
     count2 = 3
 
     buttonClicked() {
-      this.count = this.count + 1
-      this.count2 = this.count2 + 1
+      this.count++
+      this.count2++
     }
   }
 
@@ -216,7 +216,7 @@ test('should render derived', async () => {
     }
 
     buttonClicked() {
-      this.count = this.count + 1
+      this.count++
     }
 
     reset() {
@@ -294,7 +294,7 @@ test('should reset state', async () => {
     count = 1
 
     addButtonClicked() {
-      this.count = this.count + 1
+      this.count++
     }
 
     resetButtonClicked() {
@@ -539,7 +539,7 @@ test('should handle complex derived state', async () => {
     }
 
     add() {
-      this.idCounter = this.idCounter + 1
+      this.idCounter++
     }
 
     noop() {

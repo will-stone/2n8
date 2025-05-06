@@ -9,7 +9,7 @@ describe('simple count', () => {
     count = 0
 
     increaseCount() {
-      this.count = this.count + 1
+      this.count++
     }
 
     resetAll() {
@@ -42,7 +42,7 @@ describe('simple count', () => {
     }
 
     increaseCount = () => {
-      this.count = this.count + 1
+      this.count++
     }
 
     resetAll = () => {
