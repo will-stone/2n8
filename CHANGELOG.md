@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.3](https://github.com/will-stone/2n8/compare/0.13.2...0.13.3) (2025-05-06)
+
+### Patches
+
+- Add id function
+  ([c58892c](https://github.com/will-stone/2n8/commit/c58892cc490819e4b5b0d1c88baea1ef2fa7c51e))
+
 ## [0.13.2](https://github.com/will-stone/2n8/compare/0.13.1...0.13.2) (2025-05-06)
 
 ### Patches
