@@ -144,6 +144,9 @@ class Store extends TwoAndEight {
 }
 ```
 
+> [!WARNING]  
+> The class methods must use arrow functions in order to bind `this`.
+
 Generate your React hook:
 
 ```tsx
@@ -480,12 +483,12 @@ actions.
 
 |                          | Bundle size | GZipped | Notes                                                                      |
 | ------------------------ | ----------- | ------- | -------------------------------------------------------------------------- |
-| [2n8][2n8-bench]         | 11.3 kB     | 4.32 kB |                                                                            |
+| [2n8][2n8-bench]         | 10.8 kB     | 4.13 kB |                                                                            |
 | [Zustand][zustand-bench] | 17.4 kB     | 6.53 kB | Includes `useShallow` hook and `immer` middleware to match feature parity. |
 | [MobX][mobx-bench]       | 74.9 kB     | 21.9 kB |                                                                            |
 
 [2n8-bench]:
-  https://bundlejs.com/?q=2n8%400.12.1&treeshake=%5B%7BTwoAndEight%2CcreateReactStore%7D%5D
+  https://bundlejs.com/?q=2n8%400.16.0&treeshake=%5B%7BTwoAndEight%2CcreateReactStore%7D%5D
 [zustand-bench]:
   https://bundlejs.com/?q=zustand%405.0.3%2Czustand%405.0.3%2Freact%2Fshallow%2Czustand%2Fmiddleware%2Fimmer&treeshake=%5B%7B+create+%7D%5D%2C%5B%7B+useShallow+%7D%5D%2C%5B%7B+immer+%7D%5D
 [mobx-bench]:
