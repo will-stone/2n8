@@ -13,11 +13,11 @@ describe('simple count', () => {
   class TwoAndEightStore extends TwoAndEight {
     count = 0
 
-    addButtonClicked() {
+    addButtonClicked = () => {
       this.count++
     }
 
-    resetClicked() {
+    resetClicked = () => {
       this.$reset()
     }
   }
