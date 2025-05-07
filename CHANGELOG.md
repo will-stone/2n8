@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/will-stone/2n8/compare/0.14.0...0.15.0) (2025-05-07)
+
+### Minor changes
+
+- Make auto-bind optional
+  ([4e861f7](https://github.com/will-stone/2n8/commit/4e861f7a7e3a07f8932c19c0c9e7a7d70c5eb726))
+
 ## [0.14.0](https://github.com/will-stone/2n8/compare/0.13.4...0.14.0) (2025-05-07)
 
 ### Minor changes
