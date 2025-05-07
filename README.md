@@ -24,11 +24,12 @@ import { TwoAndEight, createReactStore } from '2n8'
 class Store extends TwoAndEight {
   count = 0
 
-  addClicked() {
+  // Make sure to use arrow-functions to bind `this`.
+  addClicked = () => {
     this.count++
   }
 
-  resetClicked() {
+  resetClicked = () => {
     this.$reset('count')
   }
 }
@@ -72,11 +73,11 @@ import { TwoAndEight, createReactStore } from '2n8'
 class Store extends TwoAndEight {
   expression: '🫤' | '🥸' = '🫤'
 
-  addDisguise() {
+  addDisguise = () => {
     this.expression = '🥸'
   }
 
-  resetToConfusion() {
+  resetToConfusion = () => {
     this.$reset('expression')
   }
 }
@@ -137,7 +138,7 @@ mutate the fields.
 class Store extends TwoAndEight {
   counter = 0
 
-  addButtonClicked() {
+  addButtonClicked = () => {
     this.counter++
   }
 }
@@ -199,7 +200,7 @@ import { fetchData } from './data-fetcher'
 class Store extends TwoAndEight {
   data: { id: string; name: string }[] = []
 
-  async loadDataButtonClicked() {
+  loadDataButtonClicked = async () => {
     this.data = await fetchData()
   }
 }
@@ -219,7 +220,7 @@ class Store extends TwoAndEight {
   data: { id: string; name: string }[] = []
   status: 'idle' | 'pending' = 'idle'
 
-  async loadDataButtonClicked() {
+  loadDataButtonClicked = async () => {
     this.status = 'pending'
     this.$emit()
     this.data = await fetchData()
@@ -245,6 +246,7 @@ class Store extends TwoAndEight {
   counter = 0
   secondCounter = 10
 
+  // Getters do not use arrow functions.
   get totalCounters() {
     return this.counter + this.secondCounter
   }
@@ -279,11 +281,11 @@ import { TwoAndEight } from '2n8'
 class Store extends TwoAndEight {
   counter = 0
 
-  addButtonClicked() {
+  addButtonClicked = () => {
     this.counter++
   }
 
-  resetButtonClicked() {
+  resetButtonClicked = () => {
     this.$reset('counter')
   }
 }
@@ -343,11 +345,11 @@ import { TwoAndEight, createReactStore } from '2n8'
 class Store extends TwoAndEight {
   count = 0
 
-  addClicked() {
+  addClicked = () => {
     this.count++
   }
 
-  resetClicked() {
+  resetClicked = () => {
     this.$reset('count')
   }
 }
@@ -582,7 +584,7 @@ before the async event has finished.
 class Store extends TwoAndEight {
   isFetching = false
 
-  async actionName() {
+  actionName = async () => {
     this.isFetching = true
     this.$emit()
     await fetchThing()
@@ -610,11 +612,11 @@ this.$reset('stateName')
 class Store extends TwoAndEight {
   counter = 0
 
-  resetCounter() {
+  resetCounter = () => {
     this.$reset('counter')
   }
 
-  resetAll() {
+  resetAll = () => {
     this.$reset()
   }
 }
