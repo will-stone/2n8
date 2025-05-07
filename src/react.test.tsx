@@ -36,11 +36,11 @@ test('should update count component and not rerender others', async () => {
       return this.count + 10
     }
 
-    buttonClicked() {
+    buttonClicked = () => {
       this.count++
     }
 
-    async asyncButtonClicked() {
+    asyncButtonClicked = async () => {
       this.count++
       this.$emit()
       await new Promise((res) => {
@@ -152,7 +152,7 @@ test('should batch state updates', async () => {
     count = 1
     count2 = 3
 
-    buttonClicked() {
+    buttonClicked = () => {
       this.count++
       this.count2++
     }
@@ -215,15 +215,15 @@ test('should render derived', async () => {
       return this.count + this.count2
     }
 
-    buttonClicked() {
+    buttonClicked = () => {
       this.count++
     }
 
-    reset() {
+    reset = () => {
       this.$reset()
     }
 
-    resetCount() {
+    resetCount = () => {
       this.$reset('count')
     }
   }
@@ -293,11 +293,11 @@ test('should reset state', async () => {
   class Store extends TwoAndEight {
     count = 1
 
-    addButtonClicked() {
+    addButtonClicked = () => {
       this.count++
     }
 
-    resetButtonClicked() {
+    resetButtonClicked = () => {
       this.$reset('count')
     }
   }
@@ -342,12 +342,12 @@ test('should remove subscriber on unmount', async () => {
     something = 'something'
     todos = ['a']
 
-    addTodo() {
+    addTodo = () => {
       const alphabet = 'abcdefghijk'
       this.todos.push(alphabet[this.todos.length])
     }
 
-    removeTodo() {
+    removeTodo = () => {
       this.todos.pop()
     }
   }
@@ -421,19 +421,19 @@ test('should handle complex state', async () => {
     data: { bar: string; foo?: number } = { bar: 'buz', foo: 1 }
     arr = ['hello']
 
-    changeData() {
+    changeData = () => {
       this.data = { bar: 'moo', foo: 5 }
     }
 
-    changeDataDeep() {
+    changeDataDeep = () => {
       this.data.bar = 'www'
     }
 
-    deleteData() {
+    deleteData = () => {
       delete this.data.foo
     }
 
-    addToArr() {
+    addToArr = () => {
       this.arr.push('bye')
     }
   }
@@ -538,15 +538,15 @@ test('should handle complex derived state', async () => {
       return {}
     }
 
-    add() {
+    add = () => {
       this.idCounter++
     }
 
-    noop() {
+    noop = () => {
       //
     }
 
-    reset() {
+    reset = () => {
       this.$reset('idCounter')
     }
   }

@@ -22,8 +22,10 @@ export type State<Store> = {
 }
 
 export abstract class TwoAndEight {
-  constructor() {
-    autoBind(this)
+  constructor(hasAutoBind?: boolean) {
+    if (hasAutoBind) {
+      autoBind(this)
+    }
   }
 
   $emit(): void {

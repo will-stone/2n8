@@ -15,11 +15,11 @@ test('should update when using async actions', async () => {
   class Store extends TwoAndEight {
     count = 0
 
-    buttonClicked() {
+    buttonClicked = () => {
       this.count++
     }
 
-    async asyncButtonClicked() {
+    asyncButtonClicked = async () => {
       this.count++
       this.$emit()
       await new Promise((res) => {
@@ -56,11 +56,11 @@ test('should always return master record', async () => {
   class Store extends TwoAndEight {
     count = 0
 
-    buttonClicked() {
+    buttonClicked = () => {
       this.count++
     }
 
-    async asyncButtonClicked() {
+    asyncButtonClicked = async () => {
       this.count++
       await new Promise((res) => {
         setTimeout(res, 3000)
@@ -93,15 +93,15 @@ test('should reset all state', () => {
     greeting = 'hello'
     count = 999
 
-    increment() {
+    increment = () => {
       this.count++
     }
 
-    gone() {
+    gone = () => {
       this.greeting = 'bye'
     }
 
-    switched() {
+    switched = () => {
       if (this.toggle === true) {
         this.toggle = 'a string'
       } else if (this.toggle === false) {
@@ -111,7 +111,7 @@ test('should reset all state', () => {
       }
     }
 
-    resetAll() {
+    resetAll = () => {
       this.$reset()
     }
   }
@@ -173,15 +173,15 @@ test('should reset single field', () => {
     greeting = 'hello'
     count = 999
 
-    increment() {
+    increment = () => {
       this.count++
     }
 
-    gone() {
+    gone = () => {
       this.greeting = 'bye'
     }
 
-    resetCount() {
+    resetCount = () => {
       this.$reset('count')
     }
   }
@@ -223,11 +223,11 @@ test('should reset complex state', () => {
   class Store extends TwoAndEight {
     arr = [{ foo: 'bar' }]
 
-    change() {
+    change = () => {
       this.arr[0].foo = 'moo'
     }
 
-    reset() {
+    reset = () => {
       this.$reset('arr')
     }
   }
@@ -253,15 +253,15 @@ test('should not mutate initial state on reset', () => {
       },
     }
 
-    change() {
+    change = () => {
       this.obj.foo.bar = 'moo'
     }
 
-    reset() {
+    reset = () => {
       this.$reset()
     }
 
-    resetObj() {
+    resetObj = () => {
       this.$reset('obj')
     }
   }
@@ -317,11 +317,11 @@ test('should not mutate external objects when cloned', () => {
       this.obj = structuredClone(ext)
     }
 
-    change() {
+    change = () => {
       this.obj.foo.bar = 'moo'
     }
 
-    reset() {
+    reset = () => {
       this.$reset()
     }
   }
@@ -362,11 +362,11 @@ test('should not mutate external objects in nested object state when cloned', ()
       this.obj.foo = structuredClone(ext)
     }
 
-    change() {
+    change = () => {
       this.obj.foo.bar = 'moo'
     }
 
-    reset() {
+    reset = () => {
       this.$reset()
     }
   }
@@ -406,7 +406,7 @@ test('should compute derived value', () => {
       return this.count + this.count2
     }
 
-    increaseCount() {
+    increaseCount = () => {
       this.count++
     }
   }
@@ -424,19 +424,19 @@ test('should throw if attempting to reset an action', () => {
   class Store extends TwoAndEight {
     count = 0
 
-    increaseCount() {
+    increaseCount = () => {
       this.count++
     }
 
-    resetAction() {
+    resetAction = () => {
       this.$reset('increaseCount')
     }
 
-    resetResetApi() {
+    resetResetApi = () => {
       this.$reset('$reset')
     }
 
-    resetSubscribeApi() {
+    resetSubscribeApi = () => {
       this.$reset('$emit')
     }
   }
@@ -455,7 +455,7 @@ test('should return initial state', () => {
     count = 0
     untouched = 'foo'
 
-    increaseCount() {
+    increaseCount = () => {
       this.count++
     }
   }
@@ -481,7 +481,7 @@ test('should return current state', () => {
       return this.count + 10
     }
 
-    increaseCount() {
+    increaseCount = () => {
       this.count++
     }
   }
@@ -507,11 +507,11 @@ test('should not call subscriber when state has not changed', () => {
 
     obj = {}
 
-    noop() {
+    noop = () => {
       this.count = 0
     }
 
-    noop2() {
+    noop2 = () => {
       this.obj = {}
     }
   }
@@ -532,7 +532,7 @@ test('should unsubscribe', () => {
   class Store extends TwoAndEight {
     count = 0
 
-    increaseCount() {
+    increaseCount = () => {
       this.count++
     }
   }
@@ -576,23 +576,23 @@ test('should update deep state', () => {
     arr = ['hello']
     str = 'hello'
 
-    update() {
+    update = () => {
       this.obj.foo.bar = 'moo'
     }
 
-    delete() {
+    delete = () => {
       delete this.obj.foo.bar
     }
 
-    noop() {
+    noop = () => {
       //
     }
 
-    other() {
+    other = () => {
       this.str = 'bye'
     }
 
-    push() {
+    push = () => {
       this.arr.push('bye')
     }
   }
@@ -624,11 +624,11 @@ test('should not fire subscription until end of action', () => {
   class Store extends TwoAndEight {
     count = 999
 
-    increment() {
+    increment = () => {
       this.count++
     }
 
-    resetCount() {
+    resetCount = () => {
       this.$reset('count')
       this.count = 10
       this.$reset('count')
