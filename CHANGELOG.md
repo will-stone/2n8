@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://github.com/will-stone/2n8/compare/0.16.0...0.16.1) (2025-05-07)
+
+### Patches
+
+- Update README with latest bundle size
+  ([985f675](https://github.com/will-stone/2n8/commit/985f675d0ef77c1f20f83c1db3dd45584aac9bef))
+
 ## [0.16.0](https://github.com/will-stone/2n8/compare/0.15.0...0.16.0) (2025-05-07)
 
 ### Minor changes
