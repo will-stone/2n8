@@ -14,9 +14,6 @@ importers:
       auto-bind:
         specifier: ^5.0.1
         version: 5.0.1
-      immer:
-        specifier: ^10.1.1
-        version: 10.1.1
     devDependencies:
       '@commits-with-character/conventional-changelog-preset':
         specifier: ^5.1.1
@@ -6409,7 +6406,8 @@ snapshots:
 
   ignore@7.0.4: {}
 
-  immer@10.1.1: {}
+  immer@10.1.1:
+    optional: true
 
   import-fresh@3.3.1:
     dependencies:

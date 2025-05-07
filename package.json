@@ -33,8 +33,7 @@
   },
   "dependencies": {
     "@ver0/deep-equal": "^1.0.0",
-    "auto-bind": "^5.0.1",
-    "immer": "^10.1.1"
+    "auto-bind": "^5.0.1"
   },
   "devDependencies": {
     "@commits-with-character/conventional-changelog-preset": "^5.1.1",
@@ -75,7 +74,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.8.1",
+  "packageManager": "pnpm@10.10.0",
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
