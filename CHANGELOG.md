@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.0](https://github.com/will-stone/2n8/compare/0.15.0...0.16.0) (2025-05-07)
+
+### Minor changes
+
+- Remove auto-bind
+  ([6072d89](https://github.com/will-stone/2n8/commit/6072d899438d2e2f95d07927a4f6a2d5dd3c427b))
+
+### Patches
+
+- Update README with non-auto-bound methods
+  ([0233581](https://github.com/will-stone/2n8/commit/02335813a1b8fd7ba8bbb598b1dbb045d184cfed))
+
 ## [0.15.0](https://github.com/will-stone/2n8/compare/0.14.0...0.15.0) (2025-05-07)
 
 ### Minor changes
