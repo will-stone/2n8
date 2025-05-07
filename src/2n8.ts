@@ -1,5 +1,3 @@
-import autoBind from 'auto-bind'
-
 function infuseWithCallbackAfterRun(
   fn: (...args: unknown[]) => unknown,
   cb: () => void,
@@ -22,12 +20,6 @@ export type State<Store> = {
 }
 
 export abstract class TwoAndEight {
-  constructor(hasAutoBind?: boolean) {
-    if (hasAutoBind) {
-      autoBind(this)
-    }
-  }
-
   $emit(): void {
     // no-op, for now, it's enhanced in createStore
   }
