@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.14.0](https://github.com/will-stone/2n8/compare/0.13.4...0.14.0) (2025-05-07)
+
+### Minor changes
+
+- Remove Pickle (the new API)
+  ([17b733e](https://github.com/will-stone/2n8/commit/17b733ed351f2e278f2d26c5efcb771d92f69c93))
+
+  Didn't work.
+
 ## [0.13.4](https://github.com/will-stone/2n8/compare/0.13.3...0.13.4) (2025-05-06)
 
 ### Patches
