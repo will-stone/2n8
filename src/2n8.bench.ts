@@ -17,21 +17,22 @@ describe('simple count', () => {
     }
   }
 
-  const { store: twoAndEightStore, subscribe: twoAndEightSubscribe } =
-    createStore(new TwoAndEightStore())
+  const { get, subscribe: twoAndEightSubscribe } = createStore(
+    new TwoAndEightStore(),
+  )
 
   bench('2n8', async () => {
     const subscriptionComplete = new Promise<void>((resolve) => {
       twoAndEightSubscribe(() => {
-        if (twoAndEightStore.count === 1) {
+        if (get('count') === 1) {
           resolve()
         }
       })
     })
 
-    twoAndEightStore.increaseCount()
+    get('increaseCount')()
     await subscriptionComplete
-    twoAndEightStore.resetAll()
+    get('resetAll')()
   })
 
   class MobxStore {
