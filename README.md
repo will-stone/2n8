@@ -644,13 +644,14 @@ const Component = () => {
 }
 ```
 
-#### `useStore.store`
+#### `useStore.getStateByField`
 
 ```ts
-useStore.store: Store
+useStore.getStateByField(field: Field): Store[Field]
 ```
 
-A re-export of the store, useful in subscribers where hooks are not available.
+Get any field or action of your store, useful in subscribers where hooks are not
+available.
 
 #### `useStore.subscribe`
 
@@ -663,7 +664,7 @@ emits. This can be used to trigger events when all or certain state changes.
 
 ```ts
 useStore.subscribe(() => {
-  writeCounterToFile(useStore.store.counter)
+  writeCounterToFile(useStore.getStateByField('counter'))
 })
 ```
 
@@ -671,12 +672,12 @@ Note that this will be called on every emitted state from the store. If you'd
 like to optimise, it is advisable to use `if` statements and an external cache:
 
 ```ts
-let counterCache = useStore.store.counter
+let counterCache = useStore.getStateByField('counter')
 
 useStore.subscribe(() => {
-  if (useStore.store.counter !== counterCache) {
-    writeCounterToFile(useStore.store.counter)
-    counterCache = useStore.store.counter
+  if (useStore.getStateByField('counter') !== counterCache) {
+    writeCounterToFile(useStore.getStateByField('counter'))
+    counterCache = useStore.getStateByField('counter')
   }
 })
 ```
@@ -690,13 +691,14 @@ createStore(store: Store extends TwoAndEight): store
 This is the vanilla store creator used by `createReactStore`. You should only
 need this if you are creating other, non-React, integrations with a 2n8 store.
 
-#### `store.store`
+#### `store.getStateByField`
 
 ```ts
-store.store: Store
+useStore.getStateByField(field: Field): Store[Field]
 ```
 
-A re-export of the store, useful in subscribers where hooks are not available.
+Get any field or action of your store, useful in subscribers where hooks are not
+available.
 
 #### `store.subscribe`
 
