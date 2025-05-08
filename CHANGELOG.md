@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/will-stone/2n8/compare/0.16.1...0.17.0) (2025-05-08)
+
+### Minor changes
+
+- Replace getInitialState with getStateByField
+  ([d785417](https://github.com/will-stone/2n8/commit/d78541741902baf08c5e71e33573a4ed7a8d554f))
+
 ## [0.16.1](https://github.com/will-stone/2n8/compare/0.16.0...0.16.1) (2025-05-07)
 
 ### Patches
