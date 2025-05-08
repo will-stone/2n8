@@ -450,28 +450,6 @@ test('should throw if attempting to reset an action', () => {
   )
 })
 
-test('should return initial state', () => {
-  class Store extends TwoAndEight {
-    count = 0
-    untouched = 'foo'
-
-    increaseCount = () => {
-      this.count++
-    }
-  }
-
-  const { getInitialState, store } = createStore(new Store())
-  store.increaseCount()
-
-  expect(getInitialState()).toStrictEqual({
-    count: 0,
-    untouched: 'foo',
-  })
-
-  expectTypeOf(getInitialState().count).toMatchTypeOf<number>()
-  expectTypeOf(getInitialState().untouched).toMatchTypeOf<string>()
-})
-
 test('should return current state', () => {
   class Store extends TwoAndEight {
     count = 0

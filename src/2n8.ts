@@ -1,3 +1,5 @@
+import { isEqual } from '@ver0/deep-equal'
+
 function infuseWithCallbackAfterRun(
   fn: (...args: unknown[]) => unknown,
   cb: () => void,
@@ -38,7 +40,7 @@ export abstract class TwoAndEight {
 export function createStore<Store extends TwoAndEight>(
   store: Store,
 ): {
-  getInitialState: () => State<Store>
+  getStateByField: <Field extends keyof Store>(field: Field) => Store[Field]
   store: Store
   subscribe: (subscriber: () => void) => () => void
 } {
@@ -69,23 +71,21 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  const getInitialState = () => structuredClone(initialState)
-
   store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
       const value = Reflect.get(store, field)
       if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset an action.')
       }
-      const initialValue = getInitialState()[field]
+      const initialValue = initialState[field]
       if (initialValue !== undefined) {
-        Reflect.set(store, field, initialValue)
+        Reflect.set(store, field, structuredClone(initialValue))
       }
     } else {
-      for (const [key, initialValue] of Object.entries(getInitialState())) {
+      for (const [key, initialValue] of Object.entries(initialState)) {
         // No need to reset functions.
         if (typeof initialValue !== 'function') {
-          Reflect.set(store, key, initialValue)
+          Reflect.set(store, key, structuredClone(initialValue))
         }
       }
     }
@@ -96,8 +96,25 @@ export function createStore<Store extends TwoAndEight>(
     return () => subscribers.delete(subscriber)
   }
 
+  const cache = {} as Store
+
+  const getStateByField = <Field extends keyof Store>(field: Field) => {
+    const storedValue = store[field]
+    const cachedValue = cache[field]
+
+    if (typeof storedValue === 'function') {
+      return storedValue
+    }
+
+    if (!isEqual(storedValue, cachedValue)) {
+      cache[field] = structuredClone(store[field])
+    }
+
+    return cache[field]
+  }
+
   return {
-    getInitialState,
+    getStateByField,
     store,
     subscribe,
   }
