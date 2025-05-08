@@ -41,7 +41,6 @@ export function createStore<Store extends TwoAndEight>(
   store: Store,
 ): {
   getStateByField: <Field extends keyof Store>(field: Field) => Store[Field]
-  store: Store
   subscribe: (subscriber: () => void) => () => void
 } {
   const subscribers = new Set<() => void>()
@@ -115,7 +114,6 @@ export function createStore<Store extends TwoAndEight>(
 
   return {
     getStateByField,
-    store,
     subscribe,
   }
 }

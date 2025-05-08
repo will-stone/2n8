@@ -596,9 +596,7 @@ test('should forward on API', () => {
   }
   const useStore = createReactStore(new Store())
 
-  expect(useStore.store.$emit).toBeDefined()
-  expect(useStore.store.$reset).toBeDefined()
   expect(useStore.subscribe).toBeDefined()
-  expect(useStore.store.count).toBe(1)
-  expect(useStore.store.countPlusOne).toBe(2)
+  expect(useStore.getStateByField('count')).toBe(1)
+  expect(useStore.getStateByField('countPlusOne')).toBe(2)
 })
