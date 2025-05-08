@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.2](https://github.com/will-stone/2n8/compare/0.18.1...0.18.2) (2025-05-08)
+
+### Patches
+
+- Remove auto-bind from deps and docs
+  ([6f87025](https://github.com/will-stone/2n8/commit/6f870256d235454ca7d2f20ff958379e5c78a159))
+
 ## [0.18.1](https://github.com/will-stone/2n8/compare/0.18.0...0.18.1) (2025-05-08)
 
 ### Patches
