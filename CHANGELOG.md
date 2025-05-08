@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.18.1](https://github.com/will-stone/2n8/compare/0.18.0...0.18.1) (2025-05-08)
+
+### Patches
+
+- Rename getStateByField to simply get
+  ([88c0edb](https://github.com/will-stone/2n8/commit/88c0edbac21ec5d7d1d2143582935f9433f390a7))
+- Update README with updated API
+  ([3b36da7](https://github.com/will-stone/2n8/commit/3b36da7ad04cd98f29494d145206d4f8aff442c4))
+
 ## [0.18.0](https://github.com/will-stone/2n8/compare/0.17.0...0.18.0) (2025-05-08)
 
 ### Minor changes
