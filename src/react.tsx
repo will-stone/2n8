@@ -8,22 +8,22 @@ export function createReactStore<Store extends TwoAndEight>(
 ): (<Field extends keyof Omit<Store, '$emit' | '$reset'>>(
   field: Field,
 ) => Store[Field]) & {
-  getStateByField: <Field extends keyof Omit<Store, '$emit' | '$reset'>>(
+  get: <Field extends keyof Omit<Store, '$emit' | '$reset'>>(
     field: Field,
   ) => Store[Field]
   subscribe: (subscriber: () => void) => () => void
 } {
-  const { getStateByField, subscribe } = createStore(rawStore)
+  const { get, subscribe } = createStore(rawStore)
 
   function useStore<Field extends keyof Store>(field: Field): Store[Field] {
     return useSyncExternalStore(
       subscribe,
-      () => getStateByField(field),
-      () => getStateByField(field),
+      () => get(field),
+      () => get(field),
     )
   }
 
-  useStore.getStateByField = getStateByField
+  useStore.get = get
   useStore.subscribe = subscribe
 
   return useStore

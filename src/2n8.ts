@@ -40,7 +40,7 @@ export abstract class TwoAndEight {
 export function createStore<Store extends TwoAndEight>(
   store: Store,
 ): {
-  getStateByField: <Field extends keyof Store>(field: Field) => Store[Field]
+  get: <Field extends keyof Store>(field: Field) => Store[Field]
   subscribe: (subscriber: () => void) => () => void
 } {
   const subscribers = new Set<() => void>()
@@ -97,7 +97,7 @@ export function createStore<Store extends TwoAndEight>(
 
   const cache = {} as Store
 
-  const getStateByField = <Field extends keyof Store>(field: Field) => {
+  const get = <Field extends keyof Store>(field: Field) => {
     const storedValue = store[field]
     const cachedValue = cache[field]
 
@@ -113,7 +113,7 @@ export function createStore<Store extends TwoAndEight>(
   }
 
   return {
-    getStateByField,
+    get,
     subscribe,
   }
 }
