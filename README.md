@@ -552,9 +552,7 @@ zustand - src/react.bench.tsx > simple count
 ### `TwoAndEight`
 
 The abstract class that all stores must extend if you would like to use the
-following utility methods. The class also
-[auto-binds](https://www.npmjs.com/package/auto-bind) your actions so you don't
-need to use arrow functions or bind methods in the constructor.
+following utility methods.
 
 ```ts
 class Store extends TwoAndEight {
