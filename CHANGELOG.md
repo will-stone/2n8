@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/will-stone/2n8/compare/0.17.0...0.18.0) (2025-05-08)
+
+### Minor changes
+
+- Remove store from API
+  ([0bfcba0](https://github.com/will-stone/2n8/commit/0bfcba0a12db63bcb6d620bdd2e78a2acd2f0d81))
+
 ## [0.17.0](https://github.com/will-stone/2n8/compare/0.16.1...0.17.0) (2025-05-08)
 
 ### Minor changes
