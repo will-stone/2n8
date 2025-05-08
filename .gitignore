@@ -5,8 +5,10 @@ node_modules
 .DS_Store
 
 # Build assets
+.astro
 dist
 .next
+website-dist
 
 # IDEs
 .vscode

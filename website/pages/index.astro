@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets'
+import { Code } from 'astro:components'
+
+import '../styles/global.css'
+import logo from '../../media/logo.png'
+import { Counter } from '../components/counter.jsx'
+import counterCode from '../components/counter.jsx?raw'
+---
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>2n8</title>
+    <style>
+      body {
+        background-image: radial-gradient(#0d1117 0.5px, #c6ccd7 0.5px);
+        background-size: 20px 20px;
+      }
+    </style>
+  </head>
+  <body class="container mx-auto px-4 py-16 bg-ghost">
+    <main class="grid grid-cols-1 md:grid-cols-12 gap-16">
+      <div class="flex flex-col items-center md:col-span-4 lg:col-span-6">
+        <Image alt="" src={logo} width={250} />
+        <h1 class="text-7xl font-extrabold text-woodsmoke font-serif mt-4">
+          2n8
+        </h1>
+        <p class="mt-4 text-3xl font-extralight text-center">
+          Minimal React state boilerplate.
+        </p>
+        <div class="flex gap-4 mt-8">
+          <a
+            class="underline font-sans text-xl hover:bg-whiskey px-2 py-1 hover:no-underline focus-visible:bg-whiskey focus-visible:border-bunker focus-visible:outline-none focus-visible:no-underline border-2 border-transparent hover:border-bunker"
+            href="https://github.com/will-stone/2n8">GitHub</a
+          >
+          <a
+            class="underline font-sans text-xl hover:bg-whiskey px-2 py-1 hover:no-underline focus-visible:bg-whiskey focus-visible:border-bunker focus-visible:outline-none focus-visible:no-underline border-2 border-transparent hover:border-bunker"
+            href="https://www.npmjs.com/package/2n8">npm</a
+          >
+        </div>
+      </div>
+
+      <div class="md:col-span-8 lg:col-span-6">
+        <div
+          class="bg-bunker text-cadetBlue rounded-t-xl shadow-4xl p-4 flex justify-center items-center gap-4 text-3xl tabular-nums [&_button]:px-4 [&_button]:py-2 [&_button]:rounded [&_button]:touch-manipulation [&_button]:hover:cursor-pointer border-2 border-shark [&_button]:focus-visible:ring-4 [&_button]:focus-visible:ring-whiskey [&_button]:focus-visible:outline-none [&_button]:border-4 [&_button]:border-cadetBlue [&_button]:hover:bg-shark [&_button]:focus-visible:bg-shark"
+        >
+          <Counter client:load />
+        </div>
+        <Code
+          class="rounded-b-xl p-4 shadow-xl text-xs xl:text-sm"
+          code={counterCode}
+          lang="tsx"
+          theme="plastic"
+        />
+      </div>
+    </main>
+
+    <footer class="mt-16 text-center md:text-left">
+      Made by <a class="underline" href="https://wstone.uk">Will Stone</a>.
+    </footer>
+  </body>
+</html>
