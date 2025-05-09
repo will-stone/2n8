@@ -30,7 +30,9 @@
     "prepare": "husky",
     "release": "release-it",
     "test": "vitest --typecheck",
+    "prewebsite:build": "pnpm build",
     "website:build": "astro build",
+    "prewebsite:dev": "pnpm build",
     "website:dev": "astro dev"
   },
   "overrides": {
