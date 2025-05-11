@@ -6,6 +6,7 @@ import { defineConfig } from 'astro/config'
 export default defineConfig({
   integrations: [react()],
   outDir: './website-dist',
+  publicDir: './website/public',
   srcDir: './website',
   vite: {
     plugins: [tailwindcss()],
