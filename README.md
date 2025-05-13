@@ -321,6 +321,43 @@ Clicking `Reset` will put the `counter` back to `0`.
 > You can call `$reset()` without a field parameter to reset _all_ state in the
 > store.
 
+## Nested Actions
+
+Beginning an action name with a `$` will mean it won't emit subscription
+announcements at the end of the action. This can be useful if you wish to use
+actions from other actions.
+
+```tsx
+// store.ts
+import { TwoAndEight } from '2n8'
+
+class Store extends TwoAndEight {
+  counter = 0
+  face: '🫤' | '🥸' = '🫤'
+
+  $repeatedAction = () => {
+    this.counter++
+    // Will not emit when called but state will change.
+  }
+
+  action1 = (arg: boolean) => {
+    if (arg) {
+      this.$repeatedAction()
+    }
+    this.face = '🥸'
+  }
+
+  action2 = (arg: boolean) => {
+    if (!arg) {
+      this.$repeatedAction()
+    }
+    this.face = '🫤'
+  }
+}
+
+export const useStore = createReactStore(new Store())
+```
+
 ## Comparison
 
 2n8 feels like a blend between two excellent state management libraries:

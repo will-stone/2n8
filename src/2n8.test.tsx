@@ -627,6 +627,24 @@ test('should not fire subscription until end of action', () => {
   expect(subscribeSpy).toHaveBeenCalledTimes(2)
 })
 
+test('should not fire subscription if action begins with $ but state still updates', () => {
+  class Store extends TwoAndEight {
+    count = 999
+
+    $increment = () => {
+      this.count++
+    }
+  }
+
+  const { get, subscribe } = createStore(new Store())
+  const subscribeSpy = vi.fn<() => void>()
+  subscribe(subscribeSpy)
+  get('$increment')()
+
+  expect(get('count')).toBe(1000)
+  expect(subscribeSpy).not.toHaveBeenCalled()
+})
+
 test("should fail types when store hasn't extended super class", () => {
   class Store {
     count = 0
