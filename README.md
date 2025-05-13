@@ -12,9 +12,8 @@ class-based store.
 
 Key features include:
 
-- Action based state flow.
-- Built-in subscription system for reactive updates.
-- Flexible state reset functionality for entire state or specific fields.
+- Action/event based state flow.
+- Reset entire state or specific fields.
 - Type-safe state management.
 - Minimal boilerplate.
 
