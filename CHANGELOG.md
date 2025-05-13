@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.3](https://github.com/will-stone/2n8/compare/0.18.2...0.18.3) (2025-05-13)
+
+### Patches
+
+- Document and test emit-less actions
+  ([dcb4cf4](https://github.com/will-stone/2n8/commit/dcb4cf441d91820847141d69c3cc41c0ded053c1))
+
 ## [0.18.2](https://github.com/will-stone/2n8/compare/0.18.1...0.18.2) (2025-05-08)
 
 ### Patches
