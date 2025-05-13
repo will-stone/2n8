@@ -25,7 +25,9 @@ import counterCode from '../components/counter.jsx?raw'
       }
     </style>
   </head>
-  <body class="container mx-auto px-4 py-16 bg-ghost">
+  <body
+    class="container mx-auto px-4 py-16 bg-ghost md:flex md:flex-col md:justify-center min-h-screen"
+  >
     <main class="grid grid-cols-1 md:grid-cols-12 gap-16">
       <div class="flex flex-col items-center md:col-span-4 lg:col-span-6">
         <Image alt="" loading="eager" src={logo} width={250} />
@@ -58,7 +60,7 @@ import counterCode from '../components/counter.jsx?raw'
       </div>
     </main>
 
-    <footer class="mt-16 text-center md:text-left">
+    <footer class="mt-32 text-center">
       Made by <a class="underline" href="https://wstone.uk">Will Stone</a>.
     </footer>
   </body>
