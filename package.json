@@ -33,7 +33,8 @@
     "prewebsite:build": "pnpm build",
     "website:build": "astro build",
     "prewebsite:dev": "pnpm build",
-    "website:dev": "astro dev"
+    "website:dev": "astro dev",
+    "website:preview": "astro preview"
   },
   "overrides": {
     "eslint": "$eslint"
