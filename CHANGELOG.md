@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.19.0](https://github.com/will-stone/2n8/compare/0.18.4...0.19.0) (2025-05-14)
+
+### Minor changes
+
+- Subscriptions are now tracked by field
+  ([2d0e483](https://github.com/will-stone/2n8/commit/2d0e48395d9b50b33cf54d34384daf7770d20df3))
+
+  This means subscriptions will not fire if the thing they are tracking hasn't
+  changed.
+
+This has also had an affect on when state officially changes which is now only
+after an emit.
+
 ## [0.18.4](https://github.com/will-stone/2n8/compare/0.18.3...0.18.4) (2025-05-14)
 
 ### Patches
