@@ -358,6 +358,10 @@ class Store extends TwoAndEight {
 export const useStore = createReactStore(new Store())
 ```
 
+> [!NOTE]  
+> `$` prefixed actions are not available to select from `useStore`, this is
+> because these should be called from other public actions.
+
 ## Comparison
 
 2n8 feels like a blend between two excellent state management libraries:
@@ -690,29 +694,15 @@ available.
 #### `useStore.subscribe`
 
 ```ts
-useStore.subscribe(callback: () => void): () => void
+useStore.subscribe(field: Field, callback: () => void): () => void
 ```
 
-Subscribes to state updates; registers a callback that fires whenever an action
-emits. This can be used to trigger events when all or certain state changes.
+Subscribes to state updates for a particular field or getter; registers a
+callback that fires whenever an action emits that affects the chosen field.
 
 ```ts
-useStore.subscribe(() => {
+useStore.subscribe('counter', () => {
   writeCounterToFile(useStore.get('counter'))
-})
-```
-
-Note that this will be called on every emitted state from the store. If you'd
-like to optimise, it is advisable to use `if` statements and an external cache:
-
-```ts
-let counterCache = useStore.get('counter')
-
-useStore.subscribe(() => {
-  if (useStore.get('counter') !== counterCache) {
-    writeCounterToFile(useStore.get('counter'))
-    counterCache = useStore.get('counter')
-  }
 })
 ```
 
@@ -737,16 +727,8 @@ available.
 #### `store.subscribe`
 
 ```ts
-store.subscribe(callback: () => void): () => void
+store.subscribe(field: Field, callback: () => void): () => void
 ```
 
 Subscribes to state updates; registers a callback that fires whenever an action
-emits. This can be used to trigger events when all or certain state changes.
-
-#### `store.getInitialState`
-
-```ts
-store.getInitialState(): Store
-```
-
-Returns the initial state snapshot, before any mutations have occurred.
+emits and the selected field is changed.

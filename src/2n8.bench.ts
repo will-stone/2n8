@@ -23,7 +23,7 @@ describe('simple count', () => {
 
   bench('2n8', async () => {
     const subscriptionComplete = new Promise<void>((resolve) => {
-      twoAndEightSubscribe(() => {
+      twoAndEightSubscribe('count', () => {
         if (get('count') === 1) {
           resolve()
         }

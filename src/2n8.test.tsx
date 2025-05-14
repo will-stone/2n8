@@ -52,7 +52,7 @@ test('should update when using async actions', async () => {
   expect(get('count')).toBe(7)
 })
 
-test('should always return master record', async () => {
+test('should only return updated state after emit', async () => {
   class Store extends TwoAndEight {
     count = 0
 
@@ -67,6 +67,15 @@ test('should always return master record', async () => {
       })
       this.count = this.count + 5
     }
+
+    asyncWithEarlyEmitButtonClicked = async () => {
+      this.count++
+      this.$emit()
+      await new Promise((res) => {
+        setTimeout(res, 1000)
+      })
+      this.count = this.count + 2
+    }
   }
 
   const { get } = createStore(new Store())
@@ -75,7 +84,7 @@ test('should always return master record', async () => {
 
   get('asyncButtonClicked')()
 
-  expect(get('count')).toBe(1)
+  expect(get('count')).toBe(0)
 
   get('buttonClicked')()
 
@@ -84,6 +93,14 @@ test('should always return master record', async () => {
   await vi.advanceTimersByTimeAsync(3000)
 
   expect(get('count')).toBe(7)
+
+  get('asyncWithEarlyEmitButtonClicked')()
+
+  expect(get('count')).toBe(8)
+
+  await vi.advanceTimersByTimeAsync(1000)
+
+  expect(get('count')).toBe(10)
 })
 
 test('should reset all state', () => {
@@ -467,8 +484,6 @@ test('should return current state', () => {
   const { get, subscribe } = createStore(new Store())
   get('increaseCount')()
 
-  expect(get('$emit')).toStrictEqual(expect.any(Function))
-  expect(get('$reset')).toStrictEqual(expect.any(Function))
   expect(get('increaseCount')).toStrictEqual(expect.any(Function))
   expect(get('count')).toBe(1)
   expect(get('untouched')).toBe('foo')
@@ -496,14 +511,18 @@ test('should not call subscriber when state has not changed', () => {
 
   const { get, subscribe } = createStore(new Store())
   const subscribeSpy = vi.fn<() => void>()
-  subscribe(subscribeSpy)
+  const subscribe2Spy = vi.fn<() => void>()
+  subscribe('count', subscribeSpy)
+  subscribe('obj', subscribe2Spy)
   get('noop')()
 
-  expect(subscribeSpy).toHaveBeenCalledOnce()
+  expect(subscribeSpy).not.toHaveBeenCalled()
+  expect(subscribe2Spy).not.toHaveBeenCalled()
 
   get('noop2')()
 
-  expect(subscribeSpy).toHaveBeenCalledTimes(2)
+  expect(subscribeSpy).not.toHaveBeenCalled()
+  expect(subscribe2Spy).not.toHaveBeenCalled()
 })
 
 test('should unsubscribe', () => {
@@ -517,7 +536,7 @@ test('should unsubscribe', () => {
 
   const { get, subscribe } = createStore(new Store())
   const spy = vi.fn<() => void>()
-  const unsubscribe = subscribe(spy)
+  const unsubscribe = subscribe('count', spy)
   get('increaseCount')()
 
   expect(spy).toHaveBeenCalledOnce()
@@ -576,8 +595,9 @@ test('should update deep state', () => {
   }
 
   const { get, subscribe } = createStore(new Store())
-  const subscribeSpy = vi.fn<() => void>()
-  subscribe(subscribeSpy)
+  // TODO test other fields
+  const objSubscribeSpy = vi.fn<() => void>()
+  subscribe('obj', objSubscribeSpy)
 
   expect(get('obj')).toStrictEqual({ foo: { bar: 'baz' } })
   expect(get('arr')).toStrictEqual(['hello'])
@@ -587,13 +607,13 @@ test('should update deep state', () => {
   get('other')()
   get('push')()
 
-  expect(subscribeSpy).toHaveBeenCalledTimes(4)
+  expect(objSubscribeSpy).toHaveBeenCalledOnce()
   expect(get('obj')).toStrictEqual({ foo: { bar: 'moo' } })
   expect(get('arr')).toStrictEqual(['hello', 'bye'])
 
   get('delete')()
 
-  expect(subscribeSpy).toHaveBeenCalledTimes(5)
+  expect(objSubscribeSpy).toHaveBeenCalledTimes(2)
   expect(get('obj')).toStrictEqual({ foo: {} })
   expect(get('arr')).toStrictEqual(['hello', 'bye'])
 })
@@ -616,7 +636,7 @@ test('should not fire subscription until end of action', () => {
 
   const { get, subscribe } = createStore(new Store())
   const subscribeSpy = vi.fn<() => void>()
-  subscribe(subscribeSpy)
+  subscribe('count', subscribeSpy)
   get('increment')()
 
   expect(subscribeSpy).toHaveBeenCalledOnce()
@@ -627,22 +647,32 @@ test('should not fire subscription until end of action', () => {
   expect(subscribeSpy).toHaveBeenCalledTimes(2)
 })
 
-test('should not fire subscription if action begins with $ but state still updates', () => {
+test('should not fire subscription if action begins with $ and not update state until emit-able action called', () => {
   class Store extends TwoAndEight {
     count = 999
 
     $increment = () => {
       this.count++
     }
+
+    increment = () => {
+      this.count++
+    }
   }
 
   const { get, subscribe } = createStore(new Store())
   const subscribeSpy = vi.fn<() => void>()
-  subscribe(subscribeSpy)
+  subscribe('count', subscribeSpy)
+  // @ts-expect-error -- normally you shouldn't call $ actions directly.
   get('$increment')()
 
-  expect(get('count')).toBe(1000)
+  expect(get('count')).toBe(999)
   expect(subscribeSpy).not.toHaveBeenCalled()
+
+  get('increment')()
+
+  expect(get('count')).toBe(1001)
+  expect(subscribeSpy).toHaveBeenCalledOnce()
 })
 
 test("should fail types when store hasn't extended super class", () => {
