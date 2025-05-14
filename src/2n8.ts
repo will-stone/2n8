@@ -98,14 +98,11 @@ export function createStore<Store extends TwoAndEight>(
   const cache = {} as Store
 
   const get = <Field extends keyof Store>(field: Field) => {
-    const storedValue = store[field]
-    const cachedValue = cache[field]
-
-    if (typeof storedValue === 'function') {
-      return storedValue
+    if (typeof store[field] === 'function') {
+      return store[field]
     }
 
-    if (!isEqual(storedValue, cachedValue)) {
+    if (!isEqual(store[field], cache[field])) {
       cache[field] = structuredClone(store[field])
     }
 
