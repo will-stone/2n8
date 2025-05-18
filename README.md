@@ -144,7 +144,7 @@ class Store extends TwoAndEight {
 ```
 
 > [!WARNING]  
-> The class methods must use arrow functions in order to bind `this`.
+> The class methods must use arrow functions in order to bind `this` to the class, allowing you to access your state and actions.
 
 Generate your React hook:
 
