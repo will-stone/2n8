@@ -131,8 +131,8 @@ export function createStore<Store extends TwoAndEight>(
     field: Field,
     subscriber: () => void,
   ): (() => void) => {
-    subscribers[field].add(subscriber)
-    return () => subscribers[field].delete(subscriber)
+    subscribers[field]?.add(subscriber)
+    return () => subscribers[field]?.delete(subscriber)
   }
 
   const get = <Field extends keyof Store>(field: Field) => {
