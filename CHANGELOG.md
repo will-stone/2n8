@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.1](https://github.com/will-stone/2n8/compare/0.19.0...0.19.1) (2025-05-26)
+
+### Patches
+
+- Fix handle retrieval of field that doesn't exist
+  ([588e19b](https://github.com/will-stone/2n8/commit/588e19b1a4677b98d842f9f76404fea7dfed82bd))
+
 ## [0.19.0](https://github.com/will-stone/2n8/compare/0.18.4...0.19.0) (2025-05-14)
 
 ### Minor changes
