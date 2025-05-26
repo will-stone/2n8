@@ -2,6 +2,11 @@
   "name": "next-app",
   "version": "0.1.0",
   "private": true,
+  "description": "Just a test app for 2n8",
+  "keywords": [
+    ""
+  ],
+  "author": "me",
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",
@@ -19,5 +24,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
