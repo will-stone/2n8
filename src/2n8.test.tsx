@@ -437,9 +437,13 @@ test('should compute derived value', () => {
   expect(get('total')).toBe(5)
 })
 
-test('should throw if attempting to reset an action', () => {
+test('should throw if attempting to reset non-state', () => {
   class Store extends TwoAndEight {
     count = 0
+
+    get derived() {
+      return this.count + 5
+    }
 
     increaseCount = () => {
       this.count++
@@ -456,6 +460,10 @@ test('should throw if attempting to reset an action', () => {
     resetSubscribeApi = () => {
       this.$reset('$emit')
     }
+
+    resetDerived = () => {
+      this.$reset('derived')
+    }
   }
 
   const { get } = createStore(new Store())
@@ -464,6 +472,9 @@ test('should throw if attempting to reset an action', () => {
   expect(() => get('resetResetApi')()).toThrow('2n8: Cannot reset an action.')
   expect(() => get('resetSubscribeApi')()).toThrow(
     '2n8: Cannot reset an action.',
+  )
+  expect(() => get('resetDerived')()).toThrow(
+    '2n8: Cannot reset derived state.',
   )
 })
 

@@ -1,41 +1,31 @@
 import { useSyncExternalStore } from 'react'
 
-import type {
-  StateFieldsAndPublicActions,
-  StateFields,
-  TwoAndEight,
-} from './2n8.js'
+import type { Keys, State, TwoAndEight } from './2n8.js'
 import { createStore } from './2n8.js'
 
 export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
-): (<Field extends StateFieldsAndPublicActions<Store>>(
-  field: Field,
-) => Store[Field]) & {
-  get: <Field extends StateFieldsAndPublicActions<Store>>(
-    field: Field,
-  ) => Store[Field]
-  subscribe: <Field extends keyof StateFields<Store>>(
+): (<Key extends Keys<Store>>(key: Key) => Store[Key]) & {
+  get: <Key extends Keys<Store>>(key: Key) => Store[Key]
+  subscribe: <Field extends keyof State<Store>>(
     field: Field,
     subscriber: () => void,
   ) => () => void
 } {
   const { get, subscribe } = createStore(rawStore)
 
-  function useStore<Field extends StateFieldsAndPublicActions<Store>>(
-    field: Field,
-  ): Store[Field] {
+  function useStore<Key extends Keys<Store>>(key: Key): Store[Key] {
     return useSyncExternalStore(
       (cb) =>
-        typeof rawStore[field] === 'function'
+        typeof rawStore[key] === 'function'
           ? () => null
           : subscribe(
               // @ts-expect-error -- cannot subscribe to actions.
-              field,
+              key,
               cb,
             ),
-      () => get(field),
-      () => get(field),
+      () => get(key),
+      () => get(key),
     )
   }
 

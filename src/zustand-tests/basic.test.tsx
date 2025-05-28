@@ -5,7 +5,7 @@ import { StrictMode, useEffect, useLayoutEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { afterEach, expect, test, vi } from 'vitest'
 
-import type { StateFields } from '../2n8.js'
+import type { State } from '../2n8.js'
 import { createStore, TwoAndEight } from '../2n8.js'
 import { createReactStore } from '../react.js'
 
@@ -90,7 +90,7 @@ test('can update the selector', async () => {
     one = 'one'
     two = 'two'
   }
-  type Props = { selector: keyof StateFields<Store> }
+  type Props = { selector: keyof State<Store> }
   const useBoundStore = createReactStore(new Store())
 
   function Component({ selector }: Props) {

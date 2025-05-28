@@ -16,12 +16,12 @@ function infuseWithCallbackAfterRun(
   }
 }
 
-export type StateFields<Store> = {
+export type State<Store> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   [K in keyof Store as Store[K] extends Function ? never : K]: Store[K]
 }
 
-export type StateFieldsAndPublicActions<Store> = {
+export type Keys<Store> = {
   [K in keyof Store]: K extends `$${string}` ? never : K
 }[keyof Store]
 
@@ -44,15 +44,13 @@ export abstract class TwoAndEight {
 export function createStore<Store extends TwoAndEight>(
   store: Store,
 ): {
-  get: <Field extends StateFieldsAndPublicActions<Store>>(
-    field: Field,
-  ) => Store[Field]
-  subscribe: <Field extends keyof StateFields<Store>>(
+  get: <Key extends Keys<Store>>(key: Key) => Store[Key]
+  subscribe: <Field extends keyof State<Store>>(
     field: Field,
     subscriber: () => void,
   ) => () => void
 } {
-  const storeCache = {} as StateFields<Store>
+  const storeCache = {} as State<Store>
 
   const proto = Object.getPrototypeOf(store)
 
@@ -61,24 +59,24 @@ export function createStore<Store extends TwoAndEight>(
     return descriptor && typeof descriptor.get === 'function'
   })
 
-  const stateNames = (
-    Object.keys(store) as (keyof StateFields<Store>)[]
-  ).filter((key) => typeof store[key] !== 'function')
+  const stateNames = (Object.keys(store) as (keyof State<Store>)[]).filter(
+    (key) => typeof store[key] !== 'function',
+  )
 
-  const fields = [...getterNames, ...stateNames] as (keyof StateFields<Store>)[]
+  const fieldNames = [...getterNames, ...stateNames] as (keyof State<Store>)[]
 
-  for (const field of fields) {
+  for (const field of fieldNames) {
     storeCache[field] = structuredClone(store[field])
   }
 
-  const subscribers = {} as Record<keyof StateFields<Store>, Set<() => void>>
+  const subscribers = {} as Record<keyof State<Store>, Set<() => void>>
 
-  for (const field of fields) {
+  for (const field of fieldNames) {
     subscribers[field] = new Set<() => void>()
   }
 
   store.$emit = () => {
-    for (const field of fields) {
+    for (const field of fieldNames) {
       if (!isEqual(store[field], storeCache[field])) {
         storeCache[field] = structuredClone(store[field])
         for (const subscriber of subscribers[field]) {
@@ -107,11 +105,14 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  store.$reset = (field?: keyof StateFields<Store>): void => {
+  store.$reset = (field?: keyof State<Store>): void => {
     if (field) {
       const value = Reflect.get(store, field)
       if (typeof value === 'function') {
         throw new TypeError('2n8: Cannot reset an action.')
+      }
+      if (getterNames.includes(field as string)) {
+        throw new TypeError('2n8: Cannot reset derived state.')
       }
       const initialValue = initialState[field]
       if (initialValue !== undefined) {
@@ -127,7 +128,7 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  const subscribe = <Field extends keyof StateFields<Store>>(
+  const subscribe = <Field extends keyof State<Store>>(
     field: Field,
     subscriber: () => void,
   ): (() => void) => {
@@ -135,13 +136,13 @@ export function createStore<Store extends TwoAndEight>(
     return () => subscribers[field]?.delete(subscriber)
   }
 
-  const get = <Field extends keyof Store>(field: Field) => {
-    if (typeof store[field] === 'function') {
-      return store[field]
+  const get = <Key extends keyof Store>(key: Key) => {
+    if (typeof store[key] === 'function') {
+      return store[key]
     }
 
     // Pretending to be store because we've already removed actions above.
-    return (storeCache as Store)[field]
+    return (storeCache as Store)[key]
   }
 
   return {
