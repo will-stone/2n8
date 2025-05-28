@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.19.2](https://github.com/will-stone/2n8/compare/0.19.1...0.19.2) (2025-05-28)
+
+### Patches
+
+- Refactor out one loop
+  ([1e5d4aa](https://github.com/will-stone/2n8/commit/1e5d4aa24d4406e289955e943c98b43d90baa001))
+- Export Keys and State
+  ([6067e94](https://github.com/will-stone/2n8/commit/6067e94755030208f35c739498bb66cbf6a4bbbf))
+
+  Docs required: Keys = any state, derived, or action name. State = only state
+  and their values.
+
 ## [0.19.1](https://github.com/will-stone/2n8/compare/0.19.0...0.19.1) (2025-05-26)
 
 ### Patches
