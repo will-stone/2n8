@@ -65,13 +65,10 @@ export function createStore<Store extends TwoAndEight>(
 
   const fieldNames = [...getterNames, ...stateNames] as (keyof State<Store>)[]
 
-  for (const field of fieldNames) {
-    storeCache[field] = structuredClone(store[field])
-  }
-
   const subscribers = {} as Record<keyof State<Store>, Set<() => void>>
 
   for (const field of fieldNames) {
+    storeCache[field] = structuredClone(store[field])
     subscribers[field] = new Set<() => void>()
   }
 
