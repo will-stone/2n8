@@ -12,7 +12,7 @@ class-based store.
 
 Key features include:
 
-- Action/event based state flow.
+- Action/event based state flow (like Redux or Zustand).
 - Reset entire state or specific fields.
 - Type-safe state management.
 - Minimal boilerplate.
@@ -144,7 +144,8 @@ class Store extends TwoAndEight {
 ```
 
 > [!WARNING]  
-> The class methods must use arrow functions in order to bind `this` to the class, allowing you to access your state and actions.
+> The class methods must use arrow functions in order to bind the store's `this`
+> to the action, allowing you to access your state and actions.
 
 Generate your React hook:
 
@@ -685,11 +686,11 @@ const Component = () => {
 #### `useStore.get`
 
 ```ts
-useStore.get(field: Field): Store[Field]
+useStore.get(key: Key): Store[Key]
 ```
 
-Get any field or action of your store, useful in subscribers where hooks are not
-available.
+Get any state field, derived state, or action of your store, useful in
+subscribers where hooks are not available.
 
 #### `useStore.subscribe`
 
@@ -697,8 +698,9 @@ available.
 useStore.subscribe(field: Field, callback: () => void): () => void
 ```
 
-Subscribes to state updates for a particular field or getter; registers a
-callback that fires whenever an action emits that affects the chosen field.
+Subscribes to state updates for a particular state field or derived state;
+registers a callback that fires whenever an action emits that affects the chosen
+field.
 
 ```ts
 useStore.subscribe('counter', () => {
@@ -718,11 +720,11 @@ need this if you are creating other, non-React, integrations with a 2n8 store.
 #### `store.get`
 
 ```ts
-useStore.get(field: Field): Store[Field]
+useStore.get(key: Key): Store[Key]
 ```
 
-Get any field or action of your store, useful in subscribers where hooks are not
-available.
+Get any state field, derived state, or action of your store, useful in
+subscribers where hooks are not available.
 
 #### `store.subscribe`
 
@@ -731,4 +733,71 @@ store.subscribe(field: Field, callback: () => void): () => void
 ```
 
 Subscribes to state updates; registers a callback that fires whenever an action
-emits and the selected field is changed.
+emits and the selected state field or derived state is changed.
+
+### Types
+
+#### `Keys`
+
+```ts
+type T = Keys<Store>
+```
+
+Given your `Store` class, this will extract all state field names, derived state
+name, and action names.
+
+e.g.
+
+```ts
+class Store extends TwoAndEight {
+  count = 0
+
+  get countPlusOne() {
+    return this.count + 1
+  }
+
+  increment = () => {
+    this.count++
+  }
+
+  $noEmitAction = () => {
+    this.count++
+  }
+}
+
+type T = Keys<Store>
+// "count" | "countPlusOne" | "increment"
+```
+
+#### `State`
+
+```ts
+type T = State<Store>
+```
+
+Given your `Store`, this will extract the type of your state object.
+
+e.g.
+
+```ts
+class Store extends TwoAndEight {
+  count = 0
+
+  get countPlusOne() {
+    return this.count + 1
+  }
+
+  increment = () => {
+    this.count++
+  }
+
+  $noEmitAction = () => {
+    this.count++
+  }
+}
+
+type T = State<Store>
+// {
+//   count: number;
+// }
+```
