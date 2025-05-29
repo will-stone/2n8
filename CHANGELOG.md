@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.3](https://github.com/will-stone/2n8/compare/0.19.2...0.19.3) (2025-05-29)
+
+### Patches
+
+- Update docs with Keys and State types
+  ([db60c27](https://github.com/will-stone/2n8/commit/db60c272753204a176b548baa9d7dd2c6f926121))
+
 ## [0.19.2](https://github.com/will-stone/2n8/compare/0.19.1...0.19.2) (2025-05-28)
 
 ### Patches
