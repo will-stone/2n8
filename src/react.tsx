@@ -20,7 +20,7 @@ export function createReactStore<Store extends TwoAndEight>(
         typeof rawStore[key] === 'function'
           ? () => null
           : subscribe(
-              // @ts-expect-error -- cannot subscribe to actions.
+              // @ts-expect-error -- cannot subscribe to actions, as this point key=field.
               key,
               cb,
             ),
