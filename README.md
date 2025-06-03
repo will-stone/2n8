@@ -522,14 +522,18 @@ actions.
 
 ### Bundle size
 
+Please note that
+[8.46 kb (3.26 kb)](https://bundlejs.com/?q=react%4019.1.0&treeshake=%5B%7BuseSyncExternalStore%7D%5D)
+of the below values are React.
+
 |                           | Bundle size | GZipped | Notes                                                                      |
 | ------------------------- | ----------- | ------- | -------------------------------------------------------------------------- |
-| [2n8][2n8-bundle]         | 10.8 kB     | 4.13 kB |                                                                            |
+| [2n8][2n8-bundle]         | 11.2 kB     | 4.22 kB |                                                                            |
 | [Zustand][zustand-bundle] | 17.4 kB     | 6.53 kB | Includes `useShallow` hook and `immer` middleware to match feature parity. |
 | [MobX][mobx-bundle]       | 74.9 kB     | 21.9 kB |                                                                            |
 
 [2n8-bundle]:
-  https://bundlejs.com/?q=2n8%400.16.0&treeshake=%5B%7BTwoAndEight%2CcreateReactStore%7D%5D
+  https://bundlejs.com/?q=2n8%400.19.4&treeshake=%5B%7BTwoAndEight%2CcreateReactStore%7D%5D
 [zustand-bundle]:
   https://bundlejs.com/?q=zustand%405.0.3%2Czustand%405.0.3%2Freact%2Fshallow%2Czustand%2Fmiddleware%2Fimmer&treeshake=%5B%7B+create+%7D%5D%2C%5B%7B+useShallow+%7D%5D%2C%5B%7B+immer+%7D%5D
 [mobx-bundle]:
