@@ -21,7 +21,6 @@
     "src",
     "./declarations.d.ts",
     "./vitest-setup.ts",
-    "./vite.config.ts",
     "./vitest.config.ts",
     "website/components/counter.tsx"
   ]
