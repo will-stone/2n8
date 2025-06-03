@@ -16,6 +16,7 @@ Key features include:
 - Reset entire state or specific fields.
 - Type-safe state management.
 - Minimal boilerplate.
+- 730 bytes, minified and gzipped.
 
 ```tsx
 import { TwoAndEight, createReactStore } from '2n8'
@@ -523,7 +524,7 @@ actions.
 ### Bundle size
 
 Please note that
-[8.46 kb (3.26 kb)](https://bundlejs.com/?q=react%4019.1.0&treeshake=%5B%7BuseSyncExternalStore%7D%5D)
+[8.46 kB (3.26 kB)](https://bundlejs.com/?q=react%4019.1.0&treeshake=%5B%7BuseSyncExternalStore%7D%5D)
 of the below values are React.
 
 |                           | Bundle size | GZipped | Notes                                                                      |

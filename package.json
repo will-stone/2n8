@@ -27,6 +27,7 @@
   "scripts": {
     "bench": "vitest bench",
     "build": "tsdown",
+    "build:min": "tsdown --minify",
     "lint": "eslint .",
     "prepare": "husky",
     "release": "release-it",
