@@ -56,10 +56,10 @@
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
     "@vitest/eslint-plugin": "^1.2.1",
-    "@will-stone/eslint-config": "^17.1.0",
+    "@will-stone/eslint-config": "^18.0.0",
     "@will-stone/prettier-config": "^11.0.1",
     "astro": "^5.8.0",
-    "eslint": "^9.27.0",
+    "eslint": "^9.28.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "highlight.js": "^11.11.1",
@@ -96,7 +96,8 @@
     "onlyBuiltDependencies": [
       "@tailwindcss/oxide",
       "esbuild",
-      "sharp"
+      "sharp",
+      "unrs-resolver"
     ]
   }
 }

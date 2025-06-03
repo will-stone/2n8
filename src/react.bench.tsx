@@ -45,11 +45,17 @@ describe('simple count', () => {
 
     render(<Component />)
     const user = userEvent.setup()
-    expect(screen.getByText('Count: 0'))
+
+    expect(screen.getByText('Count: 0')).toBeVisible()
+
     await user.click(screen.getByRole('button', { name: 'add' }))
-    expect(screen.getByText('Count: 1'))
+
+    expect(screen.getByText('Count: 1')).toBeVisible()
+
     await user.click(screen.getByRole('button', { name: 'reset' }))
-    expect(screen.getByText('Count: 0'))
+
+    expect(screen.getByText('Count: 0')).toBeVisible()
+
     cleanup()
   })
 
@@ -90,11 +96,17 @@ describe('simple count', () => {
 
     render(<Component />)
     const user = userEvent.setup()
-    expect(screen.getByText('Count: 0'))
+
+    expect(screen.getByText('Count: 0')).toBeVisible()
+
     await user.click(screen.getByRole('button', { name: 'add' }))
-    expect(screen.getByText('Count: 1'))
+
+    expect(screen.getByText('Count: 1')).toBeVisible()
+
     await user.click(screen.getByRole('button', { name: 'reset' }))
-    expect(screen.getByText('Count: 0'))
+
+    expect(screen.getByText('Count: 0')).toBeVisible()
+
     cleanup()
   })
 
@@ -136,11 +148,17 @@ describe('simple count', () => {
 
     render(<Component />)
     const user = userEvent.setup()
-    expect(screen.getByText('Count: 0'))
+
+    expect(screen.getByText('Count: 0')).toBeVisible()
+
     await user.click(screen.getByRole('button', { name: 'add' }))
-    expect(screen.getByText('Count: 1'))
+
+    expect(screen.getByText('Count: 1')).toBeVisible()
+
     await user.click(screen.getByRole('button', { name: 'reset' }))
-    expect(screen.getByText('Count: 0'))
+
+    expect(screen.getByText('Count: 0')).toBeVisible()
+
     cleanup()
   })
 })
