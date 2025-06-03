@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.4](https://github.com/will-stone/2n8/compare/0.19.3...0.19.4) (2025-06-03)
+
+### Patches
+
+- Change build tool from Vite to tsdown
+  ([70b7475](https://github.com/will-stone/2n8/commit/70b74756748076504324b0521a402c78a6ac5881))
+
 ## [0.19.3](https://github.com/will-stone/2n8/compare/0.19.2...0.19.3) (2025-05-29)
 
 ### Patches
