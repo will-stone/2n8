@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.6](https://github.com/will-stone/2n8/compare/0.19.5...0.19.6) (2025-06-03)
+
+### Patches
+
+- Add size of package to key features
+  ([9989dc4](https://github.com/will-stone/2n8/commit/9989dc40eb2acd2b662cc4297c2acca2cf5a7b1e))
+
 ## [0.19.5](https://github.com/will-stone/2n8/compare/0.19.4...0.19.5) (2025-06-03)
 
 ### Patches
