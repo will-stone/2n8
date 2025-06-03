@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.5](https://github.com/will-stone/2n8/compare/0.19.4...0.19.5) (2025-06-03)
+
+### Patches
+
+- Update bundle size docs
+  ([2a33ab8](https://github.com/will-stone/2n8/commit/2a33ab89ef7dd43e2f0e3e2ab9bd53a7e7dbb8f2))
+
 ## [0.19.4](https://github.com/will-stone/2n8/compare/0.19.3...0.19.4) (2025-06-03)
 
 ### Patches
