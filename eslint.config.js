@@ -1,7 +1,7 @@
 import config from '@will-stone/eslint-config'
 
-export default [
-  ...(await config({ tailwind: false })),
+export default config(
+  { tailwind: false },
   {
     // For a cleaner example.
     files: ['website/components/counter.tsx'],
@@ -10,4 +10,4 @@ export default [
       'react/button-has-type': 'off',
     },
   },
-]
+)

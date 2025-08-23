@@ -7,7 +7,7 @@
     ""
   ],
   "author": "me",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",

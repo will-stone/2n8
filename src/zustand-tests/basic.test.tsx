@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom'
 import { afterEach, expect, test, vi } from 'vitest'
 
 import type { State } from '../2n8.js'
+
 import { createStore, TwoAndEight } from '../2n8.js'
 import { createReactStore } from '../react.js'
 

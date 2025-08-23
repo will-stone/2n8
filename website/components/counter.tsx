@@ -1,5 +1,5 @@
 // store.ts
-import { TwoAndEight, createReactStore } from '2n8'
+import { createReactStore, TwoAndEight } from '2n8'
 
 class Store extends TwoAndEight {
   count = 0

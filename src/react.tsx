@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react'
 
 import type { Keys, State, TwoAndEight } from './2n8.js'
+
 import { createStore } from './2n8.js'
 
 export function createReactStore<Store extends TwoAndEight>(

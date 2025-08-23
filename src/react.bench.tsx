@@ -1,8 +1,9 @@
+import type { FC } from 'react'
+
 import { cleanup, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import type { FC } from 'react'
 import { bench, describe, expect } from 'vitest'
 import { create as zustandCreate } from 'zustand'
 
