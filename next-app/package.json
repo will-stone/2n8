@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "description": "Just a test app for 2n8",
-  "keywords": [
-    ""
-  ],
   "author": "me",
   "type": "module",
   "scripts": {

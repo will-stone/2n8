@@ -8,10 +8,7 @@ export function createReactStore<Store extends TwoAndEight>(
   rawStore: Store,
 ): (<Key extends Keys<Store>>(key: Key) => Store[Key]) & {
   get: <Key extends Keys<Store>>(key: Key) => Store[Key]
-  subscribe: <Field extends keyof State<Store>>(
-    field: Field,
-    subscriber: () => void,
-  ) => () => void
+  subscribe: (field: keyof State<Store>, subscriber: () => void) => () => void
 } {
   const { get, subscribe } = createStore(rawStore)
 

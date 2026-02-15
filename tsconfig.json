@@ -15,13 +15,5 @@
     "skipLibCheck": true,
     "strict": true,
     "useDefineForClassFields": true
-  },
-  "include": [
-    "website",
-    "src",
-    "./declarations.d.ts",
-    "./vitest-setup.ts",
-    "./vitest.config.ts",
-    "website/components/counter.tsx"
-  ]
+  }
 }

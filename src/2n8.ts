@@ -1,9 +1,6 @@
 import { isEqual } from '@ver0/deep-equal'
 
-function infuseWithCallbackAfterRun(
-  fn: (...args: unknown[]) => unknown,
-  cb: () => void,
-) {
+function infuseWithCallbackAfterRun(fn: (...args: unknown[]) => unknown, cb: () => void) {
   return function infused(...args: unknown[]) {
     const result = fn.apply(fn, args)
     if (result instanceof Promise) {
@@ -45,10 +42,7 @@ export function createStore<Store extends TwoAndEight>(
   store: Store,
 ): {
   get: <Key extends Keys<Store>>(key: Key) => Store[Key]
-  subscribe: <Field extends keyof State<Store>>(
-    field: Field,
-    subscriber: () => void,
-  ) => () => void
+  subscribe: (field: keyof State<Store>, subscriber: () => void) => () => void
 } {
   const storeCache = {} as State<Store>
 
@@ -125,10 +119,7 @@ export function createStore<Store extends TwoAndEight>(
     }
   }
 
-  const subscribe = <Field extends keyof State<Store>>(
-    field: Field,
-    subscriber: () => void,
-  ): (() => void) => {
+  const subscribe = (field: keyof State<Store>, subscriber: () => void): (() => void) => {
     subscribers[field]?.add(subscriber)
     return () => subscribers[field]?.delete(subscriber)
   }

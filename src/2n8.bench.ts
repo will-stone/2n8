@@ -17,9 +17,7 @@ describe('simple count', () => {
     }
   }
 
-  const { get, subscribe: twoAndEightSubscribe } = createStore(
-    new TwoAndEightStore(),
-  )
+  const { get, subscribe: twoAndEightSubscribe } = createStore(new TwoAndEightStore())
 
   bench('2n8', async () => {
     const subscriptionComplete = new Promise<void>((resolve) => {

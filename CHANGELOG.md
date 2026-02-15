@@ -37,8 +37,7 @@
 - Export Keys and State
   ([6067e94](https://github.com/will-stone/2n8/commit/6067e94755030208f35c739498bb66cbf6a4bbbf))
 
-  Docs required: Keys = any state, derived, or action name. State = only state
-  and their values.
+  Docs required: Keys = any state, derived, or action name. State = only state and their values.
 
 ## [0.19.1](https://github.com/will-stone/2n8/compare/0.19.0...0.19.1) (2025-05-26)
 
@@ -54,11 +53,9 @@
 - Subscriptions are now tracked by field
   ([2d0e483](https://github.com/will-stone/2n8/commit/2d0e48395d9b50b33cf54d34384daf7770d20df3))
 
-  This means subscriptions will not fire if the thing they are tracking hasn't
-  changed.
+  This means subscriptions will not fire if the thing they are tracking hasn't changed.
 
-This has also had an affect on when state officially changes which is now only
-after an emit.
+This has also had an affect on when state officially changes which is now only after an emit.
 
 ## [0.18.4](https://github.com/will-stone/2n8/compare/0.18.3...0.18.4) (2025-05-14)
 
@@ -160,12 +157,10 @@ after an emit.
 - Completely different API! Zustand meets Redux meets Pinia
   ([d22d8ca](https://github.com/will-stone/2n8/commit/d22d8caf0e695ed6461b6e7fae7d9bbeeb46a94c))
 
-  This is a complete change to the API. I got fed up of dealing with classes and
-  `this` 😱 Much more fun to play with functional! This is essentially Zustand
-  but how _I_ would have built it 🤓 Immer is built in, actions are called
-  events (as they should be), and selectors are moved to the store. This is
-  going out as a patch, living next to the original 2n8 until I've tested it in
-  projects.
+  This is a complete change to the API. I got fed up of dealing with classes and `this` 😱 Much more
+  fun to play with functional! This is essentially Zustand but how _I_ would have built it 🤓 Immer
+  is built in, actions are called events (as they should be), and selectors are moved to the store.
+  This is going out as a patch, living next to the original 2n8 until I've tested it in projects.
 
 ## [0.13.1](https://github.com/will-stone/2n8/compare/0.13.0...0.13.1) (2025-04-19)
 

@@ -7,8 +7,7 @@
 > Oh my, your store is in a right
 > [two and eight](https://cockneyrhymingslang.co.uk/slang/two_and_eight/).
 
-A lightweight JavaScript / TypeScript state management library that uses a
-class-based store.
+A lightweight JavaScript / TypeScript state management library that uses a class-based store.
 
 Key features include:
 
@@ -63,8 +62,8 @@ bun add 2n8
 
 ### Create a store
 
-Your store is a class, and turning it into a React hook is as easy as passing it
-to the `createReactStore` utility.
+Your store is a class, and turning it into a React hook is as easy as passing it to the
+`createReactStore` utility.
 
 ```ts
 // store.ts
@@ -87,8 +86,8 @@ export const useStore = createReactStore(new Store())
 
 ### Import the hook into your React components
 
-The hook provides a direct connection to your store. When you modify the state,
-the consuming component automatically re-renders to reflect those changes.
+The hook provides a direct connection to your store. When you modify the state, the consuming
+component automatically re-renders to reflect those changes.
 
 ```tsx
 // Expression.tsx
@@ -118,8 +117,8 @@ function App() {
 
 ## State and Actions
 
-_State_ is initiated using class fields. The class must be extended from 2n8's
-parent class which enhances the store with a few utilities.
+_State_ is initiated using class fields. The class must be extended from 2n8's parent class which
+enhances the store with a few utilities.
 
 ```tsx
 // store.ts
@@ -130,8 +129,7 @@ class Store extends TwoAndEight {
 }
 ```
 
-State changes are made inside _actions_, which are simply class methods that
-mutate the fields.
+State changes are made inside _actions_, which are simply class methods that mutate the fields.
 
 ```tsx
 // store.ts
@@ -145,8 +143,8 @@ class Store extends TwoAndEight {
 ```
 
 > [!WARNING]  
-> The class methods must use arrow functions in order to bind the store's `this`
-> to the action, allowing you to access your state and actions.
+> The class methods must use arrow functions in order to bind the store's `this` to the action,
+> allowing you to access your state and actions.
 
 Generate your React hook:
 
@@ -155,8 +153,7 @@ Generate your React hook:
 export const useStore = createReactStore(new Store())
 ```
 
-This uses React's
-[`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore)
+This uses React's [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore)
 hook to _subscribe_ to state changes:
 
 ```tsx
@@ -170,9 +167,8 @@ const Component = () => {
 }
 ```
 
-When, and only when, the selected state changes, the component is rerendered by
-React. This is more optimal than simply passing state down the component tree
-via props.
+When, and only when, the selected state changes, the component is rerendered by React. This is more
+optimal than simply passing state down the component tree via props.
 
 Select and call actions from the store:
 
@@ -187,13 +183,12 @@ const Component2 = () => {
 }
 ```
 
-When actions are called, the current values of all state are _emitted_ to the
-subscribers at the end of the action.
+When actions are called, the current values of all state are _emitted_ to the subscribers at the end
+of the action.
 
 ## Async Actions
 
-Running asynchronous actions is as simple as making an async method on your
-store class.
+Running asynchronous actions is as simple as making an async method on your store class.
 
 ```tsx
 // store.ts
@@ -210,9 +205,8 @@ class Store extends TwoAndEight {
 }
 ```
 
-As state is only emitted at the **end** of actions, you may find you'd like to
-emit earlier to trigger state changes in your app. For this you can use the
-special `$emit` action.
+As state is only emitted at the **end** of actions, you may find you'd like to emit earlier to
+trigger state changes in your app. For this you can use the special `$emit` action.
 
 ```tsx
 // store.ts
@@ -234,13 +228,13 @@ class Store extends TwoAndEight {
 ```
 
 > [!WARNING]  
-> All state currently set within the store will be emitted when you call the
-> `$emit` action. This includes changes made by other actions in this time.
+> All state currently set within the store will be emitted when you call the `$emit` action. This
+> includes changes made by other actions in this time.
 
 ## Derived State
 
-State values based on one or more other state values, known as derived state,
-can be created using _getters_.
+State values based on one or more other state values, known as derived state, can be created using
+_getters_.
 
 ```tsx
 // store.ts
@@ -259,8 +253,7 @@ class Store extends TwoAndEight {
 export const useStore = createReactStore(new Store())
 ```
 
-Any subscribers to `totalCounters` will update when either `counter` or
-`secondCounter` are updated.
+Any subscribers to `totalCounters` will update when either `counter` or `secondCounter` are updated.
 
 ```tsx
 // Component.tsx
@@ -275,8 +268,7 @@ const Component = () => {
 
 ## Reset State
 
-If you need to reset a state value to its initial value, you can call the
-special `$reset` action.
+If you need to reset a state value to its initial value, you can call the special `$reset` action.
 
 ```tsx
 // store.ts
@@ -316,18 +308,16 @@ const Component = () => {
 }
 ```
 
-In the above example, clicking `Add` will update the displayed `counter` to `1`.
-Clicking `Reset` will put the `counter` back to `0`.
+In the above example, clicking `Add` will update the displayed `counter` to `1`. Clicking `Reset`
+will put the `counter` back to `0`.
 
 > [!TIP]  
-> You can call `$reset()` without a field parameter to reset _all_ state in the
-> store.
+> You can call `$reset()` without a field parameter to reset _all_ state in the store.
 
 ## Nested Actions
 
-Beginning an action name with a `$` will mean it won't emit subscription
-announcements at the end of the action. This can be useful if you wish to use
-actions from other actions.
+Beginning an action name with a `$` will mean it won't emit subscription announcements at the end of
+the action. This can be useful if you wish to use actions from other actions.
 
 ```tsx
 // store.ts
@@ -361,26 +351,24 @@ export const useStore = createReactStore(new Store())
 ```
 
 > [!NOTE]  
-> `$` prefixed actions are not available to select from `useStore`, this is
-> because these should be called from other public actions.
+> `$` prefixed actions are not available to select from `useStore`, this is because these should be
+> called from other public actions.
 
 ## Comparison
 
 2n8 feels like a blend between two excellent state management libraries:
-[Zustand](https://zustand.docs.pmnd.rs/) and [MobX](https://mobx.js.org/).
-Therefore, here's a quick comparison with those two packages.
+[Zustand](https://zustand.docs.pmnd.rs/) and [MobX](https://mobx.js.org/). Therefore, here's a quick
+comparison with those two packages.
 
 > [!IMPORTANT]  
-> There are always compromises. 2n8 aims for simplicity when setting up your
-> store code using TypeScript, but the other two libraries mentioned here are
-> far more mature and have a great ecosystem and community. Please use the tool
-> that best suits your use case.
+> There are always compromises. 2n8 aims for simplicity when setting up your store code using
+> TypeScript, but the other two libraries mentioned here are far more mature and have a great
+> ecosystem and community. Please use the tool that best suits your use case.
 
 ### Boilerplate
 
-The main reason for creating 2n8 was to limit the amount of boilerplate and
-repetition required to make a store when using TypeScript. Here's a simple
-counter example:
+The main reason for creating 2n8 was to limit the amount of boilerplate and repetition required to
+make a store when using TypeScript. Here's a simple counter example:
 
 #### 2n8
 
@@ -504,14 +492,12 @@ const Counter = observer(() => {
 })
 ```
 
-In this example, 2n8 requires the least store boilerplate whereas MobX needs
-less component binding.
+In this example, 2n8 requires the least store boilerplate whereas MobX needs less component binding.
 
-The advantage of 2n8's concise store implementation is that it doesn't require
-external type definitions or an initial state object. TypeScript can infer types
-inside the class too; take another look at the 2n8 example, there's no types in
-sight, but this store automatically has the correct types for both state and
-actions.
+The advantage of 2n8's concise store implementation is that it doesn't require external type
+definitions or an initial state object. TypeScript can infer types inside the class too; take
+another look at the 2n8 example, there's no types in sight, but this store automatically has the
+correct types for both state and actions.
 
 ### Features
 
@@ -542,8 +528,8 @@ of the below values are React.
 
 ### Benchmarks
 
-Here's a benchmark for the libraries running in React on an Apple MacBook Air
-M2. It shows that the libraries all display very similar performance.
+Here's a benchmark for the libraries running in React on an Apple MacBook Air M2. It shows that the
+libraries all display very similar performance.
 
 Run 1:
 
@@ -597,8 +583,8 @@ zustand - src/react.bench.tsx > simple count
 
 ### `TwoAndEight`
 
-The abstract class that all stores must extend if you would like to use the
-following utility methods.
+The abstract class that all stores must extend if you would like to use the following utility
+methods.
 
 ```ts
 class Store extends TwoAndEight {
@@ -614,8 +600,8 @@ Custom fields are your state, and should only be mutated in your actions.
 
 Custom methods are your actions, and should be used to mutate state.
 
-There are also some in-built actions. All in-built actions will always be
-prefixed with a `$` to avoid clashing with your own action names.
+There are also some in-built actions. All in-built actions will always be prefixed with a `$` to
+avoid clashing with your own action names.
 
 ##### `$emit`
 
@@ -623,9 +609,8 @@ prefixed with a `$` to avoid clashing with your own action names.
 $emit(): void
 ```
 
-Emit to subscribers early instead of waiting until the end of the action. This
-is useful in asynchronous actions where you may want subscribers to update
-before the async event has finished.
+Emit to subscribers early instead of waiting until the end of the action. This is useful in
+asynchronous actions where you may want subscribers to update before the async event has finished.
 
 ```ts
 class Store extends TwoAndEight {
@@ -646,9 +631,8 @@ class Store extends TwoAndEight {
 $reset(stateName?: string): void
 ```
 
-Call this to reset the state to its original value. Use a state name to reset a
-single field of state, or call it without any arguments to reset _all_ state to
-their original values.
+Call this to reset the state to its original value. Use a state name to reset a single field of
+state, or call it without any arguments to reset _all_ state to their original values.
 
 ```ts
 this.$reset()
@@ -675,8 +659,8 @@ class Store extends TwoAndEight {
 createReactStore(store: Store extends TwoAndEight): useStore
 ```
 
-Enhances a store instance, returning a React Hook with API utilities attached.
-This should only be called _outside_ of components.
+Enhances a store instance, returning a React Hook with API utilities attached. This should only be
+called _outside_ of components.
 
 ```ts
 const useStore = createReactStore(new Store())
@@ -694,8 +678,8 @@ const Component = () => {
 useStore.get(key: Key): Store[Key]
 ```
 
-Get any state field, derived state, or action of your store, useful in
-subscribers where hooks are not available.
+Get any state field, derived state, or action of your store, useful in subscribers where hooks are
+not available.
 
 #### `useStore.subscribe`
 
@@ -703,9 +687,8 @@ subscribers where hooks are not available.
 useStore.subscribe(field: Field, callback: () => void): () => void
 ```
 
-Subscribes to state updates for a particular state field or derived state;
-registers a callback that fires whenever an action emits that affects the chosen
-field.
+Subscribes to state updates for a particular state field or derived state; registers a callback that
+fires whenever an action emits that affects the chosen field.
 
 ```ts
 useStore.subscribe('counter', () => {
@@ -719,8 +702,8 @@ useStore.subscribe('counter', () => {
 createStore(store: Store extends TwoAndEight): store
 ```
 
-This is the vanilla store creator used by `createReactStore`. You should only
-need this if you are creating other, non-React, integrations with a 2n8 store.
+This is the vanilla store creator used by `createReactStore`. You should only need this if you are
+creating other, non-React, integrations with a 2n8 store.
 
 #### `store.get`
 
@@ -728,8 +711,8 @@ need this if you are creating other, non-React, integrations with a 2n8 store.
 useStore.get(key: Key): Store[Key]
 ```
 
-Get any state field, derived state, or action of your store, useful in
-subscribers where hooks are not available.
+Get any state field, derived state, or action of your store, useful in subscribers where hooks are
+not available.
 
 #### `store.subscribe`
 
@@ -737,8 +720,8 @@ subscribers where hooks are not available.
 store.subscribe(field: Field, callback: () => void): () => void
 ```
 
-Subscribes to state updates; registers a callback that fires whenever an action
-emits and the selected state field or derived state is changed.
+Subscribes to state updates; registers a callback that fires whenever an action emits and the
+selected state field or derived state is changed.
 
 ### Types
 
@@ -748,8 +731,8 @@ emits and the selected state field or derived state is changed.
 type T = Keys<Store>
 ```
 
-Given your `Store` class, this will extract all state field names, derived state
-name, and action names.
+Given your `Store` class, this will extract all state field names, derived state name, and action
+names.
 
 e.g.
 

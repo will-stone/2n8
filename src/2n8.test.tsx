@@ -468,14 +468,10 @@ test('should throw if attempting to reset non-state', () => {
 
   const { get } = createStore(new Store())
 
-  expect(() => get('resetAction')()).toThrow('2n8: Cannot reset an action.')
-  expect(() => get('resetResetApi')()).toThrow('2n8: Cannot reset an action.')
-  expect(() => get('resetSubscribeApi')()).toThrow(
-    '2n8: Cannot reset an action.',
-  )
-  expect(() => get('resetDerived')()).toThrow(
-    '2n8: Cannot reset derived state.',
-  )
+  expect(() => get('resetAction')()).toThrowError('2n8: Cannot reset an action.')
+  expect(() => get('resetResetApi')()).toThrowError('2n8: Cannot reset an action.')
+  expect(() => get('resetSubscribeApi')()).toThrowError('2n8: Cannot reset an action.')
+  expect(() => get('resetDerived')()).toThrowError('2n8: Cannot reset derived state.')
 })
 
 test('should return current state', () => {

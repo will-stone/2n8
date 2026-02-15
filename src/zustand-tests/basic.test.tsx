@@ -162,7 +162,7 @@ test('ensures parent components subscribe before children', async () => {
           change state
         </button>
         {Object.keys(childStates).map((id) => (
-          <Child key={id} id={id} />
+          <Child id={id} key={id} />
         ))}
       </>
     )
@@ -208,6 +208,7 @@ test('ensures the correct subscriber is removed on unmount', async () => {
     // eslint-disable-next-line react/hook-use-state
     const [Counter, setCounter] = useState(() => CountWithInitialIncrement)
     useLayoutEffect(() => {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCounter(() => Count)
     }, [])
     return (

@@ -11,10 +11,12 @@ import { createReactStore } from './react.js'
 const RenderCount: FC<{ readonly title: string }> = ({ title }) => {
   const renderCount = useRef(0)
 
+  // eslint-disable-next-line react-hooks/refs
   renderCount.current++
 
   return (
     <div>
+      {/* eslint-disable-next-line react-hooks/refs */}
       {title} component: {renderCount.current}
     </div>
   )
@@ -337,7 +339,7 @@ test('should reset state', async () => {
 })
 
 test('should remove subscriber on unmount', async () => {
-  const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => null)
+  const errorSpy = vi.spyOn(console, 'error').mockReturnValue()
 
   class Store extends TwoAndEight {
     something = 'something'
