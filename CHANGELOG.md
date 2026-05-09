@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.7](https://github.com/will-stone/2n8/compare/0.19.6...0.19.7) (2026-05-09)
+
+### Patches
+
+- Lint using latest typescript eslint rules
+  ([6e02e13](https://github.com/will-stone/2n8/commit/6e02e136d038a9d7ae34e0363681aa3ff3c49c6c))
+
 ## [0.19.6](https://github.com/will-stone/2n8/compare/0.19.5...0.19.6) (2025-06-03)
 
 ### Patches
