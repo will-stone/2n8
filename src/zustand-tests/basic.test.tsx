@@ -158,7 +158,12 @@ test('ensures parent components subscribe before children', async () => {
 
     return (
       <>
-        <button onClick={() => changeState()} type="button">
+        <button
+          onClick={() => {
+            changeState()
+          }}
+          type="button"
+        >
           change state
         </button>
         {Object.keys(childStates).map((id) => (
@@ -273,7 +278,9 @@ test('ensures a subscriber is not mistakenly overwritten', async () => {
   )
 
   // Call all subscribers
-  act(() => api.get('setOne')())
+  act(() => {
+    api.get('setOne')()
+  })
 
   await expect(screen.findAllByText('count1: 1')).resolves.toHaveLength(2)
   await expect(screen.findAllByText('count2: 1')).resolves.toHaveLength(1)

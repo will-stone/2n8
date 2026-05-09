@@ -14,6 +14,9 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "strict": true,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "paths": {
+      "2n8": ["./src/index.ts"]
+    }
   }
 }

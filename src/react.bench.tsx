@@ -123,8 +123,12 @@ describe('simple count', () => {
   const useZustandStore = zustandCreate<ZustandStore>()((set) => ({
     count: 0,
 
-    addButtonClicked: () => set((state) => ({ ...state, count: state.count + 1 })),
-    resetClicked: () => set((state) => ({ ...state, count: 0 })),
+    addButtonClicked: () => {
+      set((state) => ({ ...state, count: state.count + 1 }))
+    },
+    resetClicked: () => {
+      set((state) => ({ ...state, count: 0 }))
+    },
   }))
 
   bench('zustand', async () => {

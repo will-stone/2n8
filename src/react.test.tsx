@@ -91,7 +91,13 @@ test('should update count component and not rerender others', async () => {
     const asyncButtonClicked = useStore('asyncButtonClicked')
     return (
       <div>
-        <button onClick={asyncButtonClicked} type="button">
+        <button
+          onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            asyncButtonClicked()
+          }}
+          type="button"
+        >
           AsyncButton
         </button>
         <RenderCount title="AsyncButton" />

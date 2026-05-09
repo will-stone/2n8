@@ -46,6 +46,7 @@ export function createStore<Store extends TwoAndEight>(
 } {
   const storeCache = {} as State<Store>
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const proto = Object.getPrototypeOf(store)
 
   const getterNames = Object.getOwnPropertyNames(proto).filter((name) => {
@@ -87,7 +88,13 @@ export function createStore<Store extends TwoAndEight>(
     if (!name.startsWith('$')) {
       // Infuse all actions with an emit after they've run.
       if (typeof value === 'function') {
-        Reflect.set(store, name, infuseWithCallbackAfterRun(value, store.$emit))
+        Reflect.set(
+          store,
+          name,
+          infuseWithCallbackAfterRun(value, () => {
+            store.$emit()
+          }),
+        )
       }
       // Clone all fields to themselves so that external state isn't mutated.
       else if (typeof value !== 'function') {
@@ -120,8 +127,12 @@ export function createStore<Store extends TwoAndEight>(
   }
 
   const subscribe = (field: keyof State<Store>, subscriber: () => void): (() => void) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     subscribers[field]?.add(subscriber)
-    return () => subscribers[field]?.delete(subscriber)
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      subscribers[field]?.delete(subscriber)
+    }
   }
 
   const get = <Key extends keyof Store>(key: Key) => {

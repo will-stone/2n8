@@ -39,6 +39,7 @@ test('should update when using async actions', async () => {
 
   expect(get('count')).toBe(1)
 
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises -- time is controlled and we're testing this isn't affecting anything synchronously.
   get('asyncButtonClicked')()
 
   expect(get('count')).toBe(2)
@@ -82,6 +83,7 @@ test('should only return updated state after emit', async () => {
 
   expect(get('count')).toBe(0)
 
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises -- time is controlled and we're testing this isn't affecting anything synchronously.
   get('asyncButtonClicked')()
 
   expect(get('count')).toBe(0)
@@ -94,6 +96,7 @@ test('should only return updated state after emit', async () => {
 
   expect(get('count')).toBe(7)
 
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises -- time is controlled and we're testing this isn't affecting anything synchronously.
   get('asyncWithEarlyEmitButtonClicked')()
 
   expect(get('count')).toBe(8)
@@ -468,10 +471,18 @@ test('should throw if attempting to reset non-state', () => {
 
   const { get } = createStore(new Store())
 
-  expect(() => get('resetAction')()).toThrowError('2n8: Cannot reset an action.')
-  expect(() => get('resetResetApi')()).toThrowError('2n8: Cannot reset an action.')
-  expect(() => get('resetSubscribeApi')()).toThrowError('2n8: Cannot reset an action.')
-  expect(() => get('resetDerived')()).toThrowError('2n8: Cannot reset derived state.')
+  expect(() => {
+    get('resetAction')()
+  }).toThrowError('2n8: Cannot reset an action.')
+  expect(() => {
+    get('resetResetApi')()
+  }).toThrowError('2n8: Cannot reset an action.')
+  expect(() => {
+    get('resetSubscribeApi')()
+  }).toThrowError('2n8: Cannot reset an action.')
+  expect(() => {
+    get('resetDerived')()
+  }).toThrowError('2n8: Cannot reset derived state.')
 })
 
 test('should return current state', () => {

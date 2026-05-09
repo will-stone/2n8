@@ -13,6 +13,7 @@ export const Buttons: FC = () => {
       <button onClick={buttonClicked} type="button">
         Button
       </button>
+      {/* eslint-disable-next-line @typescript-eslint/strict-void-return */}
       <button onClick={asyncButtonClicked} type="button">
         Async Button
       </button>

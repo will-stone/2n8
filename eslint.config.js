@@ -1,7 +1,7 @@
 import config from '@will-stone/eslint-config'
 
 export default config(
-  { tailwind: false },
+  { cwd: import.meta.dirname, tailwind: false },
   {
     // For a cleaner example.
     files: ['website/components/counter.tsx'],
