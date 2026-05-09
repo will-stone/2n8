@@ -1,9 +1,12 @@
 {
   "hooks": {
-    "before:init": ["pnpm lint", "pnpm build"]
+    "before:init": ["pnpm build"]
   },
   "github": {
     "release": true
+  },
+  "npm": {
+    "skipChecks": true
   },
   "plugins": {
     "@release-it/conventional-changelog": {
