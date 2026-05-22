@@ -96,6 +96,11 @@
   "engines": {
     "node": ">=22"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm"
+    }
+  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "@tailwindcss/oxide",
